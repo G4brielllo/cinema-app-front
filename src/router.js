@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 
 import LoginPage from './components/LoginPage.vue'; 
 import RegisterPage from './components/RegisterPage.vue';
+import Toolbar from './components/ToolbarNavigation.vue';
 // import HelloWorld from './components/HelloWorld.vue';
 
 const routes = [
@@ -12,6 +13,11 @@ const routes = [
   // },
   {
     path: '/',
+    name: 'Toolbar',
+    component: Toolbar
+  },
+  {
+    path: '/login',
     name: 'Login',
     component: LoginPage
   },
