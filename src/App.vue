@@ -1,8 +1,18 @@
 <template>
-  <router-view/>
+  <v-app>
+    <ToolbarNavigation/>
+    <router-view/>
+  </v-app>
+  
 </template>
 
 <script>
+import ToolbarNavigation from './components/ToolbarNavigation.vue';
+export default {
+  components: {
+    ToolbarNavigation,
+  },
+};
 </script>
 
 <style>

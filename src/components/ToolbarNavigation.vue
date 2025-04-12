@@ -10,16 +10,20 @@
         <v-spacer></v-spacer>
         <v-label>O nas</v-label>
         <v-spacer></v-spacer>
-        <v-btn icon @click="collapse = !collapse">
+        <v-label @click="goToAddMovie">Dodaj Film</v-label>
+        <v-spacer></v-spacer>
+        <v-label @click="goToMovieList">Lista Filmów</v-label>
+        <v-spacer></v-spacer>
+        <v-btn @click="collapse = !collapse">
           <v-icon icon="mdi-menu"></v-icon>
         </v-btn>
-        <v-btn icon @click="goHome">
+        <v-btn @click="goHomePage">
           <v-icon icon="mdi-home"></v-icon>
         </v-btn>
-        <v-btn icon @click="goToLogin">
+        <v-btn @click="goToLogin">
           <v-icon icon="mdi-account"></v-icon>
         </v-btn>
-        <v-btn icon @click="logout">
+        <v-btn @click="logout">
           <v-icon icon="mdi-logout"></v-icon>
         </v-btn>
       </div>
@@ -44,11 +48,23 @@ export default {
     };
   },
   methods: {
+    goHomePage() {
+      this.$router.push("/");
+    },
     goToLogin() {
       this.$router.push("/login");
     },
     goToRegister() {
       this.$router.push("/register");
+    },
+    goToAddMovie() {
+      this.$router.push("/addMovie");
+    },
+    goToMovieList() {
+      this.$router.push("/movieList");
+    },
+    goToDeleteMovie() {
+      this.$router.push("/addMovie");
     },
     async logout() {
       localStorage.removeItem("access_token");
