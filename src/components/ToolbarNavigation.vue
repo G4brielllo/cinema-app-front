@@ -2,7 +2,7 @@
   <v-toolbar title="Toolbar" :collapse="collapse">
     <v-toolbar-items class="ml-auto">
       <div class="d-flex ga-1">
-        <v-label>Repertuar</v-label>
+        <v-label @click="goToRepertoire">Repertuar</v-label>
         <v-spacer></v-spacer>
         <v-label>Cennik</v-label>
         <v-spacer></v-spacer>
@@ -12,9 +12,12 @@
         <v-spacer></v-spacer>
         <v-label @click="goToAddMovie">Dodaj Film</v-label>
         <v-spacer></v-spacer>
+        <v-label @click="goToAddMovieScreening">Dodaj Seanse</v-label>
+        <v-spacer></v-spacer>
         <v-label @click="goToMovieList">Lista Filmów</v-label>
         <v-spacer></v-spacer>
-        <v-btn @click="collapse = !collapse">
+        <!-- <v-btn @click="collapse = !collapse"> -->
+        <v-btn @click="openAdminPanel">
           <v-icon icon="mdi-menu"></v-icon>
         </v-btn>
         <v-btn @click="goHomePage">
@@ -63,8 +66,17 @@ export default {
     goToMovieList() {
       this.$router.push("/movieList");
     },
+    goToAddMovieScreening() {
+      this.$router.push("/addMovieScreening");
+    },
+    goToRepertoire() {
+      this.$router.push("/repertoire");
+    },
     goToDeleteMovie() {
       this.$router.push("/addMovie");
+    },
+    openAdminPanel(){
+      
     },
     async logout() {
       localStorage.removeItem("access_token");

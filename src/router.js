@@ -6,6 +6,9 @@ import RegisterPage from './components/RegisterPage.vue';
 import AddMovie from './components/AddMovie.vue';
 import HomePage from './components/HomePage.vue';
 import MovieList from './components/MovieList.vue';
+import RepertoirePage from './components/RepertoirePage.vue';
+import AddMovieScreening from './components/AddMovieScreening.vue';
+import MovieBooking from './components/MovieBooking.vue';
 // import HelloWorld from './components/HelloWorld.vue';
 
 const routes = [
@@ -13,6 +16,16 @@ const routes = [
     path: '/',
     name: 'HomePage',
     component: HomePage
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: LoginPage
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: RegisterPage
   },
   {
     path: '/addMovie',
@@ -25,15 +38,21 @@ const routes = [
     component: MovieList
   },
   {
-    path: '/login',
-    name: 'Login',
-    component: LoginPage
+    path: '/repertoire',
+    name: 'Repertoire',
+    component: RepertoirePage
   },
   {
-    path: '/register',
-    name: 'Register',
-    component: RegisterPage
-  }
+    path: '/addMovieScreening',
+    name: 'AddMovieScreening',
+    component: AddMovieScreening
+  },
+  {
+    path: '/movieBooking',
+    name: 'MovieBooking',
+    component: MovieBooking
+  },
+  
 ];
 
 const router = createRouter({
