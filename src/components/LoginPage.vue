@@ -15,10 +15,13 @@
         >
         </v-text-field>
         <v-text-field
-          
+
           v-model="user.password"
+          :type="showPassword ? 'text' : 'password'"
           label="Hasło"
           variant="outlined"
+          :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+          @click:append-inner="togglePassword"
           clearable
         >
         </v-text-field>
@@ -58,13 +61,14 @@ export default {
     VCardText,
   },
   data() {
-  return {
-    user: {
-      email: "",
-      password: "",
-    },
-  };
-},
+    return {
+      user: {
+        email: "",
+        password: "",
+      },
+      showPassword: false,
+    };
+  },
   methods: {
     async login() {
       try {
@@ -85,6 +89,9 @@ export default {
     },
     goToHomePage() {
       this.$router.push("/");
+    },
+    togglePassword() {
+      this.showPassword = !this.showPassword;
     },
   },
 };

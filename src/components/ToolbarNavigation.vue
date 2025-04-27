@@ -4,11 +4,11 @@
       <div class="d-flex ga-1">
         <v-label @click="goToRepertoire">Repertuar</v-label>
         <v-spacer></v-spacer>
-        <v-label>Cennik</v-label>
+        <!-- <v-label>Cennik</v-label> -->
         <v-spacer></v-spacer>
-        <v-label>Kontakt</v-label>
+        <!-- <v-label>Kontakt</v-label> -->
         <v-spacer></v-spacer>
-        <v-label>O nas</v-label>
+        <!-- <v-label>O nas</v-label> -->
         <v-spacer></v-spacer>
         <v-label @click="goToAddMovie">Dodaj Film</v-label>
         <v-spacer></v-spacer>

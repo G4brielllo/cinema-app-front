@@ -48,7 +48,7 @@
               :key="index"
               class="mb-4 mx-1"
               color="orange"
-              @click="goToMovieBooking(screening.id)"
+              @click="goToMovieBooking(screening.id, screening.hall_id)"
               :disabled="isPast(screening)"
             >
               {{
@@ -100,7 +100,7 @@ export default {
     this.setDaysOfWeek();
   },
   methods: {
-    async fetchMovies() {
+    async fetchMovies() {//pobiera movies i screenings
       try {
         const response = await axios.get("http://localhost:8000/api/movies", {
           headers: {
@@ -158,10 +158,10 @@ export default {
         screening.screening_date === now.toISOString().split("T")[0];
       return isToday && screeningDateTime < now;
     },
-    goToMovieBooking(screeningId) {
+    goToMovieBooking(screeningId, hallId) {
       this.$router.push({
         path: "/movieBooking",
-        query: { screeningId },
+        query: { screeningId, hallId },
       });
     },
   },

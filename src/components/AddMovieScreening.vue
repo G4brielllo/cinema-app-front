@@ -16,26 +16,34 @@
                 variant="outlined"
                 required
               ></v-select>
-  
-              <v-text-field
-                v-model="screening.screening_date"
-                label="Data (YYYY-MM-DD)"
+              
+              <!-- <v-select
+                v-model="screening.hall_id"
+                :items=[1]
+                label="Wybierz halę"
                 variant="outlined"
                 required
+              ></v-select> -->
+              
+              <v-text-field
+              v-model="screening.screening_date"
+              label="Data (YYYY-MM-DD)"
+              variant="outlined"
+              required
               ></v-text-field>
-
+              
               <!-- <v-date-picker
-                v-model="screening.screening_date"
-                label="Data (YYYY-MM-DD)"
-                variant="outlined"
-                required
+              v-model="screening.screening_date"
+              label="Data (YYYY-MM-DD)"
+              variant="outlined"
+              required
               ></v-date-picker> -->
-  
+              
               <v-text-field
-                v-model="screening.screening_time"
-                label="Godzina (HH:MM)"
-                variant="outlined"
-                required
+              v-model="screening.screening_time"
+              label="Godzina (HH:MM)"
+              variant="outlined"
+              required
               ></v-text-field>
   
               <v-btn @click="addScreening" color="primary">Dodaj Seans</v-btn>
@@ -56,6 +64,8 @@
           movie_id: null,
           screening_date: "",
           screening_time: "",
+          hall_id: 1, // domyślnie 1 - bo jedna sala
+          // hall_id: "",
         },
         movies: [],
       };
@@ -110,6 +120,7 @@
           movie_id: null,
           screening_date: "",
           screening_time: "",
+          hall_id: "",
         };
       },
     },

@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-container class="d-flex justify-center align-center">
-      <v-card variant="tonal" width="50%">
+      <v-card width="50%">
         <v-card-title>
           <h1>Dodaj film</h1>
         </v-card-title>
@@ -13,12 +13,24 @@
               label="Tytuł"
               required
             ></v-text-field>
-            <v-text-field
-              variant="outlined"
+            <v-select
               v-model="movie.category"
+              :items="[
+                'Akcja',
+                'Komedia',
+                'Dramat',
+                'Animacja',
+                'Fantasy',
+                'Science Fiction (Sci-Fi)',
+                'Horror',
+                'Romans',
+                'Thriller',
+                'Przygodowy',
+              ]"
               label="Kategoria"
+              variant="outlined"
               required
-            ></v-text-field>
+            ></v-select>
             <v-text-field
               variant="outlined"
               v-model="movie.show_time"
@@ -84,6 +96,20 @@
               label="Obsada"
               required
             ></v-text-field>
+            <v-select
+              variant="outlined"
+              v-model="movie.format"
+              :items="['2D', '3D']"
+              label="Format"
+              required
+            ></v-select>
+            <v-select
+              v-model="movie.audio_type"
+              :items="['Dubbing', 'Napisy']"
+              label="Audio"
+              variant="outlined"
+              required
+            ></v-select>
 
             <v-btn @click="addMovie">Dodaj film</v-btn>
           </v-form>
@@ -127,6 +153,8 @@ export default {
         script: "",
         production_year: "",
         cast: "",
+        format: "",
+        audio_type: "",
         image: null,
       },
       file: null,
@@ -145,13 +173,13 @@ export default {
           }
         );
         console.log(response.data);
-    } catch (error) {
+      } catch (error) {
         console.error(
-            "Error adding movie:",
-            error.response?.data || error.message
+          "Error adding movie:",
+          error.response?.data || error.message
         );
-    }
-    this.clearData();
+      }
+      this.clearData();
     },
     clearData() {
       this.movie = {
