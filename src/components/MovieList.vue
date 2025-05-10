@@ -97,6 +97,12 @@ export default {
 
     editMovie(movie) {
       console.log("Edytowanie filmu:", movie);
+
+      this.$router.push({
+        path: "/addMovie", 
+        query: { movieId: movie.id },
+      });
+
     },
 
     async deleteMovie(movieId) {

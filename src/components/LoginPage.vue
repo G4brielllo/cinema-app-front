@@ -34,6 +34,7 @@
             >Zarejestruj się</v-btn
           >
         </v-card-actions>
+        <v-card-text> Zapomniałem hasła </v-card-text>
       </v-card>
     </v-container>
   </v-app>

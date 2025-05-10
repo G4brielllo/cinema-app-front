@@ -1,25 +1,34 @@
 <template>
-  <v-toolbar title="Toolbar" :collapse="collapse">
+  <v-toolbar title="CineManager">
     <v-toolbar-items class="ml-auto">
       <div class="d-flex ga-1">
         <v-label @click="goToRepertoire">Repertuar</v-label>
         <v-spacer></v-spacer>
-        <!-- <v-label>Cennik</v-label> -->
+        <v-label>Cennik</v-label>
         <v-spacer></v-spacer>
-        <!-- <v-label>Kontakt</v-label> -->
+        <v-label>Kontakt</v-label>
         <v-spacer></v-spacer>
-        <!-- <v-label>O nas</v-label> -->
+        <v-label>O nas</v-label>
         <v-spacer></v-spacer>
-        <v-label @click="goToAddMovie">Dodaj Film</v-label>
-        <v-spacer></v-spacer>
-        <v-label @click="goToAddMovieScreening">Dodaj Seanse</v-label>
-        <v-spacer></v-spacer>
-        <v-label @click="goToMovieList">Lista Filmów</v-label>
-        <v-spacer></v-spacer>
-        <!-- <v-btn @click="collapse = !collapse"> -->
-        <v-btn @click="openAdminPanel">
+        <v-btn color="primary">
           <v-icon icon="mdi-menu"></v-icon>
+          <v-menu activator="parent">
+            <v-list>
+              <v-list-item
+              @click="navigate(item.route)"
+                v-for="(item, index) in items"
+                :key="index"
+                :value="index"
+              >
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
         </v-btn>
+
+        <!-- <v-btn @click="openAdminPanel">
+          <v-icon icon="mdi-menu"></v-icon>
+        </v-btn> -->
         <v-btn @click="goHomePage">
           <v-icon icon="mdi-home"></v-icon>
         </v-btn>
@@ -47,10 +56,19 @@ export default {
   },
   data() {
     return {
-      collapse: false,
+      items: [
+        { title: "Dodaj Film", route: "/addMovie" },
+        { title: "Lista Filmów", route: "/moviesList" },
+        { title: "Dodaj Seans", route: "/addMovieScreening" },
+        { title: "Lista Seansów", route: "/screeningsList" },
+        { title: "Lista Użytkowników", route: "/usersList" },
+      ],
     };
   },
   methods: {
+    navigate(route){
+      this.$router.push(route);
+    },
     goHomePage() {
       this.$router.push("/");
     },
@@ -60,24 +78,13 @@ export default {
     goToRegister() {
       this.$router.push("/register");
     },
-    goToAddMovie() {
-      this.$router.push("/addMovie");
-    },
-    goToMovieList() {
-      this.$router.push("/movieList");
-    },
-    goToAddMovieScreening() {
-      this.$router.push("/addMovieScreening");
-    },
     goToRepertoire() {
       this.$router.push("/repertoire");
     },
     goToDeleteMovie() {
       this.$router.push("/addMovie");
     },
-    openAdminPanel(){
-      
-    },
+    openAdminPanel() {},
     async logout() {
       localStorage.removeItem("access_token");
       console.log("Logout successful");

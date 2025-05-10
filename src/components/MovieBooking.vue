@@ -36,7 +36,10 @@
                 v-for="seat in parseInt(hall.seats_per_row)"
                 :key="seat"
                 class="seat"
-                :class="{ selected: isSelected(row, seat) }"
+                :class="{
+                  selected: isSelected(row, seat),
+                  booked: isBooked(row, seat),
+                }"
                 @click="toggleSeat(row, seat)"
               >
                 <!-- {{ seat }} -->
@@ -228,6 +231,11 @@ export default {
       }
     },
     toggleSeat(row, seat) {
+      if (this.isBooked(row, seat)) {
+        alert("To miejsce jest już zarezerwowane.");
+        return;
+      }
+
       const index = this.selectedSeats.findIndex(
         (s) => s.row === row && s.number === seat
       );
@@ -241,6 +249,11 @@ export default {
 
     isSelected(row, seat) {
       return this.selectedSeats.some((s) => s.row === row && s.number === seat);
+    },
+    isBooked(row, seat) {
+      return this.seats.some(
+        (s) => s.row === row && s.number === seat && s.is_booked
+      );
     },
 
     async bookTickets() {
@@ -313,6 +326,7 @@ export default {
   background-color: orange;
 }
 .seat.booked {
-  background-color: gray;
+  background-color: lightgray;
+  cursor: not-allowed;
 }
 </style>

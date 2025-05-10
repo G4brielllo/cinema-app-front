@@ -3,7 +3,9 @@
     <v-container class="d-flex justify-center align-center">
       <v-card width="50%">
         <v-card-title>
-          <h1>Dodaj film</h1>
+          <h1>
+            <v-model>{{ pageOperationType }}</v-model>
+          </h1>
         </v-card-title>
         <v-card-text>
           <v-form ref="form">
@@ -111,7 +113,9 @@
               required
             ></v-select>
 
-            <v-btn @click="addMovie">Dodaj film</v-btn>
+            <v-btn @click="receivedMovieID ? editMovie() : addMovie()"
+              ><v-model>{{ pageOperationType }}</v-model></v-btn
+            >
           </v-form>
         </v-card-text>
       </v-card>
@@ -158,7 +162,13 @@ export default {
         image: null,
       },
       file: null,
+      receivedMovieID: null,
+      pageOperationType: "",
     };
+  },
+  created() {
+    this.isMovieEditing();
+    this.changeTitle();
   },
   methods: {
     async addMovie() {
@@ -181,6 +191,26 @@ export default {
       }
       this.clearData();
     },
+    async editMovie() {
+      try {
+        const response = await axios.put(
+          `http://localhost:8000/api/movies/${this.receivedMovieID}`,
+          this.movie,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          }
+        );
+        console.log(response.data);
+      } catch (error) {
+        console.error(
+          "Error editing movie:",
+          error.response?.data || error.message
+        );
+      }
+      this.clearData();
+    },
     clearData() {
       this.movie = {
         title: "",
@@ -196,6 +226,7 @@ export default {
         image: null,
       };
       this.file = null;
+      this.receivedMovieID = null;
     },
     createBase64Image(event) {
       const file = event.target.files[0];
@@ -214,6 +245,35 @@ export default {
 
     isImageUrl(url) {
       return url.match(/\.(jpeg|jpg|gif|png)$/) != null;
+    },
+    isMovieEditing() {
+      if (this.$route.query.movieId !== undefined) {
+        this.receivedMovieID = this.$route.query.movieId;
+        console.log("Received movie ID:", this.receivedMovieID);
+        this.fetchMovieData(this.receivedMovieID);
+      }
+    },
+    async fetchMovieData(id) {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/movies/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          }
+        );
+        this.movie = response.data;
+      } catch (error) {
+        console.error("Błąd przy pobieraniu danych filmów:", error);
+      }
+    },
+    changeTitle() {
+      if (this.$route.query.movieId !== undefined) {
+        this.pageOperationType = "Edytuj film";
+      } else {
+        this.pageOperationType = "Dodaj film";
+      }
     },
   },
 };

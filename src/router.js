@@ -9,6 +9,8 @@ import MovieList from './components/MovieList.vue';
 import RepertoirePage from './components/RepertoirePage.vue';
 import AddMovieScreening from './components/AddMovieScreening.vue';
 import MovieBooking from './components/MovieBooking.vue';
+import ScreeningsList from './components/ScreeningsList.vue';
+import UsersList from './components/UsersList.vue';
 // import HelloWorld from './components/HelloWorld.vue';
 
 const routes = [
@@ -33,7 +35,7 @@ const routes = [
     component: AddMovie
   },
   {
-    path: '/movieList',
+    path: '/moviesList',
     name: 'MovieList',
     component: MovieList
   },
@@ -51,6 +53,16 @@ const routes = [
     path: '/movieBooking',
     name: 'MovieBooking',
     component: MovieBooking
+  },
+  {
+    path: '/screeningsList',
+    name: 'ScreeningsList',
+    component: ScreeningsList
+  },
+  {
+    path: '/usersList',
+    name: 'UsersList',
+    component: UsersList
   },
   
 ];
