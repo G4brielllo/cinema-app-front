@@ -63,6 +63,7 @@ export default {
         { title: "Lista Seansów", route: "/screeningsList" },
         { title: "Lista Użytkowników", route: "/usersList" },
       ],
+      
     };
   },
   methods: {

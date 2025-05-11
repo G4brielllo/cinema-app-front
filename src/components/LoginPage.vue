@@ -15,7 +15,6 @@
         >
         </v-text-field>
         <v-text-field
-
           v-model="user.password"
           :type="showPassword ? 'text' : 'password'"
           label="Hasło"
@@ -34,8 +33,13 @@
             >Zarejestruj się</v-btn
           >
         </v-card-actions>
-        <v-card-text> Zapomniałem hasła </v-card-text>
-      </v-card>
+        <!-- <v-card-text> Zapomniałem hasła </v-card-text> -->
+        <v-card-actions>
+          <v-btn variant= "text" @click="goToForgotPassword" style="outline: auto">
+            Zapomniałem hasła
+          </v-btn>
+        </v-card-actions>
+        </v-card>
     </v-container>
   </v-app>
 </template>
@@ -90,6 +94,9 @@ export default {
     },
     goToHomePage() {
       this.$router.push("/");
+    },
+    goToForgotPassword() {
+      this.$router.push("/forgot-password");
     },
     togglePassword() {
       this.showPassword = !this.showPassword;

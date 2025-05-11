@@ -11,6 +11,8 @@ import AddMovieScreening from './components/AddMovieScreening.vue';
 import MovieBooking from './components/MovieBooking.vue';
 import ScreeningsList from './components/ScreeningsList.vue';
 import UsersList from './components/UsersList.vue';
+import ForgotPassword from './components/ForgotPassword.vue';
+import ResetPassword from './components/ResetPassword.vue';
 // import HelloWorld from './components/HelloWorld.vue';
 
 const routes = [
@@ -64,6 +66,16 @@ const routes = [
     name: 'UsersList',
     component: UsersList
   },
+  {
+    path: '/forgot-password',
+    name: 'ForgotPassword',
+    component: ForgotPassword
+  },
+  {
+    path: '/reset-password',
+    name: 'ResetPassword',
+    component: ResetPassword
+  }
   
 ];
 
