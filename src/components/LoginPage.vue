@@ -93,7 +93,8 @@ export default {
       this.$router.push("/register");
     },
     goToHomePage() {
-      this.$router.push("/");
+      // this.$router.push("/");
+      window.location.href = "/";
     },
     goToForgotPassword() {
       this.$router.push("/forgot-password");

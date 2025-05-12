@@ -13,6 +13,7 @@ import ScreeningsList from './components/ScreeningsList.vue';
 import UsersList from './components/UsersList.vue';
 import ForgotPassword from './components/ForgotPassword.vue';
 import ResetPassword from './components/ResetPassword.vue';
+import CheckReeervation from './components/CheckReservation.vue';
 // import HelloWorld from './components/HelloWorld.vue';
 
 const routes = [
@@ -75,6 +76,11 @@ const routes = [
     path: '/reset-password',
     name: 'ResetPassword',
     component: ResetPassword
+  },
+  {
+    path: '/checkReservation',
+    name: 'CheckReeservation',
+    component: CheckReeervation
   }
   
 ];

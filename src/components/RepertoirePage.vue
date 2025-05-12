@@ -1,59 +1,59 @@
 <template>
   <v-app>
     <v-container>
-      <v-card variant="toned">
-        <v-card-title>
-          <h1>Repertuar</h1>
-        </v-card-title>
-        <v-btn
+        <v-card variant="toned">
+          <v-card-title>
+            <h1>Repertuar</h1>
+          </v-card-title>
+          <v-btn
           v-for="(day, index) in daysOfWeek"
           :key="index"
           class="mb-4 mx-1"
           :color="index === selectedDayIndex ? 'primary' : 'grey lighten-1'"
           @click="selectedDayIndex = index"
-        >
+          >
           {{ day }}
         </v-btn>
-
+        
         <v-row
-          class="py-6 border-b"
-          v-for="(movie, index) in filteredMovies"
-          :key="index"
+        class="py-6 border-b"
+        v-for="(movie, index) in filteredMovies"
+        :key="index"
         >
-          <v-col cols="3">
-            <v-img :src="movie.image" aspect-ratio="2/3" elevation-3></v-img>
-          </v-col>
-          <v-col cols="3" class="d-flex flex-column justify-space-between">
-            <div>
-              <h1>{{ movie.title }}</h1>
-              <div class="text-grey-darken-1">
-                <strong
-                  >{{ movie.category }} | {{ movie.duration }} min
-                </strong>
-              </div>
-              <div class="text-grey-darken-1">
-                <strong>Format:</strong> {{ movie.format }}
-              </div>
-              <div class="text-grey-darken-1">
-                <strong>Audio:</strong> {{ movie.audio_type }}
-              </div>
-              <div class="text-grey-darken-1">
-                <strong>Obsada:</strong> {{ movie.cast }}
-              </div>
-            </div>
-          </v-col>
-          <v-col cols="2" class="d-flex flex-column justify-inline">
-            <v-btn
-              v-for="(screening, index) in filteredScreenings(movie.screenings)"
-              :key="index"
-              class="mb-4 mx-1"
-              color="orange"
-              @click="goToMovieBooking(screening.id, screening.hall_id)"
-              :disabled="isPast(screening)"
-            >
-              {{
-                formatTime(screening.screening_time, screening.screening_date)
-              }}
+        <v-col cols="3">
+          <v-img :src="movie.image" aspect-ratio="2/3" elevation-3></v-img>
+        </v-col>
+        <v-col cols="3" class="d-flex flex-column justify-space-between">
+          <div>
+            <h1>{{ movie.title }}</h1>
+            <div class="text-grey-darken-1">
+              <strong
+              >{{ movie.category }} | {{ movie.duration }} min
+            </strong>
+          </div>
+          <div class="text-grey-darken-1">
+            <strong>Format:</strong> {{ movie.format }}
+          </div>
+          <div class="text-grey-darken-1">
+            <strong>Audio:</strong> {{ movie.audio_type }}
+          </div>
+          <div class="text-grey-darken-1">
+            <strong>Obsada:</strong> {{ movie.cast }}
+          </div>
+        </div>
+      </v-col>
+      <v-col cols="2" class="d-flex flex-column justify-inline">
+        <v-btn
+        v-for="(screening, index) in filteredScreenings(movie.screenings)"
+        :key="index"
+        class="mb-4 mx-1"
+        color="orange"
+        @click="goToMovieBooking(screening.id, screening.hall_id)"
+        :disabled="isPast(screening)"
+        >
+        {{
+          formatTime(screening.screening_time, screening.screening_date)
+        }}
             </v-btn>
           </v-col>
         </v-row>
