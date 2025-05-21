@@ -108,8 +108,9 @@ export default {
         const payload = {
           ...this.screening,
           screening_date: this.screening.screening_date
-            ? this.screening.screening_date.toISOString().split("T")[0]
-            : null,
+  ? this.screening.screening_date.toLocaleDateString('fr-CA') // format YYYY-MM-DD
+  : null,
+
         };
         const response = await axios.post(
           "http://localhost:8000/api/screenings",
