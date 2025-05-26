@@ -108,7 +108,7 @@ export default {
         const payload = {
           ...this.screening,
           screening_date: this.screening.screening_date
-  ? this.screening.screening_date.toLocaleDateString('fr-CA') // format YYYY-MM-DD
+  ? this.screening.screening_date.toLocaleDateString('fr-CA')
   : null,
 
         };

@@ -20,7 +20,7 @@
               <p><strong>Film:</strong> {{ reservationData.screening.movie.title }}</p>
               <p><strong>Data seansu:</strong> {{ reservationData.screening.screening_date }}</p>
               <p><strong>Godzina:</strong> {{ reservationData.screening.screening_time }}</p>
-              <p><strong>Miejsce:</strong> {{ reservationData.screening.seat_id }}</p>
+              <p><strong>Rząd | Miejsce:</strong> {{ reservationData.seat.row }} | {{ reservationData.seat.number }}</p>
               <p><strong>Sala Kinowa:</strong> {{ reservationData.screening.hall_id }}</p>
             </v-card-text>
   
@@ -58,6 +58,7 @@ export default {
           `http://localhost:8000/api/reservations/${this.reservation.code}`
         );
         this.reservationData = response.data;
+        console.log("Reservation data:", this.reservationData);
         this.dialog = true; 
       } catch (error) {
         console.error("Reservation not found or error occurred:", error);

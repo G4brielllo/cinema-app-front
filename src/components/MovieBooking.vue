@@ -22,6 +22,9 @@
               <strong>Czas rozpoczęcia:</strong>
               {{ formatTime(screening.screening_time) }}
             </div>
+            <div class="mb-4 font-weight-bold text-red">
+              Czas do finalizacji zamówienia: {{ formatCountdown }}
+            </div>
           </v-col>
         </v-row>
       </v-card>
@@ -41,14 +44,12 @@
                   booked: isBooked(row, seat),
                 }"
                 @click="toggleSeat(row, seat)"
-              >
-                <!-- {{ seat }} -->
-              </div>
+              ></div>
             </div>
           </div>
         </v-col>
 
-        <v-col cols="12">
+        <v-col cols="6">
           <v-card variant="toned">
             <v-card-title>
               <h2>Wybierz miejsca</h2>
@@ -59,6 +60,13 @@
                   Liczba wybranych biletów: {{ selectedSeats.length }}
                 </v-label>
                 <v-spacer></v-spacer>
+                <div v-if="selectedSeats.length">
+                  <div v-for="(seat, index) in selectedSeats" :key="index">
+                    Wybrane miejsce: Rząd {{ seat.row }}, Miejsce
+                    {{ seat.number }}
+                  </div>
+                </div>
+
                 <v-text-field
                   v-if="showEmailField"
                   v-model="email"
@@ -149,12 +157,25 @@ export default {
       seats: [],
       selectedSeats: [],
       showEmailField: false,
+      currentSelectedSeat: null,
+      countdownTime: 600,
     };
   },
   created() {
     this.fetchHallData();
     this.fetchScreeningData();
+    this.startCountdown();
   },
+  computed: {
+    formatCountdown() {
+      const minutes = Math.floor(this.countdownTime / 60)
+        .toString()
+        .padStart(2, "0");
+      const seconds = (this.countdownTime % 60).toString().padStart(2, "0");
+      return `${minutes}:${seconds}`;
+    },
+  },
+
   methods: {
     async fetchScreeningData() {
       try {
@@ -225,7 +246,6 @@ export default {
       const token = localStorage.getItem("access_token");
       if (!token) {
         this.$router.push("/login");
-        // this.showEmailField = true;
       } else {
         this.showEmailField = false;
       }
@@ -242,11 +262,12 @@ export default {
 
       if (index === -1) {
         this.selectedSeats.push({ row, number: seat });
+        this.currentSelectedSeat = { row, number: seat };
       } else {
         this.selectedSeats.splice(index, 1);
+        this.currentSelectedSeat = null;
       }
     },
-
     isSelected(row, seat) {
       return this.selectedSeats.some((s) => s.row === row && s.number === seat);
     },
@@ -255,11 +276,9 @@ export default {
         (s) => s.row === row && s.number === seat && s.is_booked
       );
     },
-
     async bookTickets() {
       const token = localStorage.getItem("access_token");
       const isLoggedIn = !!token;
-      console.log("Wybrane miejsca:", this.selectedSeats);
       if (this.selectedSeats.length === 0) {
         alert("Proszę wybrać przynajmniej jedno miejsce.");
         return;
@@ -288,7 +307,17 @@ export default {
     },
     formatTime(time) {
       if (!time) return "";
-      return time.slice(0, 5); // Zwraca tylko 5 znaków jeśli wartość w czasie jest pusta
+      return time.slice(0, 5);
+    },
+    startCountdown() {
+      const timer = setInterval(() => {
+        if (this.countdownTime > 0) {
+          this.countdownTime--;
+        } else {
+          clearInterval(timer);
+          location.reload();
+        }
+      }, 1000);
     },
   },
 };

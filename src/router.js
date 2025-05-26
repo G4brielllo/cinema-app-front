@@ -14,6 +14,8 @@ import UsersList from './components/UsersList.vue';
 import ForgotPassword from './components/ForgotPassword.vue';
 import ResetPassword from './components/ResetPassword.vue';
 import CheckReeervation from './components/CheckReservation.vue';
+import UserDashboard from './components/UserDashboard.vue';
+import AnnouncementsPage from './components/AnnouncementsPage.vue';
 // import HelloWorld from './components/HelloWorld.vue';
 
 const routes = [
@@ -81,6 +83,16 @@ const routes = [
     path: '/checkReservation',
     name: 'CheckReeservation',
     component: CheckReeervation
+  },
+  {
+    path: '/userDashboard',
+    name: 'UserDashboard',
+    component: UserDashboard
+  },
+  {
+    path: '/announcements',
+    name: 'AnnouncementsPage',
+    component: AnnouncementsPage
   }
   
 ];
