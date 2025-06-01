@@ -112,6 +112,10 @@
               variant="outlined"
               required
             ></v-select>
+            <v-checkbox
+              v-model="movie.announcement"
+              label="Zapowiedź"
+            ></v-checkbox>
 
             <v-btn @click="receivedMovieID ? editMovie() : addMovie()"
               ><v-model>{{ pageOperationType }}</v-model></v-btn
@@ -159,6 +163,7 @@ export default {
         cast: "",
         format: "",
         audio_type: "",
+        announcement: false,
         image: null,
       },
       file: null,
@@ -223,6 +228,9 @@ export default {
         script: "",
         production_year: "",
         cast: "",
+        audio_type: "",
+        format: "",
+        announcement: false,
         image: null,
       };
       this.file = null;
@@ -263,16 +271,19 @@ export default {
             },
           }
         );
-        this.movie = response.data;
+        this.movie = {
+          ...response.data,
+          announcement: Boolean(response.data.announcement), // konwertuje 1 lub 0 na true/false
+        };
       } catch (error) {
         console.error("Błąd przy pobieraniu danych filmów:", error);
       }
     },
     changeTitle() {
       if (this.$route.query.movieId !== undefined) {
-        this.pageOperationType = "Edytuj film";
+        this.pageOperationType = "Edytuj Film";
       } else {
-        this.pageOperationType = "Dodaj film";
+        this.pageOperationType = "Dodaj Film";
       }
     },
   },

@@ -16,6 +16,8 @@ import ResetPassword from './components/ResetPassword.vue';
 import CheckReeervation from './components/CheckReservation.vue';
 import UserDashboard from './components/UserDashboard.vue';
 import AnnouncementsPage from './components/AnnouncementsPage.vue';
+import PriceList from './components/PriceList.vue';
+import PaymentStatus from './components/PaymentStatus.vue';
 // import HelloWorld from './components/HelloWorld.vue';
 
 const routes = [
@@ -93,7 +95,17 @@ const routes = [
     path: '/announcements',
     name: 'AnnouncementsPage',
     component: AnnouncementsPage
-  }
+  },
+  {
+    path: '/priceList',
+    name: 'PriceList',
+    component: PriceList
+  },
+  {
+    path: '/paymentStatus',
+    name: 'PaymentStatus',
+    component: PaymentStatus
+  },
   
 ];
 
