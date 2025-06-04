@@ -78,6 +78,9 @@
                 <v-btn @click="bookTickets()" color="primary">
                   Potwierdzam rezerwację
                 </v-btn>
+                <v-col>
+                  <v-btn @click="startPayment()"> Zapłać </v-btn>
+                </v-col>
               </v-form>
             </v-card-text>
           </v-card>
@@ -318,6 +321,51 @@ export default {
           location.reload();
         }
       }, 1000);
+    },
+    async startPayment() {
+      try {
+        const res = await fetch("http://127.0.0.1:8000/api/payu/create-order", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            notifyUrl:
+              "https://de08-91-205-91-71.ngrok-free.app/api/payu/notify",
+            continueUrl:
+              "https://de08-91-205-91-71.ngrok-free.app/paymentStatus",
+
+            currencyCode: "PLN",
+            totalAmount: 1000,
+            products: [
+              {
+                name: "Bilet do kina",
+                unitPrice: 1000,
+                quantity: 1,
+              },
+            ],
+          }),
+        });
+
+        if (!res.ok) {
+          const text = await res.text();
+          alert("Błąd serwera: " + text);
+          return;
+        }
+
+        const json = await res.json();
+
+        if (json.data && json.data.redirectUri) {
+          window.location.href = json.data.redirectUri;
+        } else {
+          alert(
+            "Nie udało się przekierować do płatności. Odpowiedź: " +
+              JSON.stringify(json)
+          );
+        }
+      } catch (error) {
+        alert("Błąd sieci lub parsowania JSON: " + error.message);
+      }
     },
   },
 };
