@@ -67,25 +67,46 @@
                   </div>
                 </div>
 
-                <v-text-field
+                <!-- <v-text-field
                   v-if="showEmailField"
                   v-model="email"
                   label="Podaj adres e-mail, na który wyślemy potwierdzenie rezerwacji"
                   variant="outlined"
                   required
-                ></v-text-field>
+                ></v-text-field> -->
                 <v-spacer></v-spacer>
                 <v-btn @click="bookTickets()" color="primary">
                   Potwierdzam rezerwację
                 </v-btn>
-                <v-col>
-                  <v-btn @click="startPayment()"> Zapłać </v-btn>
-                </v-col>
               </v-form>
             </v-card-text>
           </v-card>
         </v-col>
       </v-row>
+      <v-dialog v-model="showLoginModal" max-width="500">
+        <v-card>
+          <v-card-title>Zaloguj się</v-card-title>
+          <v-card-text>
+            <v-text-field
+              v-model="user.email"
+              label="Email"
+              type="email"
+              required
+            ></v-text-field>
+            <v-text-field
+              v-model="user.password"
+              label="Hasło"
+              type="password"
+              required
+            ></v-text-field>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn color="primary" @click="login">Zaloguj</v-btn>
+            <v-spacer></v-spacer>
+            <v-btn text @click="showLoginModal = false">Anuluj</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-container>
   </v-app>
 </template>
@@ -104,6 +125,7 @@ import {
   VLabel,
   VSpacer,
   VBtn,
+  VDialog,
 } from "vuetify/lib/components";
 import axios from "axios";
 
@@ -121,6 +143,7 @@ export default {
     VLabel,
     VSpacer,
     VBtn,
+    VDialog,
   },
   data() {
     return {
@@ -157,11 +180,17 @@ export default {
         status: "reserved",
         reservation_time: "",
       },
+      user: {
+        email: "",
+        password: "",
+        access_token: "",
+      },
       seats: [],
       selectedSeats: [],
       showEmailField: false,
       currentSelectedSeat: null,
       countdownTime: 600,
+      showLoginModal: false,
     };
   },
   created() {
@@ -169,6 +198,7 @@ export default {
     this.fetchScreeningData();
     this.startCountdown();
   },
+
   computed: {
     formatCountdown() {
       const minutes = Math.floor(this.countdownTime / 60)
@@ -247,10 +277,11 @@ export default {
     },
     isUserLoggedIn() {
       const token = localStorage.getItem("access_token");
+      this.showEmailField = !this.access_token;
       if (!token) {
-        this.$router.push("/login");
+        this.showLoginModal = true;
       } else {
-        this.showEmailField = false;
+        this.showLoginModal = false;
       }
     },
     toggleSeat(row, seat) {
@@ -279,35 +310,7 @@ export default {
         (s) => s.row === row && s.number === seat && s.is_booked
       );
     },
-    async bookTickets() {
-      const token = localStorage.getItem("access_token");
-      const isLoggedIn = !!token;
-      if (this.selectedSeats.length === 0) {
-        alert("Proszę wybrać przynajmniej jedno miejsce.");
-        return;
-      }
-      try {
-        const response = await axios.post(
-          "http://localhost:8000/api/reservations",
-          {
-            screening_id: this.screening.id,
-            seats: this.selectedSeats,
-            email: isLoggedIn ? null : this.email,
-          },
-          {
-            headers: {
-              Authorization: token ? `Bearer ${token}` : "",
-            },
-          }
-        );
-        console.log(response.data);
-      } catch (error) {
-        console.error(
-          "Error making reservation:",
-          error.response?.data || error.message
-        );
-      }
-    },
+
     formatTime(time) {
       if (!time) return "";
       return time.slice(0, 5);
@@ -322,7 +325,30 @@ export default {
         }
       }, 1000);
     },
+    async login() {
+      try {
+        const response = await axios.post(
+          "http://localhost:8000/api/login",
+          this.user
+        );
+        localStorage.setItem("access_token", response.data.access_token);
+        this.showLoginModal = false;
+        this.showEmailField = false;
+        this.user.email = "";
+        this.user.password = "";
+
+        location.reload();
+      } catch (error) {
+        console.error("Login failed", error.response?.data || error.message);
+        alert(
+          "Błąd logowania: " + (error.response?.data?.message || error.message)
+        );
+      }
+    },
+    // STARE
     async startPayment() {
+      console.log("Srakulka", this.reservation.reservation_code);
+
       try {
         const res = await fetch("http://127.0.0.1:8000/api/payu/create-order", {
           method: "POST",
@@ -336,14 +362,19 @@ export default {
               "https://de08-91-205-91-71.ngrok-free.app/paymentStatus",
 
             currencyCode: "PLN",
-            totalAmount: 1000,
+            totalAmount: function () {
+              const ticketPrice = 2500;
+              const quantity = this.selectedSeats.length;
+              return ticketPrice * quantity;
+            }.call(this),
             products: [
               {
                 name: "Bilet do kina",
-                unitPrice: 1000,
-                quantity: 1,
+                unitPrice: 2500,
+                quantity: this.selectedSeats.length,
               },
             ],
+            extOrderId: this.reservation.reservation_code,
           }),
         });
 
@@ -365,6 +396,45 @@ export default {
         }
       } catch (error) {
         alert("Błąd sieci lub parsowania JSON: " + error.message);
+      }
+    },
+
+    // STARE
+    async bookTickets() {
+      this.isUserLoggedIn();
+      const token = localStorage.getItem("access_token");
+      const isLoggedIn = !!token;
+      if (!isLoggedIn && !this.user.email) {
+        alert("Proszę podać adres e-mail.");
+        return;
+      }
+
+      if (this.selectedSeats.length === 0) {
+        alert("Proszę wybrać przynajmniej jedno miejsce.");
+        return;
+      }
+      try {
+        const response = await axios.post(
+          "http://localhost:8000/api/reservations",
+          {
+            screening_id: this.screening.id,
+            seats: this.selectedSeats,
+            email: isLoggedIn ? null : this.email,
+          },
+          {
+            headers: {
+              Authorization: token ? `Bearer ${token}` : "",
+            },
+          }
+        );
+        this.reservation.reservation_code = response.data.reservation_code;
+        console.log(response.data);
+        await this.startPayment();
+      } catch (error) {
+        console.error(
+          "Error making reservation:",
+          error.response?.data || error.message
+        );
       }
     },
   },
