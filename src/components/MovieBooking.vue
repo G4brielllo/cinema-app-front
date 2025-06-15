@@ -197,9 +197,6 @@ export default {
     this.fetchHallData();
     this.fetchScreeningData();
     this.startCountdown();
-    setInterval(() => {
-      this.callReservationCleanup();
-    }, 3 * 60 * 1000);
   },
 
   computed: {
@@ -328,13 +325,7 @@ export default {
         }
       }, 1000);
     },
-    async callReservationCleanup() {
-      try {
-        await axios.get("http://localhost:8000/api/delete-expired-reservations");
-      } catch (error) {
-        console.error("Nie udało się wyczyścić rezerwacji:", error);
-      }
-    },
+  
     async login() {
       try {
         const response = await axios.post(
@@ -357,7 +348,7 @@ export default {
     },
     // STARE
     async startPayment() {
-      console.log("Srakulka", this.reservation.reservation_code);
+      console.log(this.reservation.reservation_code);
 
       try {
         const res = await fetch("http://127.0.0.1:8000/api/payu/create-order", {

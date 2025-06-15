@@ -57,7 +57,6 @@
                 </v-btn>
               </v-container>
             </v-tabs-window-item>
-
             <v-tabs-window-item value="tickets">
               <v-container>
                 <v-row>
@@ -83,23 +82,32 @@
                             </strong>
                           </v-card-title>
                           <v-card-text>
-                            {{ reservation.screening.screening_date }}
+                            {{
+                              formatDate(reservation.screening.screening_date)
+                            }}
                           </v-card-text>
                           <v-card-text>
-                            {{ reservation.screening.screening_time }}
+                            {{
+                              formatHour(reservation.screening.screening_time)
+                            }}
                           </v-card-text>
                           <v-card-text>
-                            Rząd: {{ reservation.seat.row }}, Miejsce:
-                            {{ reservation.seat.number }}
+                            <div
+                              v-for="seat in reservation.seat_data"
+                              :key="seat.seat_id"
+                            >
+                              Rząd: {{ seat.row }}, Miejsce:
+                              {{ seat.number }}
+                            </div>
                           </v-card-text>
+
                           <v-card-text>
-                             Kod rezerwacji:
+                            Kod rezerwacji:
                             {{ reservation.reservation_code }}
                           </v-card-text>
-                          <v-btn>
+                          <v-btn @click="cancelReservation(reservation.id)">
                             Anuluj rezerwację
                           </v-btn>
-                          
                         </v-col>
                       </v-row>
                     </v-card>
@@ -140,8 +148,17 @@ export default {
         id: null,
         user_id: null,
         screening_id: null,
-        seat_id: null,
         code: "",
+      },
+      reservation_seat: {
+        row: null,
+        number: null,
+        seat_id: null,
+      },
+      seat: {
+        row: null,
+        number: null,
+        seat_id: null,
       },
       tab: null,
     };
@@ -172,7 +189,6 @@ export default {
         console.error("Error fetching user data:", error);
       }
     },
-
     async checkMyReservations() {
       try {
         const response = await axios.get(
@@ -188,6 +204,38 @@ export default {
         console.log("Reservations", this.reservations);
       } catch (error) {
         console.error("Error fetching reservations:", error);
+      }
+    },
+    formatDate(date) {
+      const options = { year: "numeric", month: "long", day: "numeric" };
+      return new Date(date).toLocaleDateString("pl-PL", options);
+    },
+    formatHour(time) {
+      const [hours, minutes] = time.split(":");
+      return `${hours}:${minutes}`;
+    },
+    async cancelReservation(reservationId) {
+      try {
+        const reservation = this.reservations.find(
+          (res) => res.id === reservationId
+        );
+        if (!reservation) {
+          console.error("Reservation not found:", reservationId);
+          return;
+        }
+        const response = await axios.delete(
+          `http://localhost:8000/api/reservations/${reservationId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log("Reservation cancelled:", response.data);
+        this.checkMyReservations();
+      } catch (error) {
+        console.error("Error cancelling reservation:", error);
       }
     },
   },

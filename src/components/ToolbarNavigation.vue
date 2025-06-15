@@ -90,6 +90,9 @@ export default {
   created() {
     this.checkAdminRole();
     this.isLoggedIn();
+     setInterval(() => {
+      this.callReservationCleanup();
+    }, 3 * 60 * 1000);
   },
   methods: {
     navigate(route) {
@@ -115,6 +118,13 @@ export default {
     },
     goToPriceList() {
       this.$router.push("/priceList");
+    },
+    async callReservationCleanup() {
+      try {
+        await axios.get("http://localhost:8000/api/delete-expired-reservations");
+      } catch (error) {
+        console.error("Nie udało się wyczyścić rezerwacji:", error);
+      }
     },
     async checkAdminRole() {
       try {
