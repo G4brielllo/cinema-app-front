@@ -96,12 +96,10 @@
                              Kod rezerwacji:
                             {{ reservation.reservation_code }}
                           </v-card-text>
-                          <!-- <v-card-actions>
-                            <v-btn
-                              @click="goToReservationDetails(reservation.id)"
-                              >Szczegóły</v-btn
-                            >
-                          </v-card-actions> -->
+                          <v-btn>
+                            Anuluj rezerwację
+                          </v-btn>
+                          
                         </v-col>
                       </v-row>
                     </v-card>

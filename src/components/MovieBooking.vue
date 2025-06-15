@@ -197,6 +197,9 @@ export default {
     this.fetchHallData();
     this.fetchScreeningData();
     this.startCountdown();
+    setInterval(() => {
+      this.callReservationCleanup();
+    }, 3 * 60 * 1000);
   },
 
   computed: {
@@ -324,6 +327,13 @@ export default {
           location.reload();
         }
       }, 1000);
+    },
+    async callReservationCleanup() {
+      try {
+        await axios.get("http://localhost:8000/api/delete-expired-reservations");
+      } catch (error) {
+        console.error("Nie udało się wyczyścić rezerwacji:", error);
+      }
     },
     async login() {
       try {

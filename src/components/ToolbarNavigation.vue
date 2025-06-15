@@ -73,8 +73,8 @@ export default {
     return {
       actionsForAdmin: [
         { title: "Dodaj Film/Zapowiedź", route: "/addMovie" },
-        { title: "Lista Filmów", route: "/moviesList" },
         { title: "Dodaj Seans", route: "/addMovieScreening" },
+        { title: "Lista Filmów", route: "/moviesList" },
         { title: "Lista Seansów", route: "/screeningsList" },
         { title: "Lista Użytkowników", route: "/usersList" },
         { title: "Zweryfikuj Numer Rezerwacji", route: "/checkReservation" },
