@@ -18,6 +18,7 @@ import UserDashboard from './components/UserDashboard.vue';
 import AnnouncementsPage from './components/AnnouncementsPage.vue';
 import PriceList from './components/PriceList.vue';
 import PaymentStatus from './components/PaymentStatus.vue';
+import HomePageManagement from './components/HomePageManagement.vue';
 // import HelloWorld from './components/HelloWorld.vue';
 
 const routes = [
@@ -105,6 +106,11 @@ const routes = [
     path: '/paymentStatus',
     name: 'PaymentStatus',
     component: PaymentStatus
+  },
+  {
+    path: '/homePageManagement',
+    name: 'HomePageManagement',
+    component: HomePageManagement
   },
   
 ];

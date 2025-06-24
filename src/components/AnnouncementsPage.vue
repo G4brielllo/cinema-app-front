@@ -8,7 +8,7 @@
 
         <v-list>
           <v-row
-            v-for="movie in movies.filter(m => m.announcement)"
+            v-for="movie in movies.filter((m) => m.status === 'announcement')"
             :key="movie.id"
             class="mb-6"
           >
@@ -23,7 +23,7 @@
               <div>
                 <h1>{{ movie.title }}</h1>
                 <div class="text-grey-darken-1 text-left mt-5">
-                   {{ movie.description }}
+                  {{ movie.description }}
                 </div>
                 <div class="text-grey-darken-1 text-left mt-5">
                   <strong>Obsada:</strong> {{ movie.cast }}
@@ -33,8 +33,8 @@
                     {{ movie.category }} | {{ movie.duration }} min
                   </strong>
                 </div>
-                <v-btn class="mt-5">
-                  Zwiazstun
+                <v-btn v-if="movie.trailer" class="mt-5" @click="openTrailer(movie)">
+                  Zwiastun
                 </v-btn>
               </div>
             </v-col>
@@ -42,16 +42,53 @@
         </v-list>
       </v-card>
     </v-container>
+    <v-dialog v-model="trailerDialog" max-width="800px">
+      <v-card>
+        <v-card-title class="headline">Zwiastun</v-card-title>
+        <v-card-text>
+          <iframe
+            width="100%"
+            height="400"
+            :src="currentTrailer"
+            frameborder="0"
+            allowfullscreen
+          ></iframe>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn color="primary" @click="trailerDialog = false">Zamknij</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-app>
 </template>
 
 <script>
-import { VCard } from "vuetify/lib/components";
+import {
+  VCard,
+  VImg,
+  VList,
+  VRow,
+  VCol,
+  VBtn,
+  VDialog,
+  VCardTitle,
+  VCardText,
+  VCardActions,
+} from "vuetify/lib/components";
 import "@mdi/font/css/materialdesignicons.css";
 import axios from "axios";
 export default {
   components: {
     VCard,
+    VImg,
+    VList,
+    VRow,
+    VCol,
+    VBtn,
+    VDialog,
+    VCardTitle,
+    VCardText,
+    VCardActions,
   },
   data() {
     return {
@@ -70,7 +107,11 @@ export default {
         format: "",
         audio_type: "",
         image: null,
+        trailer: "",
+        status: "",
       },
+      trailerDialog: false,
+      currentTrailer: "",
     };
   },
   created() {
@@ -89,6 +130,15 @@ export default {
       } catch (error) {
         console.error("Błąd przy pobieraniu danych filmów:", error);
       }
+    },
+    openTrailer(movie) {
+      if (!movie.trailer) return;
+
+      // Zamień link watch?v= na embed/
+      const embedUrl = movie.trailer.replace("watch?v=", "embed/");
+
+      this.currentTrailer = embedUrl;
+      this.trailerDialog = true;
     },
   },
 };

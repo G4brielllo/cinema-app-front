@@ -20,8 +20,16 @@
               <p><strong>Film:</strong> {{ reservationData.screening.movie.title }}</p>
               <p><strong>Data seansu:</strong> {{ reservationData.screening.screening_date }}</p>
               <p><strong>Godzina:</strong> {{ reservationData.screening.screening_time }}</p>
-              <p><strong>Rząd | Miejsce:</strong> {{ reservationData.seat.row }} | {{ reservationData.seat.number }}</p>
               <p><strong>Sala Kinowa:</strong> {{ reservationData.screening.hall_id }}</p>
+  
+              <div v-if="reservationData.seats && reservationData.seats.length">
+                <p><strong>Rzędy i miejsca:</strong></p>
+                <ul>
+                  <li v-for="(seat, idx) in reservationData.seats" :key="idx">
+                    Rząd: {{ seat.row }} | Miejsce: {{ seat.number }}
+                  </li>
+                </ul>
+              </div>
             </v-card-text>
   
             <v-card-actions>
@@ -47,6 +55,9 @@ export default {
       reservation: {
         code: "",
       },
+      // reservation_seat: [
+      //   seat_id = null,
+      // ],
       dialog: false,
       reservationData: null,
     };

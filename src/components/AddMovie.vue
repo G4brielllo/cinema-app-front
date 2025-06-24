@@ -3,9 +3,7 @@
     <v-container class="d-flex justify-center align-center">
       <v-card width="50%">
         <v-card-title>
-          <h1>
-            <v-model>{{ pageOperationType }}</v-model>
-          </h1>
+          <h1>{{ pageOperationType }}</h1>
         </v-card-title>
         <v-card-text>
           <v-form ref="form">
@@ -33,22 +31,24 @@
               variant="outlined"
               required
             ></v-select>
-            <v-text-field
+            <v-date-input
+              label="Data Rozpoczęcia Emisji"
+              first-day-of-week="1"
+              v-model="movie.playing_from"
               variant="outlined"
-              v-model="movie.show_time"
-              label="show-time"
               required
-            ></v-text-field>
+            ></v-date-input>
+            <v-date-input
+              label="Data Zakończenia Emisji"
+              first-day-of-week="1"
+              v-model="movie.playing_until"
+              variant="outlined"
+              required
+            ></v-date-input>
             <v-text-field
               variant="outlined"
               v-model="movie.duration"
-              label="Czas trwania"
-              required
-            ></v-text-field>
-            <v-text-field
-              variant="outlined"
-              v-model="movie.release_date"
-              label="Data premiery"
+              label="Czas trwania (w minutach)"
               required
             ></v-text-field>
             <v-file-input
@@ -66,6 +66,13 @@
                 style="max-width: 100px; max-height: 100px"
               />
             </div>
+            <v-text-field
+              variant="outlined"
+              v-model="movie.trailer"
+              label="Trailer (Link)"
+              required
+            >
+            </v-text-field>
             <v-textarea
               variant="outlined"
               v-model="movie.description"
@@ -98,28 +105,15 @@
               label="Obsada"
               required
             ></v-text-field>
-            <v-select
-              variant="outlined"
-              v-model="movie.format"
-              :items="['2D', '3D']"
-              label="Format"
-              required
-            ></v-select>
-            <v-select
-              v-model="movie.audio_type"
-              :items="['Dubbing', 'Napisy']"
-              label="Audio"
-              variant="outlined"
-              required
-            ></v-select>
-            <v-checkbox
-              v-model="movie.announcement"
+            <v-switch
+              v-model="movie.status"
+              :true-value="'announcement'"
+              :false-value="'movie'"
               label="Zapowiedź"
-            ></v-checkbox>
-
-            <v-btn @click="receivedMovieID ? editMovie() : addMovie()"
-              ><v-model>{{ pageOperationType }}</v-model></v-btn
-            >
+            ></v-switch>
+            <v-btn @click="receivedMovieID ? editMovie() : addMovie()">
+              {{ pageOperationType }}
+            </v-btn>
           </v-form>
         </v-card-text>
       </v-card>
@@ -128,6 +122,9 @@
 </template>
 
 <script>
+import { VDateInput } from "vuetify/labs/VDateInput";
+import { format } from "date-fns";
+
 import {
   VApp,
   VCard,
@@ -136,8 +133,12 @@ import {
   VCardText,
   VTextarea,
   VFileInput,
+  VSelect,
+  VForm,
+  VSwitch,
 } from "vuetify/lib/components";
 import axios from "axios";
+
 export default {
   components: {
     VApp,
@@ -147,24 +148,27 @@ export default {
     VTextarea,
     VBtn,
     VCardText,
+    VDateInput,
+    VSelect,
+    VSwitch,
+    VForm,
   },
   data() {
     return {
       movie: {
         title: "",
         category: "",
-        show_time: "",
+        playing_from: "",
+        playing_until: "",
         duration: "",
-        release_date: "",
         description: "",
         direction: "",
         script: "",
         production_year: "",
         cast: "",
-        format: "",
-        audio_type: "",
         announcement: false,
         image: null,
+        trailer: null,
       },
       file: null,
       receivedMovieID: null,
@@ -178,9 +182,29 @@ export default {
   methods: {
     async addMovie() {
       try {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const playingUntilDate = new Date(this.movie.playing_until);
+        playingUntilDate.setHours(0, 0, 0, 0);
+
+        if (playingUntilDate < today) {
+          throw new Error(
+            "Data Zakończenia Emisji nie może być wcześniejsza niż dzisiejsza data!"
+          );
+        }
+
+        const payload = {
+          ...this.movie,
+          playing_from: format(new Date(this.movie.playing_from), "yyyy-MM-dd"),
+          playing_until: format(
+            new Date(this.movie.playing_until),
+            "yyyy-MM-dd"
+          ),
+        };
+
         const response = await axios.post(
           "http://localhost:8000/api/movies",
-          this.movie,
+          payload,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("access_token")}`,
@@ -188,49 +212,68 @@ export default {
           }
         );
         console.log(response.data);
+        this.clearData();
       } catch (error) {
         console.error(
-          "Error adding movie:",
+          "Błąd podczas dodawania filmu:",
           error.response?.data || error.message
         );
+        alert(error.message);
       }
-      this.clearData();
     },
+
     async editMovie() {
       try {
-        const response = await axios.put(
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const playingUntilDate = new Date(this.movie.playing_until);
+        playingUntilDate.setHours(0, 0, 0, 0);
+
+        if (playingUntilDate < today) {
+          throw new Error(
+            "Data Zakończenia Emisji nie może być wcześniejsza niż dzisiejsza data!"
+          );
+        }
+        const payload = {
+          ...this.movie,
+          playing_from: format(new Date(this.movie.playing_from), "yyyy-MM-dd"),
+          playing_until: format(
+            new Date(this.movie.playing_until),
+            "yyyy-MM-dd"
+          ),
+        };
+        await axios.put(
           `http://localhost:8000/api/movies/${this.receivedMovieID}`,
-          this.movie,
+          payload,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("access_token")}`,
             },
+            withCredentials: true, // jeśli używasz Laravel Sanctum
           }
         );
-        console.log(response.data);
+
+        // console.log(response.data);
+        this.clearData();
       } catch (error) {
         console.error(
           "Error editing movie:",
           error.response?.data || error.message
         );
       }
-      this.clearData();
     },
     clearData() {
       this.movie = {
         title: "",
         category: "",
-        show_time: "",
+        playing_from: "",
+        playing_until: "",
         duration: "",
-        release_date: "",
         description: "",
         direction: "",
         script: "",
         production_year: "",
         cast: "",
-        audio_type: "",
-        format: "",
-        announcement: false,
         image: null,
       };
       this.file = null;
@@ -238,21 +281,15 @@ export default {
     },
     createBase64Image(event) {
       const file = event.target.files[0];
-
       if (!(file instanceof Blob)) {
         console.error("Niepoprawny typ pliku:", file);
         return;
       }
-
       const reader = new FileReader();
       reader.onload = (e) => {
         this.movie.image = e.target.result; // base64
       };
       reader.readAsDataURL(file);
-    },
-
-    isImageUrl(url) {
-      return url.match(/\.(jpeg|jpg|gif|png)$/) != null;
     },
     isMovieEditing() {
       if (this.$route.query.movieId !== undefined) {
@@ -273,7 +310,7 @@ export default {
         );
         this.movie = {
           ...response.data,
-          announcement: Boolean(response.data.announcement), // konwertuje 1 lub 0 na true/false
+          announcement: Boolean(response.data.announcement),
         };
       } catch (error) {
         console.error("Błąd przy pobieraniu danych filmów:", error);
@@ -285,6 +322,13 @@ export default {
       } else {
         this.pageOperationType = "Dodaj Film";
       }
+    },
+    watch: {
+      "movie.status"(val) {
+        // Jeśli switch jest włączony (true), status to "announcement"
+        // Jeśli wyłączony (false), status to "movie"
+        this.movie.status = val ? "announcement" : "movie";
+      },
     },
   },
 };

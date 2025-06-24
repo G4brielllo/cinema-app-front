@@ -11,7 +11,7 @@
       </v-card-actions>
 
     </v-card>
-  </v-container>>
+  </v-container>
 </template>
 
 <script>

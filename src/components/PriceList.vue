@@ -8,7 +8,7 @@
     <div class="ticket-option">
       <h3>Film 3D</h3>
       <p class="price">25 zł</p>
-      <p class="note">+ 5 zł za okulary 3D (opcjonalnie)</p>
+      <!-- <p class="note">+ 5 zł za okulary 3D (płatność na miejscu)</p> -->
     </div>
   </v-card>
 </template>

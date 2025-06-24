@@ -9,29 +9,21 @@
         <v-table>
           <thead>
             <tr>
+              <th>Zdjęcie</th>
               <th>Tytuł</th>
               <th>Kategoria</th>
-              <th>Data premiery</th>
-              <th>Opis</th>
-              <th>Reżyseria</th>
-              <th>Scenariusz</th>
-              <th>Data produkcji</th>
-              <th>Obsada</th>
-              <th>Zdjęcie</th>
+              <th>Data rozpoczęcia emisji</th>
+              <th>Data zakończenia emisji</th>
               <th>Akcja</th>
             </tr>
           </thead>
           <tbody>
             <tr v-for="(movie, index) in movies" :key="index">
+              <td><img :src="movie.image" alt="Film Image" width="100" /></td>
               <td>{{ movie.title }}</td>
               <td>{{ movie.category }}</td>
-              <td>{{ movie.release_date }}</td>
-              <td>{{ movie.description }}</td>
-              <td>{{ movie.direction }}</td>
-              <td>{{ movie.script }}</td>
-              <td>{{ movie.production_year }}</td>
-              <td>{{ movie.cast }}</td>
-              <td><img :src="movie.image" alt="Film Image" width="100" /></td>
+              <td>{{ movie.playing_from }}</td>
+              <td>{{ movie.playing_until }}</td>
               <td>
                 <v-btn @click="editMovie(movie)">Edytuj</v-btn>
                 <v-btn @click="deleteMovie(movie.id)">Usuń</v-btn>
@@ -67,7 +59,8 @@ export default {
         category: "",
         show_time: "",
         duration: "",
-        release_date: "",
+        playing_from: "",
+        playing_until: "",
         description: "",
         direction: "",
         script: "",
@@ -99,10 +92,9 @@ export default {
       console.log("Edytowanie filmu:", movie);
 
       this.$router.push({
-        path: "/addMovie", 
+        path: "/addMovie",
         query: { movieId: movie.id },
       });
-
     },
 
     async deleteMovie(movieId) {
@@ -126,4 +118,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+th {
+  text-align: center !important;
+}
+</style>

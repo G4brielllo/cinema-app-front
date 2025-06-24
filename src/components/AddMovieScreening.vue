@@ -21,6 +21,7 @@
 
             <v-date-input
               label="Data (YYYY-MM-DD)"
+              first-day-of-week="1"
               v-model="screening.screening_date"
               variant="outlined"
               required
@@ -30,8 +31,22 @@
               label="Godzina (HH:MM)"
               variant="outlined"
               required
-            ></v-text-field>
-
+              @blur="formatScreeningTime"
+            />
+            <v-select
+              variant="outlined"
+              v-model="screening.format"
+              :items="['2D', '3D']"
+              label="Format"
+              required
+            ></v-select>
+            <v-select
+              v-model="screening.audio_type"
+              :items="['Dubbing', 'Napisy']"
+              label="Audio"
+              variant="outlined"
+              required
+            ></v-select>
             <v-btn
               @click="receivedScreeningID ? editScreening() : addScreening()"
               color="primary"
@@ -66,6 +81,8 @@ export default {
         movie_id: null,
         screening_date: null,
         screening_time: "",
+        format: "",
+        audio_type: "",
         hall_id: 1,
       },
       movies: [],
@@ -97,7 +114,7 @@ export default {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },
         });
-        this.movies = response.data;
+        this.movies = response.data.filter(movie => movie.status !== 'archive' && movie.status !== 'announcement');
       } catch (error) {
         console.error("Błąd przy pobieraniu filmów:", error);
       }
@@ -108,9 +125,8 @@ export default {
         const payload = {
           ...this.screening,
           screening_date: this.screening.screening_date
-  ? this.screening.screening_date.toLocaleDateString('fr-CA')
-  : null,
-
+            ? this.screening.screening_date.toLocaleDateString("fr-CA")
+            : null,
         };
         const response = await axios.post(
           "http://localhost:8000/api/screenings",
@@ -197,6 +213,28 @@ export default {
         screening_time: "",
         hall_id: 1,
       };
+    },
+    formatScreeningTime() {
+      let val = this.screening.screening_time.replace(/\D/g, "");
+
+      if (val.length === 2) {
+        val = val + "00";
+      }
+      if (val.length === 3) {
+        val = "0" + val;
+      }
+      if (val.length === 4) {
+        const hours = parseInt(val.slice(0, 2), 10);
+        const minutes = parseInt(val.slice(2, 4), 10);
+
+        if (hours > 23 || minutes > 59) {
+          this.screening.screening_time = "";
+          return;
+        }
+        this.screening.screening_time = val.slice(0, 2) + ":" + val.slice(2, 4);
+        return;
+      }
+      this.screening.screening_time = "";
     },
   },
 };

@@ -1,5 +1,8 @@
 <template>
-  <v-toolbar title="CineManager">
+  <v-toolbar>
+    <v-btn @click="goHomePage">
+      <v-toolbar-title>CineManager</v-toolbar-title>
+    </v-btn>
     <v-toolbar-items class="ml-auto">
       <div class="d-flex ga-1">
         <v-label @click="goToRepertoire">Repertuar</v-label>
@@ -74,7 +77,7 @@ export default {
       actionsForAdmin: [
         { title: "Dodaj Film/Zapowiedź", route: "/addMovie" },
         { title: "Dodaj Seans", route: "/addMovieScreening" },
-        { title: "Lista Filmów", route: "/moviesList" },
+        { title: "Lista Filmów/Zapowiedzi", route: "/moviesList" },
         { title: "Lista Seansów", route: "/screeningsList" },
         { title: "Lista Użytkowników", route: "/usersList" },
         { title: "Zweryfikuj Numer Rezerwacji", route: "/checkReservation" },
@@ -90,9 +93,12 @@ export default {
   created() {
     this.checkAdminRole();
     this.isLoggedIn();
-     setInterval(() => {
+    setInterval(() => {
       this.callReservationCleanup();
     }, 3 * 60 * 1000);
+    setInterval(() => {
+      this.archiveMovies();
+    }, 30 * 60 * 1000);
   },
   methods: {
     navigate(route) {
@@ -121,9 +127,20 @@ export default {
     },
     async callReservationCleanup() {
       try {
-        await axios.get("http://localhost:8000/api/delete-expired-reservations");
+        await axios.get(
+          "http://localhost:8000/api/delete-expired-reservations"
+        );
       } catch (error) {
         console.error("Nie udało się wyczyścić rezerwacji:", error);
+      }
+    },
+    async archiveMovies() {
+      try {
+        await axios.get(
+          "http://localhost:8000/api/auto-archive-movies"
+        );
+      } catch (error) {
+        console.error("Nie udało się zarchiwizować filmu:", error);
       }
     },
     async checkAdminRole() {

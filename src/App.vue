@@ -9,8 +9,9 @@
       <div class="d-flex ga-3">
         <v-btn
           v-for="icon in icons"
-          :key="icon"
-          :icon="icon"
+          :key="icon.name"
+          :icon="icon.name"
+          :href="icon.link"
           density="comfortable"
           variant="text"
         ></v-btn>
@@ -66,7 +67,12 @@ export default {
   },
   data() {
     return {
-      icons: ["mdi-facebook", "mdi-twitter", "mdi-linkedin", "mdi-instagram"],
+      icons: [
+        { name: "mdi-facebook", link: "https://www.facebook.com/" },
+        { name: "mdi-twitter", link: "https://x.com/" },
+        { name: "mdi-linkedin", link: "https://www.linkedin.com/" },
+        { name: "mdi-instagram", link: "https://www.instagram.com/" },
+      ],
     };
   },
 };

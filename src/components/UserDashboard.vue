@@ -105,7 +105,15 @@
                             Kod rezerwacji:
                             {{ reservation.reservation_code }}
                           </v-card-text>
-                          <v-btn @click="cancelReservation(reservation.id)">
+                          <v-btn
+                            v-if="
+                              checkCancelationTime(
+                                reservation.screening.screening_date,
+                                reservation.screening.screening_time
+                              )
+                            "
+                            @click="cancelReservation(reservation.id)"
+                          >
                             Anuluj rezerwację
                           </v-btn>
                         </v-col>
@@ -213,6 +221,14 @@ export default {
     formatHour(time) {
       const [hours, minutes] = time.split(":");
       return `${hours}:${minutes}`;
+    },
+    checkCancelationTime(screeningDate, screeningTime) {
+      const screeningDateTime = new Date(`${screeningDate}T${screeningTime}`);
+      const currentTime = new Date();
+      const cancelationDeadline = new Date(
+        screeningDateTime.getTime() - 60 * 60 * 1000
+      );
+      return currentTime < cancelationDeadline;
     },
     async cancelReservation(reservationId) {
       try {

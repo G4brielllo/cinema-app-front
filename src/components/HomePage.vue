@@ -1,6 +1,6 @@
 <template>
   <v-parallax src="https://cdn.vuetifyjs.com/images/parallax/material.jpg">
-    <v-carousel show-arrows="hover" hide-delimiters>
+    <v-carousel show-arrows="hover" hide-delimiters cycle>
       <v-carousel-item
         src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
         cover
