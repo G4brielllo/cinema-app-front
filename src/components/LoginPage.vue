@@ -45,6 +45,7 @@
 </template>
 
 <script>
+import Swal from "sweetalert2";
 import {
   VApp,
   VContainer,
@@ -84,6 +85,7 @@ export default {
         console.log(response.data);
         localStorage.setItem("access_token", response.data.access_token);
         console.log("Login successful", response.data);
+        // this.showAlert();
         this.goToHomePage();
       } catch (error) {
         console.error("Login failed", error.response.data);
@@ -102,6 +104,20 @@ export default {
     togglePassword() {
       this.showPassword = !this.showPassword;
     },
+    showAlert() {
+      Swal.fire({
+        icon: "success",
+        title: "Dodano Seans",
+        text: 'alercik',
+        animation: true,
+        toast: true,
+        position: "top-end",
+        timer: 3000,
+        timerProgressBar: true,
+        showConfirmButton: false,
+      });
+    },
+    
   },
 };
 </script>

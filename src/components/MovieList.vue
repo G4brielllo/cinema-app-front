@@ -7,6 +7,7 @@
         </v-card-title>
 
         <v-table>
+          
           <thead>
             <tr>
               <th>Zdjęcie</th>
@@ -18,7 +19,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(movie, index) in movies" :key="index">
+            <tr v-for="(movie) in movies.filter((m) => m.status === 'movie')" :key="movie.id">
               <td><img :src="movie.image" alt="Film Image" width="100" /></td>
               <td>{{ movie.title }}</td>
               <td>{{ movie.category }}</td>
@@ -26,14 +27,14 @@
               <td>{{ movie.playing_until }}</td>
               <td>
                 <v-btn @click="editMovie(movie)">Edytuj</v-btn>
-                <v-btn @click="deleteMovie(movie.id)">Usuń</v-btn>
+                <v-btn @click="confirmDeleteMovie(movie.id)">Usuń</v-btn>
               </td>
             </tr>
           </tbody>
         </v-table>
 
         <v-card-actions>
-          <v-btn style="outline: auto" @click="addMovie">Dodaj</v-btn>
+          <v-btn style="outline: auto" @click="goToAddMovie">Dodaj</v-btn>
         </v-card-actions>
       </v-card>
     </v-container>
@@ -43,6 +44,7 @@
 <script>
 import { VApp, VCard, VBtn, VTable } from "vuetify/lib/components";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default {
   components: {
@@ -82,7 +84,9 @@ export default {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },
         });
-        this.movies = response.data;
+        this.movies = response.data.filter(
+          (movie) => movie.status === "movie"
+        );
       } catch (error) {
         console.error("Błąd przy pobieraniu danych filmów:", error);
       }
@@ -105,14 +109,66 @@ export default {
           },
         });
         this.movies = this.movies.filter((movie) => movie.id !== movieId);
-        console.log("Usuwanie filmu o id:", movieId);
+        console.log("Usunięto film o id:", movieId);
       } catch (error) {
         console.error("Błąd przy usuwaniu filmu:", error);
+        Swal.fire({
+          icon: "error",
+          title: "Błąd",
+          text: "Nie udało się usunąć filmu.",
+          animation: true,
+          toast: true,
+          position: "top-end",
+          timer: 3000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
       }
     },
 
-    addMovie() {
-      console.log("Dodawanie nowego filmu");
+    goToAddMovie() {
+      this.$router.push("/addMovie");
+    },
+    confirmDeleteMovie(movieId) {
+      Swal.fire({
+        icon: "info",
+        title: "Akcja wymaga potwierdzenia",
+        text: "Czy na pewno chcesz usunąć film?",
+        showConfirmButton: true,
+        showDenyButton: true,
+        confirmButtonText: "Usuń",
+        denyButtonText: `Anuluj`,
+        confirmButtonColor: "red",
+        denyButtonColor: "lightblue",
+        animation: true,
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          await this.deleteMovie(movieId);
+          Swal.fire({
+            icon: "success",
+            title: "Film usunięty",
+            text: "Film został pomyślnie usunięty.",
+            animation: true,
+            toast: true,
+            position: "top-end",
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+          });
+        } else if (result.isDenied) {
+          Swal.fire({
+            icon: "info",
+            title: "Anulowano",
+            text: "Usuwanie filmu zostało anulowane.",
+            animation: true,
+            toast: true,
+            position: "top-end",
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+          });
+        }
+      });
     },
   },
 };

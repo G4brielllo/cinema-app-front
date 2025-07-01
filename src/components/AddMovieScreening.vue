@@ -62,6 +62,7 @@
 <script>
 import axios from "axios";
 import { VDateInput } from "vuetify/labs/VDateInput";
+import Swal from "sweetalert2";
 import {
   VApp,
   VContainer,
@@ -114,7 +115,10 @@ export default {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },
         });
-        this.movies = response.data.filter(movie => movie.status !== 'archive' && movie.status !== 'announcement');
+        this.movies = response.data.filter(
+          (movie) =>
+            movie.status !== "archive" && movie.status !== "announcement"
+        );
       } catch (error) {
         console.error("Błąd przy pobieraniu filmów:", error);
       }
@@ -139,7 +143,9 @@ export default {
         );
         console.log("Seans dodany:", response.data);
         this.clearForm();
+        this.showAlert("add-success");
       } catch (error) {
+        this.showAlert("add-error");
         console.error(
           "Błąd przy dodawaniu seansu:",
           error.response?.data || error.message
@@ -166,7 +172,9 @@ export default {
         );
         console.log("Seans edytowany:", response.data);
         this.clearForm();
+        this.showAlert("edit-success");
       } catch (error) {
+        this.showAlert("edit-error");
         console.error(
           "Błąd przy edytowaniu seansu:",
           error.response?.data || error.message
@@ -235,6 +243,69 @@ export default {
         return;
       }
       this.screening.screening_time = "";
+    },
+    showAlert(status) {
+      if (status === "add-success") {
+        Swal.fire({
+          icon: "success",
+          title: "Sukces",
+          text: "Dodano seans.",
+          animation: true,
+          toast: true,
+          position: "top-end",
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
+      } else if (status === "add-error") {
+        Swal.fire({
+          icon: "error",
+          title: "Błąd",
+          text: "Nie udało się dodać seansu.",
+          animation: true,
+          toast: true,
+          position: "top-end",
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
+      } else if (status === "edit-success") {
+        Swal.fire({
+          icon: "success",
+          title: "Sukces",
+          text: "Edycja udana.",
+          animation: true,
+          toast: true,
+          position: "top-end",
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
+      } else if (status === "edit-error") {
+        Swal.fire({
+          icon: "eroor",
+          title: "Błąd",
+          text: "Edycja nieudana.",
+          animation: true,
+          toast: true,
+          position: "top-end",
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Błąd",
+          text: "Nieoczekiwany błąd w Twojej okolicy :O",
+          animation: true,
+          toast: true,
+          position: "top-end",
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
+      }
     },
   },
 };

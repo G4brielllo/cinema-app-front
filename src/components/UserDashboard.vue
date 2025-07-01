@@ -40,11 +40,25 @@
                   label="E-mail"
                 >
                 </v-text-field>
+                <v-text-field
+                  v-model="change_form.current_password"
+                  variant="outlined"
+                  label="Stare Hasło"
+                  type="password"
+                >
+                </v-text-field>
+                <v-text-field
+                  v-model="change_form.password"
+                  variant="outlined"
+                  label="Nowe Hasło"
+                  type="password"
+                >
+                </v-text-field>
 
                 <v-text-field
-                  v-model="user.password"
+                  v-model="change_form.password_confirmation"
                   variant="outlined"
-                  label="Hasło"
+                  label="Potwierdź Hasło"
                   type="password"
                 >
                 </v-text-field>
@@ -140,6 +154,7 @@ import {
   VBtn,
 } from "vuetify/lib/components";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default {
   data() {
@@ -150,6 +165,15 @@ export default {
         surname: "",
         email: "",
         password: "",
+        password_confirmation: "",
+      },
+      change_form: {
+        name: "",
+        surname: "",
+        email: "",
+        current_password: "",
+        new_password: "",
+        password_confirmation: "",
       },
       reservations: [],
       reservation: {
@@ -190,6 +214,12 @@ export default {
           },
         });
         this.user = response.data;
+        this.change_form.name = this.user.name;
+        this.change_form.surname = this.user.surname;
+        this.change_form.email = this.user.email;
+        this.change_form.current_password = "";
+        this.change_form.password = "";
+        this.change_form.password_confirmation = "";
         console.log(this.user);
         console.log("UserId", this.user.id);
         this.checkMyReservations();
@@ -252,6 +282,71 @@ export default {
         this.checkMyReservations();
       } catch (error) {
         console.error("Error cancelling reservation:", error);
+      }
+    },
+    async updateUserData() {
+      try {
+        const payload = {
+          name: this.change_form.name,
+          surname: this.change_form.surname,
+          email: this.change_form.email,
+        };
+        if (this.change_form.password) {
+          payload.current_password = this.change_form.current_password;
+          payload.password = this.change_form.password;
+          payload.password_confirmation =
+            this.change_form.password_confirmation;
+        }
+        const response = await axios.put(
+          `http://localhost:8000/api/users/${this.user.id}`,
+          payload,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          }
+        );
+        this.showAlert("success");
+        this.fetchUserData();
+        console.log("User data updated:", response.data);
+      } catch (error) {
+        if (error.response && error.response.status === 422) {
+          if (error.response.data.errors.current_password) {
+            this.showAlert("current_password_error");
+          } else if (
+            error.response.data.errors.password ||
+            error.response.data.errors.password_confirmation
+          ) {
+            this.showAlert("new_password_change");
+          }
+        } else {
+          this.showAlert("error");
+        }
+        console.error("Error updating user data:", error);
+      }
+    },
+    showAlert(status) {
+      if (status === "success") {
+        Swal.fire({
+          title: "Sukces",
+          text: "Dane zostały zaktualizowane.",
+          icon: "success",
+          confirmButtonText: "OK",
+        });
+      } else if (status === "current_password_error") {
+        Swal.fire({
+          title: "Błąd",
+          text: "Stare hasło jest niepoprawne.",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
+      } else if (status === "new_password_change") {
+        Swal.fire({
+          title: "Błąd",
+          text: "Podane hasła nie są zgodne.",
+          icon: "error",
+          confirmButtonText: "OK",
+        });
       }
     },
   },

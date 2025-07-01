@@ -30,14 +30,16 @@
               <td>{{ screening.screening_time }}</td>
               <td>
                 <v-btn @click="editScreening(screening)">Edytuj</v-btn>
-                <v-btn @click="deleteScreening(screening.id)">Usuń</v-btn>
+                <v-btn @click="confirmDeleteScreening(screening.id)"
+                  >Usuń</v-btn
+                >
               </td>
             </tr>
           </tbody>
         </v-table>
 
         <v-card-actions>
-          <v-btn style="outline: auto" @click="addMovie">Dodaj</v-btn>
+          <v-btn style="outline: auto" @click="addScreening">Dodaj</v-btn>
         </v-card-actions>
       </v-card>
     </v-container>
@@ -47,7 +49,7 @@
 <script>
 import { VApp, VCard, VBtn, VTable } from "vuetify/lib/components";
 import axios from "axios";
-
+import Swal from "sweetalert2";
 export default {
   components: {
     VApp,
@@ -127,9 +129,49 @@ export default {
         console.error("Błąd przy usuwaniu seansu:", error);
       }
     },
-
-    addMovie() {
-      console.log("Dodawanie nowego filmu");
+    addScreening() {
+      this.$router.push("/addMovieScreening");
+    },
+    confirmDeleteScreening(screeningId) {
+      Swal.fire({
+        icon: "info",
+        title: "Akcja wymaga potwierdzenia",
+        text: "Czy na pewno chcesz usunąć seans?",
+        showConfirmButton: true,
+        showDenyButton: true,
+        confirmButtonText: "Usuń",
+        denyButtonText: `Anuluj`,
+        confirmButtonColor: "red",
+        denyButtonColor: "lightblue",
+        animation: true,
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          await this.deleteScreening(screeningId);
+          Swal.fire({
+            icon: "success",
+            title: "Sukces",
+            text: "Seans został pomyślnie usunięty.",
+            animation: true,
+            toast: true,
+            position: "top-end",
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+          });
+        } else if (result.isDenied) {
+          Swal.fire({
+            icon: "info",
+            title: "Anulowano",
+            text: "Usuwanie seansu zostało anulowane.",
+            animation: true,
+            toast: true,
+            position: "top-end",
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+          });
+        }
+      });
     },
   },
 };

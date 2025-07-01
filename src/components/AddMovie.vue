@@ -124,6 +124,7 @@
 <script>
 import { VDateInput } from "vuetify/labs/VDateInput";
 import { format } from "date-fns";
+import Swal from "sweetalert2";
 
 import {
   VApp,
@@ -212,13 +213,15 @@ export default {
           }
         );
         console.log(response.data);
+        this.showAlert("add-success");
         this.clearData();
       } catch (error) {
+        this.showAlert("add-error");
         console.error(
           "Błąd podczas dodawania filmu:",
           error.response?.data || error.message
         );
-        alert(error.message);
+        // alert(error.message);
       }
     },
 
@@ -254,8 +257,10 @@ export default {
         );
 
         // console.log(response.data);
+        this.showAlert("edit-success");
         this.clearData();
       } catch (error) {
+        this.showAlert("edit-error");
         console.error(
           "Error editing movie:",
           error.response?.data || error.message
@@ -325,10 +330,71 @@ export default {
     },
     watch: {
       "movie.status"(val) {
-        // Jeśli switch jest włączony (true), status to "announcement"
-        // Jeśli wyłączony (false), status to "movie"
         this.movie.status = val ? "announcement" : "movie";
       },
+    },
+    showAlert(status) {
+      if (status === "add-success") {
+        Swal.fire({
+          icon: "success",
+          title: "Sukces",
+          text: "Dodano film.",
+          animation: true,
+          toast: true,
+          position: "top-end",
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
+      } else if (status === "add-error") {
+        Swal.fire({
+          icon: "error",
+          title: "Błąd",
+          text: "Nie udało się dodać filmu.",
+          animation: true,
+          toast: true,
+          position: "top-end",
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
+      } else if (status === "edit-success") {
+        Swal.fire({
+          icon: "success",
+          title: "Sukces",
+          text: "Edycja udana.",
+          animation: true,
+          toast: true,
+          position: "top-end",
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
+      } else if (status === "edit-error") {
+        Swal.fire({
+          icon: "eroor",
+          title: "Błąd",
+          text: "Edycja nieudana.",
+          animation: true,
+          toast: true,
+          position: "top-end",
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Błąd",
+          text: "Nieoczekiwany błąd w Twojej okolicy :O",
+          animation: true,
+          toast: true,
+          position: "top-end",
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
+      }
     },
   },
 };

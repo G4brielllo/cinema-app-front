@@ -30,11 +30,6 @@
             </v-list>
           </v-menu>
         </v-btn>
-
-        <v-btn @click="goHomePage">
-          <v-icon icon="mdi-home"></v-icon>
-        </v-btn>
-
         <v-btn v-if="isLogged">
           <v-icon icon="mdi-account"></v-icon>
 

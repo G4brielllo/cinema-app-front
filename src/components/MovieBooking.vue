@@ -13,10 +13,10 @@
           <v-col cols="3">
             <h3>{{ movie.title }}</h3>
             <div class="text-grey-darken-1">
-              <strong>Format:</strong> {{ movie.format }}
+              <strong>Format:</strong> {{ screening.format }}
             </div>
             <div class="text-grey-darken-1">
-              <strong>Audio:</strong> {{ movie.audio_type }}
+              <strong>Audio:</strong> {{ screening.audio_type }}
             </div>
             <div class="text-grey-darken-1">
               <strong>Czas rozpoczęcia:</strong>
@@ -112,6 +112,7 @@
 </template>
 
 <script>
+import Swal from "sweetalert2";
 import {
   VApp,
   VContainer,
@@ -286,10 +287,9 @@ export default {
     },
     toggleSeat(row, seat) {
       if (this.isBooked(row, seat)) {
-        alert("To miejsce jest już zarezerwowane.");
+        this.showAlert("reserved_seat");
         return;
       }
-
       const index = this.selectedSeats.findIndex(
         (s) => s.row === row && s.number === seat
       );
@@ -325,7 +325,7 @@ export default {
         }
       }, 1000);
     },
-  
+
     async login() {
       try {
         const response = await axios.post(
@@ -363,6 +363,7 @@ export default {
               "https://de08-91-205-91-71.ngrok-free.app/paymentStatus",
 
             currencyCode: "PLN",
+            
             totalAmount: function () {
               const ticketPrice = 2500;
               const quantity = this.selectedSeats.length;
@@ -381,7 +382,12 @@ export default {
 
         if (!res.ok) {
           const text = await res.text();
-          alert("Błąd serwera: " + text);
+          Swal.fire({
+            iconHtml: "?",
+            title: "Błąd serwera",
+            text:
+              "Nie udało się utworzyć zamówienia. Odpowiedź serwera: " + text,
+          });
           return;
         }
 
@@ -396,7 +402,12 @@ export default {
           );
         }
       } catch (error) {
-        alert("Błąd sieci lub parsowania JSON: " + error.message);
+        Swal.fire({
+          icon: "error",
+          title: "Błąd serwera",
+          text:
+            "Nie udało się utworzyć zamówienia. Odpowiedź serwera: " + error,
+        });
       }
     },
 
@@ -406,12 +417,10 @@ export default {
       const token = localStorage.getItem("access_token");
       const isLoggedIn = !!token;
       if (!isLoggedIn && !this.user.email) {
-        alert("Proszę podać adres e-mail.");
         return;
       }
-
       if (this.selectedSeats.length === 0) {
-        alert("Proszę wybrać przynajmniej jedno miejsce.");
+        this.showAlert("select_seats");
         return;
       }
       try {
@@ -436,6 +445,39 @@ export default {
           "Error making reservation:",
           error.response?.data || error.message
         );
+      }
+    },
+    showAlert(status) {
+      if (status === "success") {
+        Swal.fire({
+          icon: "success",
+          title: "Rezerwacja zakończona sukcesem",
+          text: `Kod rezerwacji: ${this.reservation.reservation_code}`,
+        });
+      } else if (status === "reserved_seat") {
+        Swal.fire({
+          icon: "info",
+          title: "Miejsce już zarezerwowane",
+          text: "Proszę wybrać inne miejsce.",
+        });
+      } else if (status === "select_seats") {
+        Swal.fire({
+          icon: "warning",
+          title: "Nie wybrano miejsc",
+          text: "Proszę wybrać miejsca przed dokonaniem rezerwacji.",
+        });
+      } else if (status === "add-error") {
+        Swal.fire({
+          icon: "error",
+          title: "Błąd",
+          text: "Nie udało się dodać seansu.",
+        });
+      } else {
+        Swal.fire({
+          icon: "error",
+          title: "Błąd",
+          text: "Nie udało się zarezerwować miejsc.",
+        });
       }
     },
   },
