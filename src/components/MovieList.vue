@@ -1,13 +1,13 @@
 <template>
   <v-app>
-    <v-container class="d-flex justify-center align-center">
-      <v-card>
+    <v-container class="d-flex flex-column align-center">
+      <v-card class="mb-6">
         <v-card-title>
           <h1>Lista filmów</h1>
         </v-card-title>
 
+        <h2>Filmy</h2>
         <v-table>
-          
           <thead>
             <tr>
               <th>Zdjęcie</th>
@@ -15,16 +15,21 @@
               <th>Kategoria</th>
               <th>Data rozpoczęcia emisji</th>
               <th>Data zakończenia emisji</th>
+              <th>Status</th>
               <th>Akcja</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(movie) in movies.filter((m) => m.status === 'movie')" :key="movie.id">
+            <tr
+              v-for="movie in movies.filter((m) => m.status === 'movie')"
+              :key="movie.id"
+            >
               <td><img :src="movie.image" alt="Film Image" width="100" /></td>
               <td>{{ movie.title }}</td>
               <td>{{ movie.category }}</td>
               <td>{{ movie.playing_from }}</td>
               <td>{{ movie.playing_until }}</td>
+              <td>{{ movie.status }}</td>
               <td>
                 <v-btn @click="editMovie(movie)">Edytuj</v-btn>
                 <v-btn @click="confirmDeleteMovie(movie.id)">Usuń</v-btn>
@@ -32,11 +37,45 @@
             </tr>
           </tbody>
         </v-table>
-
-        <v-card-actions>
-          <v-btn style="outline: auto" @click="goToAddMovie">Dodaj</v-btn>
-        </v-card-actions>
       </v-card>
+
+      <v-card class="mb-6">
+        <v-card-title>
+          <h2>Zapowiedzi</h2>
+        </v-card-title>
+        <v-table>
+          <thead>
+            <tr>
+              <th>Zdjęcie</th>
+              <th>Tytuł</th>
+              <th>Kategoria</th>
+              <th>Data rozpoczęcia emisji</th>
+              <th>Data zakończenia emisji</th>
+              <th>Status</th>
+              <th>Akcja</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="movie in movies.filter((m) => m.status === 'announcement')"
+              :key="movie.id"
+            >
+              <td><img :src="movie.image" alt="Film Image" width="100" /></td>
+              <td>{{ movie.title }}</td>
+              <td>{{ movie.category }}</td>
+              <td>{{ movie.playing_from }}</td>
+              <td>{{ movie.playing_until }}</td>
+              <td>{{ movie.status }}</td>
+              <td>
+                <v-btn @click="editMovie(movie)">Edytuj</v-btn>
+                <v-btn @click="confirmDeleteMovie(movie.id)">Usuń</v-btn>
+              </td>
+            </tr>
+          </tbody>
+        </v-table>
+      </v-card>
+
+      <v-btn style="outline: auto" @click="goToAddMovie">Dodaj</v-btn>
     </v-container>
   </v-app>
 </template>
@@ -66,9 +105,10 @@ export default {
         description: "",
         direction: "",
         script: "",
-        production_year: "",
+        release_date: "",
         cast: "",
         image: null,
+        status: "",
       },
       file: null,
     };
@@ -84,9 +124,10 @@ export default {
             Authorization: `Bearer ${localStorage.getItem("access_token")}`,
           },
         });
-        this.movies = response.data.filter(
-          (movie) => movie.status === "movie"
-        );
+        this.movies = response.data;
+        // this.movies = response.data.filter(
+        //   (movie) => movie.status === "movie"
+        // );
       } catch (error) {
         console.error("Błąd przy pobieraniu danych filmów:", error);
       }

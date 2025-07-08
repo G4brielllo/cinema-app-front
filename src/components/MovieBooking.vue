@@ -361,21 +361,6 @@ export default {
               "https://de08-91-205-91-71.ngrok-free.app/api/payu/notify",
             continueUrl:
               "https://de08-91-205-91-71.ngrok-free.app/paymentStatus",
-
-            currencyCode: "PLN",
-            
-            totalAmount: function () {
-              const ticketPrice = 2500;
-              const quantity = this.selectedSeats.length;
-              return ticketPrice * quantity;
-            }.call(this),
-            products: [
-              {
-                name: "Bilet do kina",
-                unitPrice: 2500,
-                quantity: this.selectedSeats.length,
-              },
-            ],
             extOrderId: this.reservation.reservation_code,
           }),
         });

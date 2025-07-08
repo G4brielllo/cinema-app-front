@@ -33,7 +33,11 @@
                     {{ movie.category }} | {{ movie.duration }} min
                   </strong>
                 </div>
-                <v-btn v-if="movie.trailer" class="mt-5" @click="openTrailer(movie)">
+                <v-btn
+                  v-if="movie.trailer"
+                  class="mt-5"
+                  @click="openTrailer(movie)"
+                >
                   Zwiastun
                 </v-btn>
               </div>
@@ -102,7 +106,6 @@ export default {
         description: "",
         direction: "",
         script: "",
-        production_year: "",
         cast: "",
         format: "",
         audio_type: "",
@@ -115,11 +118,10 @@ export default {
     };
   },
   created() {
-    this.fetchMovies();
+    this.fetchAnnouncements();
   },
   methods: {
-    async fetchMovies() {
-      //pobiera movies i screenings
+    async fetchAnnouncements() {
       try {
         const response = await axios.get("http://localhost:8000/api/movies", {
           headers: {

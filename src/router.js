@@ -18,7 +18,15 @@ import UserDashboard from './components/UserDashboard.vue';
 import AnnouncementsPage from './components/AnnouncementsPage.vue';
 import PriceList from './components/PriceList.vue';
 import PaymentStatus from './components/PaymentStatus.vue';
-import HomePageManagement from './components/HomePageManagement.vue';
+import HomePageManagement from './components/HomePageManagement/HomePageManagement.vue';
+import MainSlider from './components/HomePageComponents/MainSlider.vue';
+import SliderManager from './components/HomePageManagement/SliderManager.vue';
+import NowPlayingMovies from './components/HomePageComponents/NowPlayingMovies.vue';
+import AnnouncementsForHP from './components/HomePageComponents/AnnouncementsForHP.vue';
+import MovieDetails from './components/MovieDetails.vue';
+import SchoolPage from './components/SchoolPage.vue';
+import PromotionsPage from './components/HomePageComponents/PromotionsPage.vue';
+import PromotionsManagement from './components/HomePageManagement/PromotionsManagement.vue';
 // import HelloWorld from './components/HelloWorld.vue';
 
 const routes = [
@@ -111,6 +119,46 @@ const routes = [
     path: '/homePageManagement',
     name: 'HomePageManagement',
     component: HomePageManagement
+  },
+  {
+    path: '/sliderManager',
+    name: 'SliderManager',
+    component: SliderManager
+  },
+  {
+    path: '/mainSlider',
+    name: 'MainSlider',
+    component: MainSlider
+  },
+  {
+    path: '/nowPlayingMovies',
+    name: 'NowPlayingMovies',
+    component: NowPlayingMovies
+  },
+  {
+    path: '/announcementsForHP',
+    name: 'AnnouncementsForHP',
+    component: AnnouncementsForHP
+  },
+  {
+    path: '/movieDetails',
+    name: 'MovieDetails',
+    component: MovieDetails
+  },
+  {
+    path: '/schoolPage',
+    name: 'SchoolPage',
+    component: SchoolPage
+  },
+  {
+    path: '/promotionsPage',
+    name: 'PromotionsPage',
+    component: PromotionsPage
+  },
+  {
+    path: '/promotionsManagement',
+    name: 'PromotionsManagement',
+    component: PromotionsManagement
   },
   
 ];

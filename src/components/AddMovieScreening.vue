@@ -20,7 +20,7 @@
             ></v-select>
 
             <v-date-input
-              label="Data (YYYY-MM-DD)"
+              label="Data"
               first-day-of-week="1"
               v-model="screening.screening_date"
               variant="outlined"

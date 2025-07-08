@@ -95,8 +95,8 @@
             ></v-text-field>
             <v-text-field
               variant="outlined"
-              v-model="movie.production_year"
-              label="Rok produkcji"
+              v-model="movie.release_date"
+              label="Data premiery(yyyy-mm-dd)"
               required
             ></v-text-field>
             <v-text-field
@@ -165,7 +165,7 @@ export default {
         description: "",
         direction: "",
         script: "",
-        production_year: "",
+        release_date: "",
         cast: "",
         announcement: false,
         image: null,
@@ -277,7 +277,7 @@ export default {
         description: "",
         direction: "",
         script: "",
-        production_year: "",
+        release_date: "",
         cast: "",
         image: null,
       };
@@ -400,4 +400,5 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+</style>

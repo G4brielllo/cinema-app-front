@@ -1,22 +1,27 @@
 <template>
-  <v-parallax src="https://cdn.vuetifyjs.com/images/parallax/material.jpg">
-    <v-carousel show-arrows="hover" hide-delimiters cycle>
-      <v-carousel-item
-        src="https://cdn.vuetifyjs.com/images/cards/docks.jpg"
-        cover
-      ></v-carousel-item>
-
-      <v-carousel-item
-        src="https://cdn.vuetifyjs.com/images/cards/hotel.jpg"
-        cover
-      ></v-carousel-item>
-
-      <v-carousel-item
-        src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
-        cover
-      ></v-carousel-item>
-    </v-carousel>
-  </v-parallax>
+  <MainSlider />
+  <h1><strong>Teraz Gramy</strong></h1>
+  <NowPlayingMovies />
+  <h1><strong>Zapowiedzi</strong></h1>
+  <AnnouncementsForHP />
+  <h1><strong>Promocje</strong></h1>
+  <PromotionsPage />
+  
+  <!-- <v-parallax src="https://cdn.vuetifyjs.com/images/parallax/material.jpg">
+  </v-parallax> -->
 </template>
-<script></script>
+<script>
+import AnnouncementsForHP from "./HomePageComponents/AnnouncementsForHP.vue";
+import MainSlider from "./HomePageComponents/MainSlider.vue";
+import NowPlayingMovies from "./HomePageComponents/NowPlayingMovies.vue";
+import PromotionsPage from "./HomePageComponents/PromotionsPage.vue";
+export default {
+  components: {
+    MainSlider,
+    NowPlayingMovies,
+    AnnouncementsForHP,
+    PromotionsPage,
+  },
+};
+</script>
 <style></style>
