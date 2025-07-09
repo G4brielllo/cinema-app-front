@@ -84,7 +84,6 @@ export default {
         description: "",
         direction: "",
         script: "",
-        production_year: "",
         cast: "",
         format: "",
         audio_type: "",

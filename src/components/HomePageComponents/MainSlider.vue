@@ -61,11 +61,7 @@ export default {
   methods: {
     async fetchSlides() {
       try {
-        const response = await axios.get("http://localhost:8000/api/slides", {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-          },
-        });
+       const response = await axios.get("http://localhost:8000/api/slides");
         this.slides = response.data;
         console.log("Pobrano slajd", response.data);
       } catch (error) {

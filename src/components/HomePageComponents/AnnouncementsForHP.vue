@@ -1,40 +1,38 @@
 <template>
-  <v-card>
-    <v-container>
-      <div class="carousel-wrapper">
-        <v-btn icon @click="scroll(-1)">
-          <v-icon>mdi-chevron-left</v-icon>
-        </v-btn>
-        <div class="carousel" ref="carousel">
-          <div
-            class="carousel-item"
-            v-for="announcement in announcements"
-            :key="announcement.id"
+  <v-container>
+    <div class="carousel-wrapper">
+      <v-btn icon @click="scroll(-1)">
+        <v-icon>mdi-chevron-left</v-icon>
+      </v-btn>
+      <div class="carousel" ref="carousel">
+        <div
+          class="carousel-item"
+          v-for="announcement in announcements"
+          :key="announcement.id"
+        >
+          <v-card
+            @click="goToMovieDetails(announcement.id)"
+            variant="flat"
+            class="mx-2"
+            :width="cardWidth"
           >
-            <v-card
-              @click="goToMovieDetails(announcement.id)"
-              variant="flat"
-              class="mx-2"
-              :width="cardWidth"
+            <v-img :src="announcement.image" height="300" cover />
+            <v-card-title style="white-space: normal; word-break: break-word">
+              {{ announcement.title }}
+            </v-card-title>
+            <v-card-subtitle
+              >Premiera:
+              {{ formatDate(announcement.playing_from) }}</v-card-subtitle
             >
-              <v-img :src="announcement.image" height="300" cover />
-              <v-card-title style="white-space: normal; word-break: break-word">
-                {{ announcement.title }}
-              </v-card-title>
-              <v-card-subtitle
-                >Premiera:
-                {{ formatDate(announcement.playing_from) }}</v-card-subtitle
-              >
-            </v-card>
-          </div>
+          </v-card>
         </div>
-
-        <v-btn icon @click="scroll(1)">
-          <v-icon>mdi-chevron-right</v-icon>
-        </v-btn>
       </div>
-    </v-container>
-  </v-card>
+
+      <v-btn icon @click="scroll(1)">
+        <v-icon>mdi-chevron-right</v-icon>
+      </v-btn>
+    </div>
+  </v-container>
 </template>
 
 <script>

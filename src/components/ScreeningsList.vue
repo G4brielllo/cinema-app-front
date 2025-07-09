@@ -69,7 +69,6 @@ export default {
         description: "",
         direction: "",
         script: "",
-        production_year: "",
         cast: "",
         image: null,
       },
