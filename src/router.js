@@ -25,8 +25,9 @@ import NowPlayingMovies from './components/HomePageComponents/NowPlayingMovies.v
 import AnnouncementsForHP from './components/HomePageComponents/AnnouncementsForHP.vue';
 import MovieDetails from './components/MovieDetails.vue';
 import SchoolPage from './components/SchoolPage.vue';
-import PromotionsPage from './components/HomePageComponents/PromotionsPage.vue';
-import PromotionsManagement from './components/HomePageManagement/PromotionsManagement.vue';
+import PromotionsPage from './components/HomePageComponents/HPPromotionsPage.vue';
+import PromotionsManagement from './components/HomePageManagement/PromotionsManager.vue';
+import AllPromotionsPage from './components/AllPromotionsPage.vue';
 // import HelloWorld from './components/HelloWorld.vue';
 
 const routes = [
@@ -159,6 +160,11 @@ const routes = [
     path: '/promotionsManagement',
     name: 'PromotionsManagement',
     component: PromotionsManagement
+  },
+  {
+    path: '/allPromotionsPage',
+    name: 'AllPromotionsPage',
+    component: AllPromotionsPage
   },
   
 ];

@@ -1,7 +1,12 @@
 <template>
   <v-app>
-    <ToolbarNavigation />
-    <router-view />
+    <NavigationDrawer v-model="drawer" />
+    <ToolbarNavigation v-model="drawer" />
+
+    <v-main>
+      <router-view />
+    </v-main>
+
     <v-footer
       class="text-center d-flex flex-column ga-2 py-4"
       color="indigo-lighten-1"
@@ -59,14 +64,17 @@
 
 <script>
 import ToolbarNavigation from "./components/ToolbarNavigation.vue";
+import NavigationDrawer from "./components/NavigationDrawer.vue";
 import "@mdi/font/css/materialdesignicons.css";
 
 export default {
   components: {
     ToolbarNavigation,
+    NavigationDrawer,
   },
   data() {
     return {
+      drawer: false,
       icons: [
         { name: "mdi-facebook", link: "https://www.facebook.com/" },
         { name: "mdi-twitter", link: "https://x.com/" },

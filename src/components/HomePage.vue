@@ -14,7 +14,7 @@
 import AnnouncementsForHP from "./HomePageComponents/AnnouncementsForHP.vue";
 import MainSlider from "./HomePageComponents/MainSlider.vue";
 import NowPlayingMovies from "./HomePageComponents/NowPlayingMovies.vue";
-import PromotionsPage from "./HomePageComponents/PromotionsPage.vue";
+import PromotionsPage from "./HomePageComponents/HPPromotionsPage.vue";
 export default {
   components: {
     MainSlider,
