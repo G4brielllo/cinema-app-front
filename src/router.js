@@ -28,6 +28,7 @@ import SchoolPage from './components/SchoolPage.vue';
 import PromotionsPage from './components/HomePageComponents/HPPromotionsPage.vue';
 import PromotionsManagement from './components/HomePageManagement/PromotionsManager.vue';
 import AllPromotionsPage from './components/AllPromotionsPage.vue';
+import StatisticsPage from './components/StatisticsPage.vue';
 // import HelloWorld from './components/HelloWorld.vue';
 
 const routes = [
@@ -165,6 +166,11 @@ const routes = [
     path: '/allPromotionsPage',
     name: 'AllPromotionsPage',
     component: AllPromotionsPage
+  },
+  {
+    path: '/statisticsPage',
+    name: 'StatisticsPage',
+    component: StatisticsPage
   },
   
 ];

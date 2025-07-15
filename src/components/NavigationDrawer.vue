@@ -68,6 +68,11 @@ export default {
           icon: "mdi-home",
         },
         {
+          title: "Statystyki",
+          route: "/statisticsPage",
+          icon: "mdi-chart-areaspline",
+        },
+        {
           title: "Zweryfikuj Rezerwację",
           route: "/checkReservation",
           icon: "mdi-key",
