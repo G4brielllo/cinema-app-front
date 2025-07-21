@@ -1,49 +1,43 @@
 <template>
-  <v-app>
-    <v-container class="d-flex justify-center align-center">
-      <v-card width="50%">
-        <v-card-title><h1>Slider</h1></v-card-title>
-        <v-card-text>
-          <v-form>
-            <v-text-field
-              v-model="slide.title"
-              variant="outlined"
-              label="Tytuł"
-            ></v-text-field>
-            <v-text-field
-              v-model="slide.trailer_url"
-              variant="outlined"
-              label="URL (np. trailer)"
-            ></v-text-field>
-            <v-file-input
-              variant="outlined"
-              v-model="file"
-              accept="image/*"
-              @change="createBase64Image"
-              label="Zdjęcie"
-              required
-            ></v-file-input>
-            <v-text-field
-              v-model="slide.position"
-              variant="outlined"
-              label="Pozycja"
-            ></v-text-field>
-          </v-form>
-          <div v-if="slide.image_url" class="mt-4">
-            <strong>Podgląd:</strong>
-            <v-img :src="slide.image_url" max-height="200" contain />
-          </div>
-          <v-btn @click="addSlide"> Dodaj Slajd </v-btn>
-        </v-card-text>
-      </v-card>
-    </v-container>
-  </v-app>
+  <v-container class="d-flex justify-center align-center">
+    <v-card width="100%">
+      <v-card-title><h1>Slider</h1></v-card-title>
+      <v-card-text>
+        <v-form>
+          <v-text-field
+            v-model="slide.title"
+            variant="outlined"
+            label="Tytuł"
+          ></v-text-field>
+          <v-text-field
+            v-model="slide.trailer_url"
+            variant="outlined"
+            label="URL (np. trailer)"
+          ></v-text-field>
+          <v-file-input
+            variant="outlined"
+            v-model="file"
+            accept="image/*"
+            @change="createBase64Image"
+            label="Zdjęcie"
+            required
+          ></v-file-input>
+        </v-form>
+        <div v-if="slide.image_url" class="mt-4">
+          <strong>Podgląd:</strong>
+          <v-img :src="slide.image_url" max-height="200" contain />
+        </div>
+        <v-btn @click="saveSlide()">
+          {{ mode === "edit" ? "Zapisz zmiany" : "Dodaj Slajd" }}
+        </v-btn>
+      </v-card-text>
+    </v-card>
+  </v-container>
 </template>
 
 <script>
 import axios from "axios";
 import {
-  VApp,
   VContainer,
   VCard,
   VCardText,
@@ -58,7 +52,6 @@ import {
 export default {
   name: "SliderForm",
   components: {
-    VApp,
     VContainer,
     VCard,
     VCardText,
@@ -69,18 +62,59 @@ export default {
     VImg,
     VBtn,
   },
+  props: {
+    mode: {
+      type: String,
+      default: "add",
+    },
+    slideData: {
+      type: Object,
+      default: null,
+    },
+  },
   data() {
     return {
       slide: {
         title: "",
         image_url: "",
         trailer_url: "",
-        position: null,
       },
       file: null,
+      receivedSlideId: null,
     };
   },
+  watch: {
+    slideData: {
+      handler(val) {
+        if (val) {
+          this.slide = { ...val };
+        }
+      },
+      immediate: true,
+    },
+  },
+  emits: ["slide-added"],
   methods: {
+    async saveSlide() {
+      try {
+        const url =
+          this.mode === "edit"
+            ? `http://localhost:8000/api/slides/${this.slide.id}`
+            : `http://localhost:8000/api/slides/`;
+        const method = this.mode === "edit" ? "put" : "post";
+        await axios({
+          method,
+          url,
+          data: this.slide,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        });
+        this.$emit("saved");
+      } catch (error) {
+        console.error(error.response?.data);
+      }
+    },
     async addSlide() {
       try {
         const payload = {
@@ -95,6 +129,7 @@ export default {
             },
           }
         );
+        this.$emit("slide-added");
         console.log("Slajd dodany:", response.data);
       } catch (error) {
         console.error(
@@ -103,7 +138,7 @@ export default {
         );
       }
     },
-     createBase64Image(event) {
+    createBase64Image(event) {
       const file = event.target?.files?.[0] || this.file;
       if (!file || !(file instanceof Blob)) {
         console.error("Invalid file:", file);
@@ -121,19 +156,16 @@ export default {
           const targetRatio = targetWidth / targetHeight;
           const sourceRatio = img.width / img.height;
 
-          // Zawsze przycinaj od góry (srcY = 0)
           let srcWidth,
             srcHeight,
             srcX = 0,
             srcY = 0;
 
           if (sourceRatio > targetRatio) {
-            // Obraz szerszy niż docelowy - przycinaj boki
             srcWidth = img.height * targetRatio;
             srcHeight = img.height;
             srcX = (img.width - srcWidth) / 2;
           } else {
-            // Obraz węższy niż docelowy - przycinaj tylko dół
             srcWidth = img.width;
             srcHeight = img.width / targetRatio;
           }

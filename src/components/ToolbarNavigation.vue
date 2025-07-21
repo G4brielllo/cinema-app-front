@@ -22,7 +22,9 @@
               <v-list-item
                 v-for="(item, index) in userActions"
                 :key="index"
-                @click="item.route === '/logout' ? logout() : navigate(item.route)"
+                @click="
+                  item.route === '/logout' ? logout() : navigate(item.route)
+                "
               >
                 <v-list-item-title>{{ item.title }}</v-list-item-title>
               </v-list-item>
@@ -43,7 +45,7 @@
 
 <script>
 import axios from "axios";
-
+import { useUserStore } from "@/stores/user";
 export default {
   props: {
     modelValue: Boolean,
@@ -105,6 +107,8 @@ export default {
           withCredentials: true,
         });
         this.isAdmin = response.data.role === "admin";
+        const userStore = useUserStore();
+        userStore.setUser(response.data);
       } catch (error) {
         console.error("Błąd przy sprawdzaniu roli użytkownika:", error);
       }
@@ -117,7 +121,9 @@ export default {
     },
     async callReservationCleanup() {
       try {
-        await axios.get("http://localhost:8000/api/delete-expired-reservations");
+        await axios.get(
+          "http://localhost:8000/api/delete-expired-reservations"
+        );
       } catch (error) {
         console.error("Nie udało się wyczyścić rezerwacji:", error);
       }

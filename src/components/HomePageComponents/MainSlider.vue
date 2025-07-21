@@ -49,7 +49,6 @@ export default {
         title: "",
         image_url: "",
         trailer_url: "",
-        position: null,
       },
       trailerDialog: false,
       currentTrailerUrl: "",
