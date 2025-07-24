@@ -75,7 +75,7 @@
                   required
                 ></v-text-field> -->
                 <v-spacer></v-spacer>
-                <v-btn @click="bookTickets()" color="primary">
+                <v-btn :disabled="screening.status === 'archived'" @click="bookTickets()" color="primary">
                   Potwierdzam rezerwację
                 </v-btn>
               </v-form>

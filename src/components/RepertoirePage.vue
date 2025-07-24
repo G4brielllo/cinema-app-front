@@ -32,12 +32,6 @@
                 </strong>
               </div>
               <div class="text-grey-darken-1">
-                <strong>Format:</strong> {{ movie.format }}
-              </div>
-              <div class="text-grey-darken-1">
-                <strong>Audio:</strong> {{ movie.audio_type }}
-              </div>
-              <div class="text-grey-darken-1">
                 <strong>Obsada:</strong> {{ movie.cast }}
               </div>
             </div>
@@ -51,9 +45,14 @@
               @click="goToMovieBooking(screening.id, screening.hall_id)"
               :disabled="isPast(screening)"
             >
-              {{
-                formatTime(screening.screening_time, screening.screening_date)
-              }}
+              <div class="d-flex flex-column">
+                <strong>{{
+                  formatTime(screening.screening_time, screening.screening_date)
+                }}</strong>
+                <span class="text-caption">
+                  {{ screening.format }} | {{ screening.audio_type }}
+                </span>
+              </div>
             </v-btn>
           </v-col>
         </v-row>

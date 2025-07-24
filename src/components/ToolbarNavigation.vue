@@ -74,7 +74,7 @@ export default {
     this.checkAdminRole();
     this.isLoggedIn();
     setInterval(this.callReservationCleanup, 3 * 60 * 1000);
-    setInterval(this.archiveMovies, 30 * 60 * 1000);
+    setInterval(this.autoArchive, 30 * 60 * 1000);
   },
   methods: {
     navigate(route) {
@@ -128,11 +128,12 @@ export default {
         console.error("Nie udało się wyczyścić rezerwacji:", error);
       }
     },
-    async archiveMovies() {
+    async autoArchive() {
       try {
         await axios.get("http://localhost:8000/api/auto-archive-movies");
+        await axios.get("http://localhost:8000/api/auto-archive-screenings");
       } catch (error) {
-        console.error("Nie udało się zarchiwizować filmów:", error);
+        console.error("Nie udało się zarchiwizować filmów oraz seansów", error);
       }
     },
   },

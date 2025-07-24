@@ -287,9 +287,9 @@ export default {
     async updateUserData() {
       try {
         const payload = {
-          name: this.change_form.name,
-          surname: this.change_form.surname,
-          email: this.change_form.email,
+          name: this.user.name,
+          surname: this.user.surname,
+          email: this.user.email,
         };
         if (this.change_form.password) {
           payload.current_password = this.change_form.current_password;
@@ -306,7 +306,16 @@ export default {
             },
           }
         );
-        this.showAlert("success");
+
+        if (
+          response.data.message &&
+          response.data.message.includes("verify it via email")
+        ) {
+          this.showAlert("email_verification_required");
+        } else {
+          this.showAlert("success");
+        }
+
         this.fetchUserData();
         console.log("User data updated:", response.data);
       } catch (error) {
@@ -325,12 +334,20 @@ export default {
         console.error("Error updating user data:", error);
       }
     },
+
     showAlert(status) {
       if (status === "success") {
         Swal.fire({
           title: "Sukces",
           text: "Dane zostały zaktualizowane.",
           icon: "success",
+          confirmButtonText: "OK",
+        });
+      } else if (status === "email_verification_required") {
+        Swal.fire({
+          title: "Zmieniono e-mail",
+          text: "Na nowy adres e-mail został wysłany link potwierdzający. Sprawdź swoją skrzynkę i kliknij w link, aby zakończyć zmianę adresu.",
+          icon: "info",
           confirmButtonText: "OK",
         });
       } else if (status === "current_password_error") {

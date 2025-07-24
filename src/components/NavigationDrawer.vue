@@ -4,7 +4,7 @@
       <v-list-item
         v-for="(item, i) in actionsForAdmin"
         :key="i"
-        @click="navigate(item.route)"
+        @click="navigate(item)"
       >
         <v-list-item-content class="d-flex align-center">
           <v-icon class="me-2">{{ item.icon }}</v-icon>
@@ -73,6 +73,11 @@ export default {
           icon: "mdi-chart-areaspline",
         },
         {
+          title: "PayU",
+          href: "https://merch-prod.snd.payu.com/user/login",
+          icon: "mdi-cash-check",
+        },
+        {
           title: "Zweryfikuj Rezerwację",
           route: "/checkReservation",
           icon: "mdi-key",
@@ -93,8 +98,12 @@ export default {
     this.internalDrawer = this.modelValue;
   },
   methods: {
-    navigate(route) {
-      this.$router.push(route);
+    navigate(item) {
+      if (item.href) {
+        window.open(item.href, "_blank");
+      } else if (item.route) {
+        this.$router.push(item.route);
+      }
       this.internalDrawer = false;
     },
   },

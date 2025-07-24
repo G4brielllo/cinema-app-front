@@ -31,6 +31,13 @@
               variant="outlined"
               required
             ></v-select>
+            <v-select
+              v-model="movie.age_group"
+              :items="['Dzieci', 'Młodzież', 'Dorośli']"
+              variant="outlined"
+              label="Grupa wiekowa"
+              required
+            ></v-select>
             <v-date-input
               label="Data Rozpoczęcia Emisji"
               first-day-of-week="1"
@@ -105,6 +112,7 @@
               label="Obsada"
               required
             ></v-text-field>
+
             <v-switch
               v-model="movie.status"
               :true-value="'announcement'"
@@ -167,6 +175,7 @@ export default {
         script: "",
         release_date: "",
         cast: "",
+        age_group: "",
         announcement: false,
         image: null,
         trailer: null,
@@ -252,11 +261,10 @@ export default {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("access_token")}`,
             },
-            withCredentials: true, // jeśli używasz Laravel Sanctum
+            withCredentials: true,
           }
         );
 
-        // console.log(response.data);
         this.showAlert("edit-success");
         this.clearData();
       } catch (error) {
@@ -279,6 +287,7 @@ export default {
         script: "",
         release_date: "",
         cast: "",
+        age_group: "",
         image: null,
       };
       this.file = null;
@@ -286,16 +295,32 @@ export default {
     },
     createBase64Image(event) {
       const file = event.target.files[0];
-      if (!(file instanceof Blob)) {
-        console.error("Niepoprawny typ pliku:", file);
+
+      if (!file) {
+        console.warn("Nie wybrano pliku");
         return;
       }
+      const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/webp",
+        "image/gif",
+        "image/svg+xml",
+      ];
+
+      if (!allowedTypes.includes(file.type)) {
+        console.error("Nieobsługiwany format obrazu:", file.type);
+        alert("Dozwolone formaty: JPG, PNG, WEBP, GIF, SVG");
+        return;
+      }
+
       const reader = new FileReader();
       reader.onload = (e) => {
-        this.movie.image = e.target.result; // base64
+        this.movie.image = e.target.result;
       };
       reader.readAsDataURL(file);
     },
+
     isMovieEditing() {
       if (this.$route.query.movieId !== undefined) {
         this.receivedMovieID = this.$route.query.movieId;
@@ -400,5 +425,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

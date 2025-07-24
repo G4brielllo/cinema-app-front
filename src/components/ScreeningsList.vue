@@ -13,11 +13,12 @@
               <th>Nazwa</th>
               <th>Data</th>
               <th>Godzina</th>
+              <th>Status</th>
               <th>Akcja</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(screening, index) in screenings" :key="index">
+            <tr v-for="(screening, index) in sortedScreenings" :key="index">
               <td>
                 <img
                   :src="screening.movie.image"
@@ -28,6 +29,7 @@
               <td>{{ screening.movie.title }}</td>
               <td>{{ screening.screening_date }}</td>
               <td>{{ screening.screening_time }}</td>
+              <td>{{ screening.status }}</td>
               <td>
                 <v-btn @click="editScreening(screening)">Edytuj</v-btn>
                 <v-btn @click="confirmDeleteScreening(screening.id)"
@@ -75,6 +77,7 @@ export default {
       screenings: [],
       screening: {
         movie_id: null,
+        status: "",
         screening_date: "",
         screening_time: "",
       },
@@ -83,6 +86,14 @@ export default {
   },
   created() {
     this.fetchScreenings();
+  },
+  computed: {
+    sortedScreenings() {
+      return this.screenings.slice().sort((a, b) => {
+        if (a.status === b.status) return 0;
+        return a.status === "active" ? -1 : 1;
+      });
+    },
   },
   methods: {
     async fetchScreenings() {

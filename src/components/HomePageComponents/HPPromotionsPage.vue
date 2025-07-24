@@ -6,7 +6,7 @@
         md="6"
         class="text-col d-flex flex-column justify-center px-12"
       >
-        <div class="text-white">
+        <div class="flex-column d-flex justify-center align-center text-white">
           <h2 class="text-h2 font-weight-medium mb-4">Oferta promocyjna</h2>
           <h5 class="text-h5 font-weight-medium mb-4">
             Sprawdź dostępne promocje i zaskocz się świetnymi ofertami!
@@ -29,7 +29,7 @@
       >
         <v-img
           :src="nachos"
-          height="70%"
+          height="100%"
           width="100%"
           cover
           class="rounded-img"
@@ -58,7 +58,7 @@ export default {
   name: "PromotionHero",
   methods: {
     goToPromotions() {
-      this.$router.push({ path:"/allPromotionsPage" });
+      this.$router.push({ path: "/allPromotionsPage" });
     },
   },
 };

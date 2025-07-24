@@ -1,5 +1,12 @@
 <template>
-  <v-carousel v-if="slides.length!=0"  height="600" show-arrows="hover" hide-delimiters cycle interval="5000">
+  <v-carousel
+    v-if="slides.length != 0"
+    height="600"
+    show-arrows="hover"
+    hide-delimiters
+    cycle
+    interval="5000"
+  >
     <v-carousel-item v-for="slide in slides" :key="slide.id">
       <div class="slider-item">
         <v-img :src="slide.image_url" height="600" cover />
@@ -18,23 +25,15 @@
   </v-carousel>
 
   <v-dialog v-model="trailerDialog" max-width="800px">
-    <v-card>
-      <v-card-title>Zwiastun</v-card-title>
-      <v-card-text>
-        <iframe
-          v-if="currentTrailerUrl"
-          :src="currentTrailerUrl"
-          width="100%"
-          height="400"
-          frameborder="0"
-          allowfullscreen
-        ></iframe>
-      </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="primary" @click="trailerDialog = false">Zamknij</v-btn>
-      </v-card-actions>
-    </v-card>
+    <iframe
+      v-if="currentTrailerUrl"
+      :src="currentTrailerUrl"
+      width="100%"
+      height="400"
+      frameborder="0"
+      allow="autoplay; encrypted-media"
+      allowfullscreen
+    ></iframe>
   </v-dialog>
 </template>
 
@@ -60,7 +59,7 @@ export default {
   methods: {
     async fetchSlides() {
       try {
-       const response = await axios.get("http://localhost:8000/api/slides");
+        const response = await axios.get("http://localhost:8000/api/slides");
         this.slides = response.data;
         console.log("Pobrano slajd", response.data);
       } catch (error) {
@@ -69,7 +68,9 @@ export default {
     },
     openTrailer(url) {
       if (!url) return;
-      const embedUrl = url.replace("watch?v=", "embed/");
+
+      const embedBase = url.replace("watch?v=", "embed/");
+      const embedUrl = `${embedBase}?autoplay=1&mute=1`;
 
       this.currentTrailerUrl = embedUrl;
       this.trailerDialog = true;
