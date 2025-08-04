@@ -30,6 +30,8 @@ import PromotionsManagement from "./components/HomePageManagement/PromotionsMana
 import AllPromotionsPage from "./components/AllPromotionsPage.vue";
 import StatisticsPage from "./components/StatisticsPage.vue";
 import UnauthorizedPage from "./components/UnauthorizedPage.vue";
+import SeatingArrangement from "./components/HomePageManagement/SeatingArrangement.vue";
+import HallList from "./components/HomePageManagement/HallList.vue";
 // import HelloWorld from './components/HelloWorld.vue';
 
 import { useUserStore } from "@/stores/user";
@@ -191,6 +193,16 @@ const routes = [
     path: "/unauthorizedPage",
     name: "UnauthorizedPage",
     component: UnauthorizedPage,
+  },
+  {
+    path: "/seatingArrangement",
+    name: "SeatingArrangement",
+    component: SeatingArrangement,
+  },
+  {
+    path: "/hallList",
+    name: "HallList",
+    component: HallList,
   },
 ];
 

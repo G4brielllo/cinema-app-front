@@ -40,8 +40,10 @@
                 :key="seat"
                 class="seat"
                 :class="{
-                  selected: isSelected(row, seat),
+                  available: isAvailable(row, seat),
                   booked: isBooked(row, seat),
+                  selected: isSelected(row, seat),
+                  hidden: !isAvailable(row, seat),
                 }"
                 @click="toggleSeat(row, seat)"
               ></div>
@@ -75,7 +77,11 @@
                   required
                 ></v-text-field> -->
                 <v-spacer></v-spacer>
-                <v-btn :disabled="screening.status === 'archived'" @click="bookTickets()" color="primary">
+                <v-btn
+                  :disabled="screening.status === 'archived'"
+                  @click="bookTickets()"
+                  color="primary"
+                >
                   Potwierdzam rezerwację
                 </v-btn>
               </v-form>
@@ -186,8 +192,11 @@ export default {
         password: "",
         access_token: "",
       },
+      screeningId: null,
       seats: [],
       selectedSeats: [],
+      bookedSeatIds: [],
+      availableSeats: [],
       showEmailField: false,
       currentSelectedSeat: null,
       countdownTime: 600,
@@ -209,11 +218,14 @@ export default {
       return `${minutes}:${seconds}`;
     },
   },
-
+  async mounted() {
+    await this.fetchBookedSeats();
+  },
   methods: {
     async fetchScreeningData() {
       try {
         const screeningId = this.$route.query.screeningId;
+        this.screeningId = screeningId;
         const response = await axios.get(
           `http://localhost:8000/api/screenings/${screeningId}`,
           {
@@ -224,10 +236,42 @@ export default {
         );
         this.screening = response.data;
         this.screening.movie_id = this.screening.movie.id;
+        this.hallId = this.screening.hall_id;
         this.fetchMovie();
         this.fetchSeats();
+        await this.fetchAvailableSeats();
       } catch (error) {
         console.error("Błąd przy pobieraniu danych seansu:", error);
+      }
+    },
+    async fetchAvailableSeats() {
+      const response = await axios.get(
+        `http://localhost:8000/api/halls/${this.hallId}/available-seats`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        }
+      );
+
+      this.availableSeats = response.data.availableSeats;
+      this.totalRows = response.data.totalRows;
+      this.totalCols = response.data.totalCols;
+    },
+
+    async fetchBookedSeats() {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/reservations/${this.screeningId}/booked-seats`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          }
+        );
+        this.bookedSeatIds = response.data;
+      } catch (error) {
+        console.error("Error fetching booked seats:", error);
       }
     },
     async fetchMovie() {
@@ -263,17 +307,13 @@ export default {
     },
     async fetchSeats() {
       try {
-        const response = await axios.get(
-          `http://localhost:8000/api/screenings/${this.screening.id}/seats`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-            },
-          }
+        const res = await axios.get(
+          `http://localhost:8000/api/hall-seats/${this.screening.hall_id}`
         );
-        this.seats = response.data;
+        this.seats = res.data;
+        console.log("Pobrane miejsca:", this.seats);
       } catch (error) {
-        console.error("Błąd przy pobieraniu miejsc:", error);
+        console.error("Błąd podczas pobierania miejsc z sali:", error);
       }
     },
     isUserLoggedIn() {
@@ -290,27 +330,47 @@ export default {
         this.showAlert("reserved_seat");
         return;
       }
+
       const index = this.selectedSeats.findIndex(
         (s) => s.row === row && s.number === seat
       );
-
+      console.log("zaznaczone miejsca:", this.selectedSeats);
       if (index === -1) {
-        this.selectedSeats.push({ row, number: seat });
+        const hallSeat = this.seats.find((s) => s.x === row && s.y === seat);
+
+        if (!hallSeat) {
+          console.warn(
+            `Nie znaleziono miejsca w bazie dla x=${row}, y=${seat}`
+          );
+          return;
+        }
+
+        this.selectedSeats.push({
+          row,
+          number: seat,
+          hall_seat_id: hallSeat.id,
+        });
+
         this.currentSelectedSeat = { row, number: seat };
       } else {
         this.selectedSeats.splice(index, 1);
         this.currentSelectedSeat = null;
       }
     },
+
     isSelected(row, seat) {
       return this.selectedSeats.some((s) => s.row === row && s.number === seat);
     },
-    isBooked(row, seat) {
-      return this.seats.some(
-        (s) => s.row === row && s.number === seat && s.is_booked
-      );
+    isAvailable(row, seat) {
+      return this.availableSeats.some((s) => s.x === row && s.y === seat);
     },
 
+    isBooked(row, seat) {
+      const matchingSeat = this.availableSeats.find(
+        (s) => s.x === row && s.y === seat
+      );
+      return matchingSeat && this.bookedSeatIds.includes(matchingSeat.id);
+    },
     formatTime(time) {
       if (!time) return "";
       return time.slice(0, 5);
@@ -346,7 +406,6 @@ export default {
         );
       }
     },
-    // STARE
     async startPayment() {
       console.log(this.reservation.reservation_code);
 
@@ -395,8 +454,6 @@ export default {
         });
       }
     },
-
-    // STARE
     async bookTickets() {
       this.isUserLoggedIn();
       const token = localStorage.getItem("access_token");
@@ -409,6 +466,9 @@ export default {
         return;
       }
       try {
+        console.log("selectedSeats:", this.selectedSeats);
+
+        // console.log("hallSeatId:", this.seat.id);
         const response = await axios.post(
           "http://localhost:8000/api/reservations",
           {
@@ -423,13 +483,18 @@ export default {
           }
         );
         this.reservation.reservation_code = response.data.reservation_code;
-        console.log(response.data);
+        console.log("eluwina", response.data);
         await this.startPayment();
       } catch (error) {
-        console.error(
-          "Error making reservation:",
-          error.response?.data || error.message
-        );
+        console.error("Error making reservation:", error);
+
+        if (error.response) {
+          console.error("Server responded with:", error.response.data);
+        } else {
+          console.error("Other error:", error.message);
+        }
+
+        this.showAlert("reservation_failed");
       }
     },
     showAlert(status) {
@@ -497,11 +562,14 @@ export default {
   border: 2px solid orange;
   transition: background-color 0.2s;
 }
-.seat.selected {
+.selected {
   background-color: orange;
 }
-.seat.booked {
+.booked {
   background-color: lightgray;
   cursor: not-allowed;
+}
+.hidden {
+  visibility: hidden;
 }
 </style>

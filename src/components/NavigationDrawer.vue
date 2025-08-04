@@ -68,6 +68,11 @@ export default {
           icon: "mdi-home",
         },
         {
+          title: "Zarządzaj Salą Kinową",
+          route: "/seatingArrangement",
+          icon: "mdi-seat",
+        },
+        {
           title: "Statystyki",
           route: "/statisticsPage",
           icon: "mdi-chart-areaspline",

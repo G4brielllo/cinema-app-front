@@ -26,6 +26,15 @@
               variant="outlined"
               required
             ></v-date-input>
+            <v-select
+              variant="outlined"
+              v-model="screening.hall_id"
+              :items="halls"
+              item-title="name"
+              item-value="id"
+              label="Sala kinowa"
+              required
+            ></v-select>
             <v-text-field
               v-model="screening.screening_time"
               label="Godzina (HH:MM)"
@@ -84,9 +93,15 @@ export default {
         screening_time: "",
         format: "",
         audio_type: "",
-        hall_id: 1,
+        hall_id: null,
       },
       movies: [],
+      halls: [],
+      hall: {
+        name: "",
+        x: null,
+        y: null,
+      },
       receivedScreeningID: null,
       pageOperationType: "",
     };
@@ -106,6 +121,7 @@ export default {
   created() {
     this.isScreeningEditing();
     this.fetchMovies();
+    this.fetchHalls();
   },
   methods: {
     async fetchMovies() {
@@ -121,6 +137,19 @@ export default {
         );
       } catch (error) {
         console.error("Błąd przy pobieraniu filmów:", error);
+      }
+    },
+    async fetchHalls() {
+      try {
+        const response = await axios.get("http://localhost:8000/api/halls", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+          },
+        });
+        this.halls = response.data;
+        console.log("response", response.data);
+      } catch (error) {
+        console.error("Błąd przy pobieraniu hall:", error);
       }
     },
 
@@ -283,7 +312,7 @@ export default {
         });
       } else if (status === "edit-error") {
         Swal.fire({
-          icon: "eroor",
+          icon: "error",
           title: "Błąd",
           text: "Edycja nieudana.",
           animation: true,
