@@ -110,8 +110,8 @@
                               v-for="seat in reservation.seat_data"
                               :key="seat.seat_id"
                             >
-                              Rząd: {{ seat.row }}, Miejsce:
-                              {{ seat.number }}
+                              Rząd: {{ seat.x }}, Miejsce:
+                              {{ seat.y }}
                             </div>
                           </v-card-text>
 
@@ -183,13 +183,14 @@ export default {
         code: "",
       },
       reservation_seat: {
+        hall_seat_id: null,
         row: null,
         number: null,
         seat_id: null,
       },
       seat: {
-        row: null,
-        number: null,
+        x: null,
+        y: null,
         seat_id: null,
       },
       tab: null,
@@ -237,8 +238,32 @@ export default {
             },
           }
         );
+        this.reservations = response.data.map((reservation) => {
+          let seatData = [];
+          if (
+            typeof reservation.selected_seats_json === "string" &&
+            reservation.selected_seats_json.trim() !== ""
+          ) {
+            try {
+              seatData = JSON.parse(reservation.selected_seats_json);
+            } catch (e) {
+              console.error(
+                "Błąd parsowania selected_seats_json:",
+                e,
+                reservation.selected_seats_json
+              );
+              seatData = [];
+            }
+          } else if (Array.isArray(reservation.selected_seats_json)) {
+            seatData = reservation.selected_seats_json;
+          }
 
-        this.reservations = response.data;
+          return {
+            ...reservation,
+            seat_data: seatData,
+          };
+        });
+
         console.log("Reservations", this.reservations);
       } catch (error) {
         console.error("Error fetching reservations:", error);

@@ -33,10 +33,13 @@
               {{ reservationData.screening.hall_id }}
             </p>
 
-            <div v-if="reservationData.seats && reservationData.seats.length">
+            <div>
               <p><strong>Rzędy i miejsca:</strong></p>
               <ul>
-                <li v-for="(seat, idx) in reservationData.seats" :key="idx">
+                <li
+                  v-for="(seat, idx) in reservationData.selected_seats_json"
+                  :key="idx"
+                >
                   Rząd: {{ seat.row }} | Miejsce: {{ seat.number }}
                 </li>
               </ul>
@@ -78,24 +81,43 @@ export default {
     async checkReservation() {
       try {
         const response = await axios.get(
-          `http://localhost:8000/api/reservations/${this.reservation.code}`
+          `http://localhost:8000/api/reservations/${this.reservation.code}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          }
         );
         this.reservationData = response.data;
         console.log("Reservation data:", this.reservationData);
+
+        if (
+          this.reservationData.selected_seats_json &&
+          this.reservationData.selected_seats_json.length
+        ) {
+          this.reservationData.selected_seats_json.forEach((seat, idx) => {
+            console.log(
+              `Miejsce #${idx + 1}: Rząd ${seat.row}, Numer ${seat.number}`
+            );
+          });
+        } else {
+          console.log("Brak miejsc w selected_seats_json");
+        }
+
         this.dialog = true;
       } catch (error) {
         console.error("Reservation not found or error occurred:", error);
         this.showErrorAlert();
       }
     },
-    showErrorAlert(){
+    showErrorAlert() {
       Swal.fire({
         title: "Błąd",
         text: "Nie znaleziono rezerwacji. Sprawdź kod.",
         icon: "error",
         showConfirmButton: false,
       });
-    }
+    },
   },
 };
 </script>

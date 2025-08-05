@@ -90,7 +90,9 @@ export default {
   computed: {
     sortedScreenings() {
       return this.screenings.slice().sort((a, b) => {
-        if (a.status === b.status) return 0;
+        if (a.status === b.status) {
+          return new Date(b.screening_date) - new Date(a.screening_date);
+        }
         return a.status === "active" ? -1 : 1;
       });
     },

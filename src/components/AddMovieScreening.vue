@@ -187,7 +187,7 @@ export default {
         const payload = {
           ...this.screening,
           screening_date: this.screening.screening_date
-            ? this.screening.screening_date.toISOString().split("T")[0]
+            ? this.screening.screening_date.toLocaleDateString("pl-PL").split("T")[0]
             : null,
         };
         const response = await axios.put(
@@ -226,6 +226,9 @@ export default {
           screening_date: response.data.screening_date
             ? new Date(response.data.screening_date)
             : null,
+          screening_time: response.data.screening_time
+            ? response.data.screening_time.slice(0, 5)
+            : "",
         };
       } catch (error) {
         console.error("Błąd przy pobieraniu seansów:", error);

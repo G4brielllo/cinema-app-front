@@ -194,10 +194,22 @@ const routes = [
     name: "UnauthorizedPage",
     component: UnauthorizedPage,
   },
+  // {
+  //   path: "/seatingArrangement",
+  //   name: "SeatingArrangement",
+  //   component: SeatingArrangement,
+  //   props: true,
+  // },
   {
-    path: "/seatingArrangement",
-    name: "SeatingArrangement",
+    path: "/hall/add",
+    name: "AddHall",
     component: SeatingArrangement,
+  },
+  {
+    path: "/hall/edit/:hallId",
+    name: "EditHall",
+    component: SeatingArrangement,
+    props: true,
   },
   {
     path: "/hallList",

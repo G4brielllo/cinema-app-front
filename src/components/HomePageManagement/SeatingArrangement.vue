@@ -76,8 +76,8 @@ import Swal from "sweetalert2";
 export default {
   props: {
     hallId: {
-      type: Number,
-      required: true,
+      type: [Number, String],
+      required: false,
     },
   },
   data() {
@@ -136,6 +136,9 @@ export default {
     },
   },
   mounted() {
+    if (this.hallId) {
+      this.loadHallData(this.hallId);
+    }
     this.generateSeats();
   },
   methods: {
@@ -148,7 +151,45 @@ export default {
       }
       this.seats = seats;
     },
+    async loadHallData(hallId) {
+      try {
+        const hallRes = await axios.get(
+          `http://localhost:8000/api/halls/${hallId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          }
+        );
 
+        this.hallName = hallRes.data.name;
+        this.rows = hallRes.data.rows;
+        this.cols = hallRes.data.seats_per_row;
+
+        const layoutRes = await axios.get(
+          `http://localhost:8000/api/halls/${hallId}/layout`,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+            },
+          }
+        );
+
+        const occupiedSeats = layoutRes.data;
+
+        const allSeats = [];
+        for (let x = 1; x <= this.rows; x++) {
+          for (let y = 1; y <= this.cols; y++) {
+            const seat = occupiedSeats.find((s) => s.x === x && s.y === y);
+            allSeats.push(seat || null);
+          }
+        }
+
+        this.seats = allSeats;
+      } catch (error) {
+        console.error("Błąd ładowania danych sali:", error);
+      }
+    },
     toggleSeat(index) {
       const seat = this.seats[index];
       this.seats[index] = seat
@@ -171,32 +212,43 @@ export default {
           seats_per_row: this.cols,
         };
 
-        const hallRes = await axios.post(
-          "http://localhost:8000/api/halls",
-          hallPayload,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-            },
-          }
-        );
+        let hallId = this.hallId;
 
-        const hallId = hallRes.data.id;
+        if (hallId) {
+          // Edycja sali
+          await axios.put(
+            `http://localhost:8000/api/halls/${hallId}`,
+            hallPayload,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+              },
+            }
+          );
+        } else {
+          // Dodanie nowej sali
+          const hallRes = await axios.post(
+            `http://localhost:8000/api/halls`,
+            hallPayload,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+              },
+            }
+          );
+          hallId = hallRes.data.id;
+        }
 
         const seatsPayload = this.seats
           .filter((seat) => seat !== null)
-          .map((seat) => ({
-            x: seat.x,
-            y: seat.y,
-          }));
-        console.log("Payload do wysłania:", seatsPayload);
+          .map((seat) => ({ x: seat.x, y: seat.y }));
 
         if (seatsPayload.length === 0) {
           this.showAlert("select-seats");
           return;
         }
 
-        const layoutRes = await axios.post(
+        await axios.post(
           `http://localhost:8000/api/halls/${hallId}/layout`,
           { seats: seatsPayload },
           {
@@ -205,12 +257,15 @@ export default {
             },
           }
         );
+
         this.showAlert("add-success");
+
         this.clearData();
-        console.log("Układ sali zapisany:", layoutRes.data);
+
+        this.$router.push("/"); // wróć np. na listę sal
       } catch (error) {
         console.error(
-          "Błąd zapisu układu sali:",
+          "Błąd zapisu układu:",
           error.response?.data || error.message
         );
         this.showAlert("error");

@@ -68,8 +68,13 @@ export default {
           icon: "mdi-home",
         },
         {
-          title: "Zarządzaj Salą Kinową",
-          route: "/seatingArrangement",
+          title: "Lista Sal Kinowych",
+          route: "/hallList",
+          icon: "mdi-seat",
+        },
+        {
+          title: "Dodaj Salę Kinową",
+          route: "/hall/add",
           icon: "mdi-seat",
         },
         {
