@@ -215,7 +215,6 @@ export default {
         let hallId = this.hallId;
 
         if (hallId) {
-          // Edycja sali
           await axios.put(
             `http://localhost:8000/api/halls/${hallId}`,
             hallPayload,
@@ -226,7 +225,6 @@ export default {
             }
           );
         } else {
-          // Dodanie nowej sali
           const hallRes = await axios.post(
             `http://localhost:8000/api/halls`,
             hallPayload,

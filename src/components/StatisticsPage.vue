@@ -140,6 +140,7 @@ export default {
     return {
       users: [],
       reservations: [],
+      reservationsFilteredByMonth: [],
       numberOfClientsStatusBar: 0,
       revenueStatusBar: 0,
       numberOfOrdersStatusBar: 0,
@@ -672,12 +673,21 @@ export default {
       this.cancellationsStatusBar = currentMonthReservations.length;
     },
     countRevenue() {
+      const today = new Date();
       let sum = 0;
+
       for (const reservation of this.reservations) {
-        if (reservation.status === "confirmed") {
+        const reservationDate = new Date(reservation.reservation_time);
+
+        const isSameMonth =
+          reservationDate.getMonth() === today.getMonth() &&
+          reservationDate.getFullYear() === today.getFullYear();
+
+        if (reservation.status === "confirmed" && isSameMonth) {
           sum += reservation.total_amount;
         }
       }
+
       this.revenueStatusBar = sum / 100;
     },
   },

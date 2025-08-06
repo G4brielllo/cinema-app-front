@@ -58,7 +58,7 @@
             ></v-select>
             <v-btn
               @click="receivedScreeningID ? editScreening() : addScreening()"
-              color="primary"
+              color="secondary"
               ><v-model>{{ pageOperationType }}</v-model></v-btn
             >
           </v-form>

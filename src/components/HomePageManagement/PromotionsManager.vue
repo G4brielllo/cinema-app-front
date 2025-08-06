@@ -86,7 +86,6 @@ export default {
             "Content-Type": "application/json",
           },
         });
-        console.log("srala", this.promotion);
         this.$emit("promotion-saved");
       } catch (error) {
         console.error("Błąd przy zapisie promocji:", error.response?.data);
