@@ -1,21 +1,20 @@
 <template>
   <v-container class="d-flex justify-center align-center">
     <v-card width="100%">
-      <v-card-title><h1>Slider</h1></v-card-title>
+      <v-card-title><h1>Dodaj Slajd</h1></v-card-title>
       <v-card-text>
         <v-form>
           <v-text-field
             v-model="slide.title"
-            variant="outlined"
             label="Tytuł"
+            prepend-icon="mdi-format-title"
           ></v-text-field>
           <v-text-field
             v-model="slide.trailer_url"
-            variant="outlined"
-            label="URL (np. trailer)"
+            label="URL trailera"
+            prepend-icon="mdi-youtube"
           ></v-text-field>
           <v-file-input
-            variant="outlined"
             v-model="file"
             accept="image/*"
             @change="createBase64Image"
@@ -27,9 +26,11 @@
           <strong>Podgląd:</strong>
           <v-img :src="slide.image_url" max-height="200" contain />
         </div>
-        <v-btn @click="saveSlide()">
-          {{ mode === "edit" ? "Zapisz zmiany" : "Dodaj Slajd" }}
-        </v-btn>
+        <v-card-actions>
+          <v-btn class="hover-btn mt-2 align-center w-100" @click="saveSlide()">
+            {{ mode === "edit" ? "Zapisz zmiany" : "Dodaj Slajd" }}
+          </v-btn>
+        </v-card-actions>
       </v-card-text>
     </v-card>
   </v-container>

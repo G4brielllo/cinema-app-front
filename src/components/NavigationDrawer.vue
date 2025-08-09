@@ -2,12 +2,13 @@
   <v-navigation-drawer v-model="internalDrawer" temporary="true">
     <v-list>
       <v-list-item
+      class="text-left"
         v-for="(item, i) in actionsForAdmin"
         :key="i"
         @click="navigate(item)"
       >
         <v-list-item-content class="d-flex align-center">
-          <v-icon class="me-2">{{ item.icon }}</v-icon>
+          <v-icon class="mr-5">{{ item.icon }}</v-icon>
           <span>{{ item.title }}</span>
         </v-list-item-content>
       </v-list-item>

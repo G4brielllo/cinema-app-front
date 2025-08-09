@@ -9,7 +9,7 @@
 
     <v-footer
       class="text-center d-flex flex-column ga-2 py-4"
-      color="indigo-lighten-1"
+      color="secondary"
     >
       <div class="d-flex ga-3">
         <v-btn
@@ -28,35 +28,42 @@
         class="text-caption font-weight-regular opacity-60 px-4"
         style="max-width: 800px; margin: 0 auto"
       >
-        CineManager to kompleksowy system zarządzania kinem, stworzony z myślą o
-        właścicielach i operatorach kin – zarówno pojedynczych, jak i
-        sieciowych. Umożliwia pełną kontrolę nad repertuarem, salami, sprzedażą
-        biletów, rezerwacjami i analizą danych. Dzięki intuicyjnemu
-        interfejsowi, nowoczesnym funkcjom i automatyzacji procesów codzienne
-        zarządzanie kinem staje się szybsze i bardziej efektywne. CineManager
-        wspiera Twoje kino w rozwoju – od pierwszego seansu po setki projekcji
-        miesięcznie.
+        <h4>
+          CineManager to kompleksowy system zarządzania kinem, stworzony z myślą
+          o właścicielach i operatorach kin – zarówno pojedynczych, jak i
+          sieciowych. Umożliwia pełną kontrolę nad repertuarem, salami,
+          sprzedażą biletów, rezerwacjami i analizą danych. Dzięki intuicyjnemu
+          interfejsowi, nowoczesnym funkcjom i automatyzacji procesów codzienne
+          zarządzanie kinem staje się szybsze i bardziej efektywne. CineManager
+          wspiera Twoje kino w rozwoju – od pierwszego seansu po setki projekcji
+          miesięcznie.
+        </h4>
       </div>
 
       <v-divider class="my-2"></v-divider>
 
       <div class="text-caption opacity-60">
-        📧 Kontakt:
-        <a
-          href="mailto:support@cinemanager.pl"
-          class="text-white text-decoration-underline"
-          >support@cinemanager.pl</a
-        >
-        |
-        <a href="#" class="text-white text-decoration-underline"
-          >Polityka prywatności</a
-        >
-        |
-        <a href="#" class="text-white text-decoration-underline">Regulamin</a>
+        <h4>
+          📧 Kontakt:
+          <a
+            href="mailto:support@cinemanager.pl"
+            class="text-decoration-underline text-black"
+          >
+            support@cinemanager.pl
+          </a>
+          |
+          <a href="#" class="text-black text-decoration-underline">
+            Polityka prywatności
+          </a>
+          |
+          <a href="#" class="text-black text-decoration-underline">
+            Regulamin
+          </a>
+        </h4>
       </div>
 
       <div class="mt-2">
-        {{ new Date().getFullYear() }} — <strong>CineManager</strong>
+        <strong> {{ currentYear }} — CineManager</strong>
       </div>
     </v-footer>
   </v-app>
@@ -75,6 +82,7 @@ export default {
   data() {
     return {
       drawer: false,
+      currentYear: new Date().getFullYear(),
       icons: [
         { name: "mdi-facebook", link: "https://www.facebook.com/" },
         { name: "mdi-twitter", link: "https://x.com/" },
@@ -87,11 +95,28 @@ export default {
 </script>
 
 <style>
+body,
+.v-toolbar,
+.v-btn {
+  font-family: "Montserrat", sans-serif !important;
+}
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Montserrat", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+:root {
+  font-family: "Montserrat", sans-serif;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700 !important;
 }
 </style>

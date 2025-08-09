@@ -8,7 +8,6 @@
     <div class="ticket-option">
       <h3>Film 3D</h3>
       <p class="price">25 zł</p>
-      <!-- <p class="note">+ 5 zł za okulary 3D (płatność na miejscu)</p> -->
     </div>
   </v-card>
 </template>
@@ -38,7 +37,7 @@
 .ticket-option {
   margin-bottom: 1.5rem;
   padding: 1rem;
-  border-left: 4px solid #3498db;
+  border-left: 6px solid #ffa600ff;
   background-color: #f9f9f9;
   border-radius: 6px;
 }

@@ -1,47 +1,74 @@
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
+import { createVuetify } from "vuetify";
+import * as components from "vuetify/components";
+import * as directives from "vuetify/directives";
 
 export default createVuetify({
   components,
   directives,
   theme: {
-    defaultTheme: 'light',
+    defaultTheme: "light",
     themes: {
       light: {
         colors: {
-          primary: '#424242',
-          secondary: '#ffa600ff',
-          accent: '#82B1FF',
-          error: '#FF5252',
-          info: '#2196F3',
-          success: '#4CAF50',
-          warning: '#FFC107',
+          primary: "#424242",
+          secondary: "#ffa600ff",
         },
-        
       },
     },
   },
   defaults: {
     global: {
       ripple: false,
-    },
-    VBtn: {
-      color: 'primary',
-      variant: 'flat',
-      rounded: 'md',
+      style: {
+        fontFamily: "Montserrat, sans-serif",
+      },
     },
     VTextField: {
-      variant: 'outlined',
-      color: 'primary',
+      class: "ml-8 mr-8",
+      variant: "underlined",
+      color: "primary",
+      density: "comfortable",
+    },
+    VBtn: {
+      style: "text-transform: none",
+      rounded: "xl",
     },
     VCard: {
-      elevation: 2,
-      rounded: 'lg',
+      rounded: "xl",
+    },
+    VContainer: {
+      class: "d-flex justify-center align-center",
+    },
+    VCardTitle: {
+      class: "d-flex justify-space-between align-center",
+    },
+    VSelect: {
+      variant: "underlined",
+      density: "comfortable",
+    },
+    VDateInput: {
+      variant: "underlined",
+    },
+    VFileInput: {
+      variant: "underlined",
+    },
+    VToolbar: {
+      style: {
+        fontFamily: "Montserrat, sans-serif",
+      },
     },
   },
+
+  //   blueprint: {
+  //     defaults: {
+  //       VBtn: {
+  //         fontFamily: "Montserrat",
+  //         fontWeight: 700,
+  //       },
+  //     },
+  //   },
   display: {
-    mobileBreakpoint: 'sm',
+    mobileBreakpoint: "sm",
     thresholds: {
       xs: 0,
       sm: 600,
@@ -50,4 +77,4 @@ export default createVuetify({
       xl: 1920,
     },
   },
-})
+});

@@ -1,31 +1,26 @@
 <template>
-  <v-app>
-    <v-container class="pa-6">
+  <v-container class="d-flex align-center justify-center">
+    <v-card class="pa-8 h-100" variant="tonned">
       <h1 class="text-center mb-8">CineManager dla szkół</h1>
       <v-carousel
-      v-if="filteredMovies.length"
+        v-if="filteredMovies.length"
         cycle
         interval="6000"
         height="400"
         show-arrows-on-hover
         hide-delimiter-background
+         class="coverflow-carousel"
       >
         <v-carousel-item
           v-for="movie in filteredMovies"
           :key="movie.id"
           class="carousel-item"
         >
-          <v-img
-            :src="movie.image"
-            cover
-            height="100%"
-            width="100%"
-            class="carousel-img"
-          >
+          <v-img :src="movie.image" rounded="xl" cover class="carousel-img">
             <div class="overlay">
               <h2>{{ movie.title }}</h2>
               <p>{{ movie.category }} | {{ movie.duration }} min</p>
-              <v-btn color="primary" @click="openDialog(movie)">
+              <v-btn class="hover-btn" @click="openDialog(movie)">
                 Szczegóły
               </v-btn>
             </div>
@@ -56,7 +51,8 @@
             <h3 class="mt-3">Kontakt</h3>
             <p>
               Zadzwoń: <a href="tel:+48123456789">+48 123 456 789</a><br />
-              Napisz: <a href="mailto:szkola@cinemanager.pl">szkola@cinemanager.pl</a>
+              Napisz:
+              <a href="mailto:szkola@cinemanager.pl">szkola@cinemanager.pl</a>
             </p>
           </v-card>
         </v-col>
@@ -78,8 +74,8 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-    </v-container>
-  </v-app>
+    </v-card>
+  </v-container>
 </template>
 
 <script>
@@ -166,7 +162,8 @@ export default {
   margin-bottom: 12px;
   font-size: 16px;
 }
-.v-card{
-    height: 200px;
+.v-card {
+  height: 200px;
 }
+
 </style>

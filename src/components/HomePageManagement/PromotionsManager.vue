@@ -1,26 +1,41 @@
 <template>
   <v-container>
-    <v-form>
-      <v-text-field v-model="promotion.title" label="Tytuł" outlined required />
-      <v-textarea v-model="promotion.description" label="Opis" outlined required />
-      <v-file-input
-        label="Obrazek"
-        accept="image/*"
-        v-model="file"
-        @change="createBase64Image"
-        outlined
-        required
-      />
+    <v-card width="80%">
+      <v-card-title><h1>Dodaj Promocję</h1></v-card-title>
+      <v-form>
+        <v-text-field
+          prepend-icon="mdi-format-title"
+          v-model="promotion.title"
+          label="Tytuł"
+          required
+        />
+        <v-textarea
+          prepend-icon="mdi-text-long"
+          v-model="promotion.description"
+          label="Opis"
+          rows="2"
+          variant="underlined"
+          auto-grow
+          required
+        />
+        <v-file-input
+          label="Obrazek"
+          accept="image/*"
+          v-model="file"
+          @change="createBase64Image"
+          required
+        />
 
-      <v-btn @click="savePromotion" color="primary" class="mt-2">
-        {{ mode === "edit" ? "Zapisz zmiany" : "Dodaj Promocję" }}
-      </v-btn>
+        <v-btn @click="savePromotion" class="hover-btn mt-4 mb-4 w-100">
+          {{ mode === "edit" ? "Zapisz zmiany" : "Dodaj Promocję" }}
+        </v-btn>
 
-      <div v-if="promotion.image" class="mt-4">
-        <strong>Podgląd:</strong>
-        <v-img :src="promotion.image" max-height="200" contain />
-      </div>
-    </v-form>
+        <div v-if="promotion.image" class="mt-4">
+          <strong>Podgląd:</strong>
+          <v-img :src="promotion.image" max-height="200" contain />
+        </div>
+      </v-form>
+    </v-card>
   </v-container>
 </template>
 

@@ -7,7 +7,7 @@
         <p>Thank you for your purchase!</p>
       </v-card-text>
       <v-card-actions>
-        <v-btn color="primary" @click="$router.push('/')">Go to Home</v-btn>
+        <v-btn class="hover-btn" @click="$router.push('/')">Udaj się na strone główną</v-btn>
       </v-card-actions>
 
     </v-card>

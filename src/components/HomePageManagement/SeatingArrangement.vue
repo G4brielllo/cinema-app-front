@@ -1,72 +1,68 @@
 <template>
-  <v-app>
-    <v-container class="d-flex justify-center">
-      <v-card width="100%" class="pa-4">
-        <v-card-title class="text-h4 text-center mb-4"
-          >Układ Sali Kinowej</v-card-title
-        >
-        <v-row>
+  <v-container>
+    <v-card class="pa-4 w-100">
+      <v-card-title class="mb-4"> <h1>Układ Sali Kinowej</h1></v-card-title>
+      <v-row>
+        <v-text-field
+          v-model="hallName"
+          label="Nazwa sali"
+          outlined
+          dense
+          class="mb-4"
+        />
+      </v-row>
+      <v-row class="mb-6">
+        <v-col cols="6">
           <v-text-field
-            v-model="hallName"
-            label="Nazwa sali"
+            v-model.number="rows"
+            label="Ilość rzędów"
+            type="number"
+            min="1"
             outlined
             dense
-            class="mb-4"
-          />
-        </v-row>
-        <v-row class="mb-6">
-          <v-col cols="6">
-            <v-text-field
-              v-model.number="rows"
-              label="Ilość rzędów"
-              type="number"
-              min="1"
-              outlined
-              dense
-            ></v-text-field>
-          </v-col>
-          <v-col cols="6">
-            <v-text-field
-              v-model.number="cols"
-              label="Ilość miejsc w rzędzie"
-              type="number"
-              min="1"
-              outlined
-              dense
-            ></v-text-field>
-          </v-col>
-        </v-row>
+          ></v-text-field>
+        </v-col>
+        <v-col cols="6">
+          <v-text-field
+            v-model.number="cols"
+            label="Ilość miejsc w rzędzie"
+            type="number"
+            min="1"
+            outlined
+            dense
+          ></v-text-field>
+        </v-col>
+      </v-row>
 
-        <div class="screen mb-6 text-center">EKRAN</div>
+      <div class="screen mb-6 text-center">EKRAN</div>
 
-        <div class="seats-container">
-          <div class="seats-grid" :style="gridStyle">
-            <div
-              v-for="(seat, index) in seats"
-              :key="index"
-              :class="['seat', seat ? 'seat--occupied' : 'seat--empty']"
-              @click="toggleSeat(index)"
-            >
-              <span v-if="seat" class="seat-label">
-                {{ seat.x }}-{{ seat.y }}
-              </span>
-            </div>
+      <div class="seats-container">
+        <div class="seats-grid" :style="gridStyle">
+          <div
+            v-for="(seat, index) in seats"
+            :key="index"
+            :class="['seat', seat ? 'seat--occupied' : 'seat--empty']"
+            @click="toggleSeat(index)"
+          >
+            <span v-if="seat" class="seat-label">
+              {{ seat.x }}-{{ seat.y }}
+            </span>
           </div>
         </div>
+      </div>
 
-        <div class="d-flex justify-center mt-6">
-          <v-btn
-            color="primary"
-            large
-            :disabled="!hasSeats"
-            @click="saveLayout"
-          >
-            Zapisz układ sali
-          </v-btn>
-        </div>
-      </v-card>
-    </v-container>
-  </v-app>
+      <div class="d-flex justify-center mt-6">
+        <v-btn
+          class="hover-btn"
+          large
+          :disabled="!hasSeats"
+          @click="saveLayout"
+        >
+          Zapisz układ sali
+        </v-btn>
+      </div>
+    </v-card>
+  </v-container>
 </template>
 
 <script>
@@ -94,7 +90,7 @@ export default {
         display: "grid",
         gridTemplateColumns: `repeat(${this.cols}, 50px)`,
         gridGap: "10px",
-        justifyContent: "center",
+        justifyContent: "start",
       };
     },
     hasSeats() {
@@ -107,8 +103,8 @@ export default {
         this.seats = [];
         return;
       }
-      if (value > 300) {
-        this.rows = 300;
+      if (value > 50) {
+        this.rows = 50;
       } else if (value < 0) {
         this.rows = 0;
         this.seats = [];
@@ -123,8 +119,8 @@ export default {
         this.seats = [];
         return;
       }
-      if (value > 300) {
-        this.cols = 300;
+      if (value > 50) {
+        this.cols = 50;
       } else if (value < 0) {
         this.cols = 0;
         this.seats = [];
@@ -224,6 +220,7 @@ export default {
               },
             }
           );
+          this.showAlert("edit-success");
         } else {
           const hallRes = await axios.post(
             `http://localhost:8000/api/halls`,
@@ -235,6 +232,8 @@ export default {
             }
           );
           hallId = hallRes.data.id;
+                  this.showAlert("add-success");
+
         }
 
         const seatsPayload = this.seats
@@ -256,11 +255,9 @@ export default {
           }
         );
 
-        this.showAlert("add-success");
-
         this.clearData();
 
-        this.$router.push("/"); // wróć np. na listę sal
+        // await this.$router.push("/");
       } catch (error) {
         console.error(
           "Błąd zapisu układu:",
@@ -281,6 +278,18 @@ export default {
           icon: "success",
           title: "Sukces",
           text: "Dodano salę kinową.",
+          animation: true,
+          toast: true,
+          position: "top-end",
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
+      } else if (status === "edit-success") {
+        Swal.fire({
+          icon: "success",
+          title: "Sukces",
+          text: "Edytowano salę kinową.",
           animation: true,
           toast: true,
           position: "top-end",
@@ -370,13 +379,11 @@ export default {
 
 .seat--empty {
   background-color: #e0e0e0;
-  border: 1px solid #bdbdbd;
 }
 
 .seat--occupied {
-  background-color: #4caf50;
+  background-color: #ffa600ff;
   color: white;
-  border: 1px solid #388e3c;
 }
 
 .seat:hover {

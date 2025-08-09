@@ -1,5 +1,4 @@
 <template>
-  <v-app>
     <v-container class="d-flex justify-center align-center">
       <v-card>
         <v-card-title>
@@ -23,7 +22,7 @@
               <td>{{ user.email }}</td>
               <td>{{ user.role }}</td>
               <td>
-                <v-btn @click="confirmDeleteUser(user.id)">
+                <v-btn class="hover-btn" @click="confirmDeleteUser(user.id)">
                   <v-icon>mdi-delete</v-icon>
                 </v-btn>
               </td>
@@ -32,17 +31,15 @@
         </v-table>
       </v-card>
     </v-container>
-  </v-app>
 </template>
 
 <script>
-import { VApp, VCard, VBtn, VTable } from "vuetify/lib/components";
+import {VCard, VBtn, VTable } from "vuetify/lib/components";
 import axios from "axios";
 import Swal from "sweetalert2";
 
 export default {
   components: {
-    VApp,
     VCard,
     VBtn,
     VTable,

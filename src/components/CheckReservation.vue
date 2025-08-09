@@ -4,8 +4,11 @@
       <v-card-title><h1>Rezerwacja</h1></v-card-title>
 
       <v-otp-input v-model="reservation.code" type="character" length="8" />
-
-      <v-btn variant="outlined" @click="checkReservation()">Zweryfikuj</v-btn>
+      <v-card-actions>
+        <v-btn class="hover-btn mb-2" @click="checkReservation()"
+          >Zweryfikuj</v-btn
+        >
+      </v-card-actions>
 
       <v-dialog v-model="dialog" max-width="600px">
         <v-card>

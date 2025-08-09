@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-card variant="flat">
+    <v-card width="80%" variant="flat">
       <v-row>
         <v-col cols="12" sm="6" md="4" lg="3">
           <v-img :src="movie.image"></v-img>

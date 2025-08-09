@@ -1,42 +1,36 @@
 <template>
-  <v-app>
     <v-container class="d-flex justify-center align-center">
-      <v-card title="Rejestracja" variant="tonal" width="50%">
-        <v-text-field v-model="user.name" label="Imię" variant="outlined">
-        </v-text-field>
+      <v-card width="50%">
+        <v-card-title>
+          <h1>Rejestracja</h1>
+        </v-card-title>
+        <v-text-field v-model="user.name" label="Imię"> </v-text-field>
+        <v-text-field v-model="user.surname" label="Nazwisko"> </v-text-field>
         <v-text-field
-          v-model="user.surname"
-          label="Nazwisko"
-          variant="outlined"
+          v-model="user.email"
+          label="E-mail"
+          placeholder="johndoe@gmail.com"
+          clearable
         >
         </v-text-field>
-        <v-text-field v-model="user.email" label="E-mail" variant="outlined"
-        placeholder="johndoe@gmail.com" clearable>
-        </v-text-field>
-        <v-text-field v-model="user.password" label="Hasło" variant="outlined">
-        </v-text-field>
+        <v-text-field v-model="user.password" label="Hasło"> </v-text-field>
         <v-text-field
           v-model="user.password_confirmation"
           label="Powtórz hasło"
-          variant="outlined"
         >
         </v-text-field>
         <v-card-actions>
-          <v-btn @click="saveUser()" style="outline: auto"
-            >Zarejestruj się</v-btn
-          >
+          <v-btn class="hover-btn" style="min-width: 170px"  @click="saveUser()">Zarejestruj się</v-btn>
         </v-card-actions>
         <v-card-actions>
-          <v-btn @click="goToLogin" style="outline: auto">Zaloguj się</v-btn>
+          <v-btn class="hover-btn md-12" style="min-width: 150px"  @click="goToLogin">Zaloguj się</v-btn>
         </v-card-actions>
       </v-card>
     </v-container>
-  </v-app>
 </template>
 
 <script>
 import {
-  VApp,
   VContainer,
   VCard,
   VTextField,
@@ -46,7 +40,6 @@ import {
 import axios from "axios";
 export default {
   components: {
-    VApp,
     VContainer,
     VCard,
     VTextField,

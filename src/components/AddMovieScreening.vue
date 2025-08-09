@@ -1,5 +1,4 @@
 <template>
-  <v-app>
     <v-container class="d-flex justify-center align-center">
       <v-card width="50%">
         <v-card-title>
@@ -10,12 +9,13 @@
         <v-card-text>
           <v-form ref="form">
             <v-select
+              movie-open-check-outline
+              prepend-icon="mdi-movie-open-check-outline"
               v-model="screening.movie_id"
               :items="movies"
               item-title="title"
               item-value="id"
               label="Wybierz film"
-              variant="outlined"
               required
             ></v-select>
 
@@ -23,11 +23,10 @@
               label="Data"
               first-day-of-week="1"
               v-model="screening.screening_date"
-              variant="outlined"
               required
             ></v-date-input>
             <v-select
-              variant="outlined"
+              prepend-icon="mdi-sofa"
               v-model="screening.hall_id"
               :items="halls"
               item-title="name"
@@ -36,36 +35,37 @@
               required
             ></v-select>
             <v-text-field
+              prepend-icon="mdi-clock-time-five-outline"
               v-model="screening.screening_time"
               label="Godzina (HH:MM)"
-              variant="outlined"
               required
               @blur="formatScreeningTime"
             />
             <v-select
-              variant="outlined"
+              prepend-icon="mdi-video-3d"
               v-model="screening.format"
               :items="['2D', '3D']"
               label="Format"
               required
             ></v-select>
             <v-select
+              prepend-icon="mdi-closed-caption-outline"
               v-model="screening.audio_type"
               :items="['Dubbing', 'Napisy']"
               label="Audio"
-              variant="outlined"
               required
             ></v-select>
-            <v-btn
-              @click="receivedScreeningID ? editScreening() : addScreening()"
-              color="secondary"
-              ><v-model>{{ pageOperationType }}</v-model></v-btn
-            >
+            <v-card-actions>
+              <v-btn
+                class="hover-btn mb-4"
+                @click="receivedScreeningID ? editScreening() : addScreening()"
+                ><v-model>{{ pageOperationType }}</v-model></v-btn
+              >
+            </v-card-actions>
           </v-form>
         </v-card-text>
       </v-card>
     </v-container>
-  </v-app>
 </template>
 
 <script>
@@ -73,7 +73,6 @@ import axios from "axios";
 import { VDateInput } from "vuetify/labs/VDateInput";
 import Swal from "sweetalert2";
 import {
-  VApp,
   VContainer,
   VCard,
   VCardTitle,
@@ -91,8 +90,8 @@ export default {
         movie_id: null,
         screening_date: null,
         screening_time: "",
-        format: "",
-        audio_type: "",
+        format: null,
+        audio_type: null,
         hall_id: null,
       },
       movies: [],
@@ -107,7 +106,6 @@ export default {
     };
   },
   components: {
-    VApp,
     VContainer,
     VCard,
     VCardTitle,
@@ -187,7 +185,9 @@ export default {
         const payload = {
           ...this.screening,
           screening_date: this.screening.screening_date
-            ? this.screening.screening_date.toLocaleDateString("pl-PL").split("T")[0]
+            ? this.screening.screening_date
+                .toLocaleDateString("pl-PL")
+                .split("T")[0]
             : null,
         };
         const response = await axios.put(
@@ -239,7 +239,7 @@ export default {
       const screeningId = this.$route.query.screeningId;
       if (screeningId) {
         this.receivedScreeningID = screeningId;
-        this.pageOperationType = "Edycja Seansu";
+        this.pageOperationType = "Edytuj Seans";
         this.fetchScreeningData(this.receivedScreeningID);
       } else {
         this.pageOperationType = "Dodaj Seans";
@@ -342,3 +342,9 @@ export default {
   },
 };
 </script>
+<style scoped>
+.v-card-actions {
+  display: flex;
+  justify-content: center;
+}
+</style>

@@ -1,135 +1,133 @@
 <template>
   <v-container>
-    <v-row>
-      <v-col>
-        <v-card
-          variant="flat"
-          class="status-card px-4 py-3 d-flex flex-column justify-space-between"
-          style="background-color: #1e1e1e; border-radius: 12px; color: white"
-        >
-          <div class="d-flex align-center justify-space-between">
-            <div>
-              <div class="text-subtitle-2 mb-1">Klienci</div>
-              <div class="text-h5 font-weight-bold">
-                {{ numberOfClientsStatusBar }}
+    <v-card width="100%">
+      <v-row>
+        <v-col>
+          <v-card
+            color="secondary"
+            variant="flat"
+            class="status-card px-4 py-3 d-flex flex-column justify-space-between"
+            style="background-color: #1e1e1e; border-radius: 12px; color: white"
+          >
+            <div class="d-flex align-center justify-space-between">
+              <div>
+                <div class="text-subtitle-2 mb-1">Klienci</div>
+                <div class="text-h5 font-weight-bold">
+                  {{ numberOfClientsStatusBar }}
+                </div>
               </div>
+              <v-icon size="36" color="#3c4c63">mdi-account-group</v-icon>
             </div>
-            <v-icon size="36" color="#3c4c63">mdi-account-group</v-icon>
-          </div>
-        </v-card>
-      </v-col>
-      <v-col>
-        <v-card
-          variant="flat"
-          class="status-card px-4 py-3 d-flex flex-column justify-space-between"
-          style="background-color: #1e1e1e; border-radius: 12px; color: white"
-        >
-          <div class="d-flex align-center justify-space-between">
-            <div>
-              <div class="text-subtitle-2 mb-1">Przychód</div>
-              <div class="text-h5 font-weight-bold">
-                {{ revenueStatusBar }} zł
+          </v-card>
+        </v-col>
+        <v-col>
+          <v-card
+            color="secondary"
+            variant="flat"
+            class="status-card px-4 py-3 d-flex flex-column justify-space-between"
+            style="background-color: #1e1e1e; border-radius: 12px; color: white"
+          >
+            <div class="d-flex align-center justify-space-between">
+              <div>
+                <div class="text-subtitle-2 mb-1">Przychód</div>
+                <div class="text-h5 font-weight-bold">
+                  {{ revenueStatusBar }} zł
+                </div>
               </div>
+              <v-icon size="36" color="#3c4c63">mdi-cash</v-icon>
             </div>
-            <v-icon size="36" color="#3c4c63">mdi-cash</v-icon>
-          </div>
-        </v-card>
-      </v-col>
+          </v-card>
+        </v-col>
 
-      <v-col>
-        <v-card
-          variant="flat"
-          class="status-card px-4 py-3 d-flex flex-column justify-space-between"
-          style="background-color: #1e1e1e; border-radius: 12px; color: white"
-        >
-          <div class="d-flex align-center justify-space-between">
-            <div>
-              <div class="text-subtitle-2 mb-1">Zamówienia</div>
-              <div class="text-h5 font-weight-bold">
-                {{ numberOfOrdersStatusBar }}
+        <v-col>
+          <v-card
+            color="secondary"
+            variant="flat"
+            class="status-card px-4 py-3 d-flex flex-column justify-space-between"
+            style="background-color: #1e1e1e; border-radius: 12px; color: white"
+          >
+            <div class="d-flex align-center justify-space-between">
+              <div>
+                <div class="text-subtitle-2 mb-1">Zamówienia</div>
+                <div class="text-h5 font-weight-bold">
+                  {{ numberOfOrdersStatusBar }}
+                </div>
               </div>
+              <v-icon size="36" color="#3c4c63">mdi-cart</v-icon>
             </div>
-            <v-icon size="36" color="#3c4c63">mdi-cart</v-icon>
-          </div>
-        </v-card>
-      </v-col>
+          </v-card>
+        </v-col>
 
-      <v-col>
-        <v-card
-          variant="flat"
-          class="status-card px-4 py-3 d-flex flex-column justify-space-between"
-          style="background-color: #1e1e1e; border-radius: 12px; color: white"
-        >
-          <div class="d-flex align-center justify-space-between">
-            <div>
-              <div class="text-subtitle-2 mb-1">Anulacje</div>
-              <div class="text-h5 font-weight-bold">
-                {{ cancellationsStatusBar }}
+        <v-col>
+          <v-card
+            color="secondary"
+            variant="flat"
+            class="status-card px-4 py-3 d-flex flex-column justify-space-between"
+            style="background-color: #1e1e1e; border-radius: 12px; color: white"
+          >
+            <div class="d-flex align-center justify-space-between">
+              <div>
+                <div class="text-subtitle-2 mb-1">Anulacje</div>
+                <div class="text-h5 font-weight-bold">
+                  {{ cancellationsStatusBar }}
+                </div>
               </div>
+              <v-icon size="36" color="#3c4c63">mdi-cancel</v-icon>
             </div>
-            <v-icon size="36" color="#3c4c63">mdi-cancel</v-icon>
-          </div>
-        </v-card>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col>
-        <v-card height="400px">
-          <canvas ref="ordersChart" id="ordersInPeriodChart"></canvas>
-          <div class="mb-4">
-            <v-btn
-              class="mt-8 mr-3"
-              @click="updateChartRange('week')"
-              :disabled="isChartLoading"
-              >Tydzień (dni)</v-btn
-            >
-            <v-btn
-              class="mt-8"
-              @click="updateChartRange('month')"
-              :disabled="isChartLoading"
-              >Miesiąc (dni)</v-btn
-            >
-            <v-btn
-              class="mt-8 ml-3"
-              @click="updateChartRange('year')"
-              :disabled="isChartLoading"
-              >Rok (miesiące)</v-btn
-            >
-          </div>
-        </v-card>
-      </v-col>
-      <v-col>
-        <v-card height="400px">
-          <canvas id="topThreeMovies"></canvas>
-        </v-card>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col>
-        <v-card>
-          <canvas id="screeningsVsReservationsChart"></canvas>
-        </v-card>
-      </v-col>
-    </v-row>
+          </v-card>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <v-card height="400px">
+            <canvas ref="ordersChart" id="ordersInPeriodChart"></canvas>
+            <div class="mb-4">
+              <v-btn
+                class="hover-btn mt-8 mr-3"
+                @click="updateChartRange('week')"
+                :disabled="isChartLoading"
+                >Tydzień (dni)</v-btn
+              >
+              <v-btn
+                class="hover-btn mt-8"
+                @click="updateChartRange('month')"
+                :disabled="isChartLoading"
+                >Miesiąc (dni)</v-btn
+              >
+              <v-btn
+                class="hover-btn mt-8 ml-3"
+                @click="updateChartRange('year')"
+                :disabled="isChartLoading"
+                >Rok (miesiące)</v-btn
+              >
+            </div>
+          </v-card>
+        </v-col>
+        <v-col>
+          <v-card height="400px">
+            <canvas id="topThreeMovies"></canvas>
+          </v-card>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-col>
+          <v-card>
+            <canvas id="screeningsVsReservationsChart"></canvas>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-card>
   </v-container>
 </template>
 
 <script>
-import {
-  VContainer,
-  VRow,
-  VCol,
-  VCard,
-  VBtn,
-  VIcon,
-} from "vuetify/lib/components";
+import { VRow, VCol, VCard, VBtn, VIcon } from "vuetify/lib/components";
 import axios from "axios";
 import Chart from "chart.js/auto";
 
 export default {
   name: "StatisticsPage",
   components: {
-    VContainer,
     VRow,
     VCol,
     VCard,

@@ -1,13 +1,13 @@
 <template>
-  <v-app>
-    <v-container>
-      <v-title>
+  <v-container>
+    <v-card class="w-100" variant="toned">
+      <v-card-title>
         <h1>Movie booking</h1>
-      </v-title>
+      </v-card-title>
 
       <v-card class="ma-12" variant="toned">
         <v-row>
-          <v-col cols="1">
+          <v-col cols="2">
             <v-img :src="movie.image" aspect-ratio="2/3" elevation-3></v-img>
           </v-col>
           <v-col cols="3">
@@ -29,9 +29,11 @@
         </v-row>
       </v-card>
 
+      <!-- Układ 2/3 (ekran i siedzenia) + 1/3 (formularz) -->
       <v-row>
-        <v-col cols="4">
-          <div>Ekran</div>
+        <!-- 2/3 szerokości -->
+        <v-col cols="12" md="8">
+          <div class="text-center mb-4 font-weight-bold">Ekran</div>
           <div class="seats">
             <div v-for="row in parseInt(hall.rows)" :key="row" class="seat-row">
               <div class="row-number">{{ row }}</div>
@@ -51,7 +53,8 @@
           </div>
         </v-col>
 
-        <v-col cols="6">
+        <!-- 1/3 szerokości -->
+        <v-col cols="12" md="4">
           <v-card variant="toned">
             <v-card-title>
               <h2>Wybierz miejsca</h2>
@@ -61,26 +64,21 @@
                 <v-label>
                   Liczba wybranych biletów: {{ selectedSeats.length }}
                 </v-label>
-                <v-spacer></v-spacer>
-                <div v-if="selectedSeats.length">
-                  <div v-for="(seat, index) in selectedSeats" :key="index">
-                    Wybrane miejsce: Rząd {{ seat.row }}, Miejsce
-                    {{ seat.number }}
+
+                <div v-if="selectedSeats.length" class="my-4">
+                  <div
+                    v-for="(seat, index) in selectedSeats"
+                    :key="index"
+                    class="text-caption"
+                  >
+                    Rząd {{ seat.row }}, Miejsce {{ seat.number }}
                   </div>
                 </div>
 
-                <!-- <v-text-field
-                  v-if="showEmailField"
-                  v-model="email"
-                  label="Podaj adres e-mail, na który wyślemy potwierdzenie rezerwacji"
-                  variant="outlined"
-                  required
-                ></v-text-field> -->
-                <v-spacer></v-spacer>
                 <v-btn
+                  class="hover-btn mt-4"
                   :disabled="screening.status === 'archived'"
                   @click="bookTickets()"
-                  color="primary"
                 >
                   Potwierdzam rezerwację
                 </v-btn>
@@ -113,14 +111,13 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-    </v-container>
-  </v-app>
+    </v-card>
+  </v-container>
 </template>
 
 <script>
 import Swal from "sweetalert2";
 import {
-  VApp,
   VContainer,
   VCard,
   VCardTitle,
@@ -138,7 +135,6 @@ import axios from "axios";
 
 export default {
   components: {
-    VApp,
     VContainer,
     VCard,
     VCardTitle,

@@ -1,5 +1,4 @@
 <template>
-  <v-app>
     <v-container class="d-flex justify-center align-center">
       <v-card width="50%">
         <v-card-title>
@@ -8,7 +7,6 @@
         <v-text-field
           v-model="user.email"
           label="E-mail"
-          variant="outlined"
           placeholder="johndoe@gmail.com"
           clearable
           type="email"
@@ -18,36 +16,49 @@
           v-model="user.password"
           :type="showPassword ? 'text' : 'password'"
           label="Hasło"
-          variant="outlined"
           :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
           @click:append-inner="togglePassword"
           clearable
         >
         </v-text-field>
         <v-card-actions>
-          <v-btn @click="login" style="outline: auto">Zaloguj</v-btn>
-        </v-card-actions>
-        <v-card-text> Nie masz konta? </v-card-text>
-        <v-card-actions>
-          <v-btn @click="goToRegister" style="outline: auto"
-            >Zarejestruj się</v-btn
+          <v-btn
+            class="hover-btn"
+            style="min-width: 150px"
+            
+            @click="login"
+            >Zaloguj</v-btn
           >
         </v-card-actions>
-        <!-- <v-card-text> Zapomniałem hasła </v-card-text> -->
         <v-card-actions>
-          <v-btn variant= "text" @click="goToForgotPassword" style="outline: auto">
+          <v-btn
+            class="hover-btn"
+            style="min-width: 250px"
+            
+            @click="goToForgotPassword"
+          >
             Zapomniałem hasła
           </v-btn>
         </v-card-actions>
-        </v-card>
+        <v-card-text class="text-center">
+          Nie masz konta?
+          <v-btn
+            class="text-blue no-uppercase"
+            style="text-transform: none"
+            variant="text"
+            
+            @click="goToRegister"
+            >Zarejestruj się</v-btn
+          >
+        </v-card-text>
+        
+      </v-card>
     </v-container>
-  </v-app>
 </template>
 
 <script>
 import Swal from "sweetalert2";
 import {
-  VApp,
   VContainer,
   VCard,
   VTextField,
@@ -58,7 +69,6 @@ import {
 import axios from "axios";
 export default {
   components: {
-    VApp,
     VContainer,
     VCard,
     VTextField,
@@ -108,7 +118,7 @@ export default {
       Swal.fire({
         icon: "success",
         title: "Dodano Seans",
-        text: 'alercik',
+        text: "alercik",
         animation: true,
         toast: true,
         position: "top-end",
@@ -117,12 +127,11 @@ export default {
         showConfirmButton: false,
       });
     },
-    
   },
 };
 </script>
 
-<style>
+<style scoped>
 .v-card-actions {
   display: flex;
   justify-content: center;

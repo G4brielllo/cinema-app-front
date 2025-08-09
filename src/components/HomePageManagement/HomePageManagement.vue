@@ -1,80 +1,104 @@
 <template>
   <v-container>
-    <v-tabs v-model="tab" bg-color="primary" dark>
-      <v-tab value="slides">Slajdy</v-tab>
-      <v-tab value="promotions">Promocje</v-tab>
-    </v-tabs>
+    <v-card width="80%" variant="flat">
+      <v-tabs align-tabs="center" v-model="tab" bg-color="secondary" dark>
+        <v-tab value="slides">Slajdy</v-tab>
+        <v-tab value="promotions">Promocje</v-tab>
+      </v-tabs>
 
-    <v-window v-model="tab">
-      <v-window-item value="slides">
-        <v-container>
-          <v-btn color="success" @click="openAddSlideModal">Dodaj slajd</v-btn>
-          <v-row>
-            <v-col v-for="slide in slides" :key="slide.id" cols="12" md="4">
-              <v-card>
-                <v-img :src="slide.image_url" height="200px" />
-                <v-card-title>{{ slide.title }}</v-card-title>
-                <v-card-actions>
-                  <v-btn color="primary" @click="openEditSlideModal(slide)"
-                    >Edytuj</v-btn
-                  >
-                  <v-btn color="error" @click="deleteSlide(slide.id)"
-                    >Usuń</v-btn
-                  >
-                </v-card-actions>
-              </v-card>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-window-item>
+      <v-window v-model="tab">
+        <v-window-item value="slides">
+          <v-container>
+            <v-row>
+              <v-col v-for="slide in slides" :key="slide.id" cols="12" md="4">
+                <v-card>
+                  <v-img :src="slide.image_url" height="200px" />
+                  <v-card-title>{{ slide.title }}</v-card-title>
+                  <v-card-actions>
+                    <v-btn class="hover-btn" @click="openEditSlideModal(slide)">
+                      <v-icon>mdi-pencil</v-icon>
+                    </v-btn>
+                    <v-btn class="hover-btn" @click="deleteSlide(slide.id)">
+                      <v-icon>mdi-delete</v-icon></v-btn
+                    >
+                  </v-card-actions>
+                </v-card>
+              </v-col>
+              <v-col>
+                <v-card
+                  @click="openAddSlideModal"
+                  class="d-flex flex-column align-center justify-center fill-height"
+                >
+                  <v-icon size="48">mdi-plus</v-icon>
+                  <v-card-title>Dodaj nowy slajd</v-card-title>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-window-item>
 
-      <v-window-item value="promotions">
-        <v-container>
-          <v-btn color="success" @click="openAddPromotionModal"
-            >Dodaj promocję</v-btn
-          >
-          <v-row>
-            <v-col v-for="promo in promotions" :key="promo.id" cols="12" md="4">
+        <v-window-item value="promotions">
+          <v-container>
+            <v-row>
+              <v-col
+              v-for="promo in promotions"
+              :key="promo.id"
+              cols="12"
+              md="4"
+              >
               <v-card>
                 <v-img :src="promo.image" height="200px" />
                 <v-card-title>{{ promo.title }}</v-card-title>
                 <v-card-subtitle>{{ promo.description }}</v-card-subtitle>
                 <v-card-actions>
-                  <v-btn color="primary" @click="openEditPromotionModal(promo)"
-                    >Edytuj</v-btn
+                  <v-btn
+                  class="hover-btn"
+                  @click="openEditPromotionModal(promo)"
                   >
-                  <v-btn color="error" @click="deletePromotion(promo.id)"
-                    >Usuń</v-btn
+                  <v-icon>mdi-pencil</v-icon></v-btn
+                  >
+                  <v-btn class="hover-btn" @click="deletePromotion(promo.id)"
+                  ><v-icon>mdi-delete</v-icon></v-btn
                   >
                 </v-card-actions>
               </v-card>
             </v-col>
+             <v-col>
+                <v-card
+                  @click="openAddPromotionModal"
+                  class="d-flex flex-column align-center justify-center fill-height"
+                >
+                  <v-icon size="48">mdi-plus</v-icon>
+                  <v-card-title>Dodaj nową promocję</v-card-title>
+                </v-card>
+              </v-col>
           </v-row>
-        </v-container>
-      </v-window-item>
-    </v-window>
-    <v-dialog v-model="showSlideModal" max-width="500">
-      <v-card>
-        <v-card-text>
-          <SliderManager
-            :mode="modalMode"
-            :slide-data="selectedSlide"
-            @slide-added="handleSlideAdded"
-          />
-        </v-card-text>
-      </v-card>
-    </v-dialog>
-    <v-dialog v-model="showPromotionModal" max-width="600">
-      <v-card>
-        <v-card-text>
-          <PromotionsManager
-            :mode="promotionModalMode"
-            :promotion-data="selectedPromotion"
-            @promotion-saved="handlePromotionSaved"
-          />
-        </v-card-text>
-      </v-card>
-    </v-dialog>
+          </v-container>
+        </v-window-item>
+      </v-window>
+      <v-dialog v-model="showSlideModal" max-width="500">
+        <v-card>
+          <v-card-text>
+            <SliderManager
+              :mode="modalMode"
+              :slide-data="selectedSlide"
+              @slide-added="handleSlideAdded"
+            />
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+      <v-dialog v-model="showPromotionModal" max-width="600">
+        <v-card>
+          <v-card-text>
+            <PromotionsManager
+              :mode="promotionModalMode"
+              :promotion-data="selectedPromotion"
+              @promotion-saved="handlePromotionSaved"
+            />
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+    </v-card>
   </v-container>
 </template>
 

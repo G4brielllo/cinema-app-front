@@ -1,6 +1,4 @@
 <template>
-  <v-app>
-    
     <v-container class="d-flex align-center justify-center">
       <v-card variant="toned" width="80%">
         <v-card-title>
@@ -22,7 +20,7 @@
             </v-col>
             <v-col cols="9" class="d-flex flex-column justify-space-between">
               <div>
-                <h1>{{ movie.title }}</h1>
+                <div class="text-left"><h1>{{ movie.title }}</h1></div>
                 <div class="text-grey-darken-1 text-left mt-5">
                   {{ movie.description }}
                 </div>
@@ -30,9 +28,8 @@
                   <strong>Obsada:</strong> {{ movie.cast }}
                 </div>
                 <div class="text-grey-darken-1 text-left mt-5">
-                  <strong>
-                    {{ movie.category }} | {{ movie.duration }} min
-                  </strong>
+                  <div><strong>Kategoria:</strong> {{ movie.category }}</div>
+                  <div><strong>Czas:</strong> {{ movie.duration }} min</div>
                 </div>
                 <v-btn
                   v-if="movie.trailer"
@@ -64,7 +61,6 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </v-app>
 </template>
 
 <script>

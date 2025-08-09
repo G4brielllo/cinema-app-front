@@ -12,12 +12,11 @@
             Sprawdź dostępne promocje i zaskocz się świetnymi ofertami!
           </h5>
           <v-btn
-            color="pink"
             variant="outlined"
-            class="text-white text-button"
+            class="hover-btn mb-4"
             @click="goToPromotions"
           >
-            SPRAWDŹ
+            Sprawdź
           </v-btn>
         </div>
       </v-col>
@@ -73,7 +72,6 @@ export default {
 
 .text-button {
   letter-spacing: 3px;
-  border: 1px solid #ff0080;
   border-radius: 4px;
 }
 

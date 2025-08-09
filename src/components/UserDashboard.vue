@@ -1,95 +1,91 @@
 <template>
-  <v-app>
-    <v-container class="d-flex justify-center align-center">
-      <v-card width="50%">
-        <v-card-text>
-          <h1>Moje konto</h1>
-        </v-card-text>
-        <v-tabs v-model="tab" bg-color="primary" align-tabs="center">
-          <v-tab value="account">Moje Konto</v-tab>
-          <v-tab value="tickets">Bilety</v-tab>
-          <v-tab value="three">Item Three</v-tab>
-        </v-tabs>
+  <v-container>
+    <v-card width="80%">
+      <v-card-text>
+        <h1>Moje konto</h1>
+      </v-card-text>
+      <v-tabs v-model="tab" bg-color="secondary" align-tabs="center">
+        <v-tab value="account">Moje Konto</v-tab>
+        <v-tab value="tickets">Bilety</v-tab>
+        <v-tab value="three">Item Three</v-tab>
+      </v-tabs>
 
-        <v-card-text>
-          <v-tabs-window v-model="tab">
-            <v-tabs-window-item value="account">
-              <v-container>
-                <v-row>
-                  <v-col>
-                    <v-text-field
-                      v-model="user.name"
-                      variant="outlined"
-                      label="Imię"
-                    >
-                    </v-text-field>
-                  </v-col>
-                  <v-col>
-                    <v-text-field
-                      v-model="user.surname"
-                      variant="outlined"
-                      label="Nazwisko"
-                    >
-                    </v-text-field>
-                  </v-col>
-                </v-row>
+      <v-card-text>
+        <v-tabs-window v-model="tab">
+          <v-tabs-window-item value="account">
+            <v-row>
+              <v-col>
+                <v-text-field
+                  v-model="user.name"
+                  variant="outlined"
+                  label="Imię"
+                >
+                </v-text-field>
+              </v-col>
+              <v-col>
+                <v-text-field
+                  v-model="user.surname"
+                  variant="outlined"
+                  label="Nazwisko"
+                >
+                </v-text-field>
+              </v-col>
+            </v-row>
 
-                <v-text-field
-                  v-model="user.email"
-                  variant="outlined"
-                  label="E-mail"
-                >
-                </v-text-field>
-                <v-text-field
-                  v-model="change_form.current_password"
-                  variant="outlined"
-                  label="Stare Hasło"
-                  type="password"
-                >
-                </v-text-field>
-                <v-text-field
-                  v-model="change_form.password"
-                  variant="outlined"
-                  label="Nowe Hasło"
-                  type="password"
-                >
-                </v-text-field>
+            <v-text-field
+              v-model="user.email"
+              variant="outlined"
+              label="E-mail"
+            >
+            </v-text-field>
+            <v-text-field
+              v-model="change_form.current_password"
+              variant="outlined"
+              label="Stare Hasło"
+              type="password"
+            >
+            </v-text-field>
+            <v-text-field
+              v-model="change_form.password"
+              variant="outlined"
+              label="Nowe Hasło"
+              type="password"
+            >
+            </v-text-field>
 
-                <v-text-field
-                  v-model="change_form.password_confirmation"
-                  variant="outlined"
-                  label="Potwierdź Hasło"
-                  type="password"
+            <v-text-field
+              v-model="change_form.password_confirmation"
+              variant="outlined"
+              label="Potwierdź Hasło"
+              type="password"
+            >
+            </v-text-field>
+            <v-card-actions>
+              <v-btn class="hover-btn" @click="updateUserData()">
+                Zapisz zmiany
+              </v-btn>
+            </v-card-actions>
+          </v-tabs-window-item>
+          <v-tabs-window-item value="tickets">
+            <v-container>
+              <v-row>
+                <v-col
+                  v-for="(reservation, index) in reservations"
+                  :key="index"
+                  cols="12"
                 >
-                </v-text-field>
-                <v-btn
-                  variant="outlined"
-                  @click="updateUserData()"
-                  style="outline: auto"
-                >
-                  Zapisz zmiany
-                </v-btn>
-              </v-container>
-            </v-tabs-window-item>
-            <v-tabs-window-item value="tickets">
-              <v-container>
-                <v-row>
-                  <v-col
-                    v-for="(reservation, index) in reservations"
-                    :key="index"
-                    cols="12"
-                  >
-                    <v-card>
-                      <v-row>
-                        <v-col cols="6">
-                          <v-img
-                            class="mb-4 mt-4"
-                            :src="reservation.screening.movie.image"
-                            aspect-ratio="1"
-                            elevation-3
-                          ></v-img>
-                        </v-col>
-                        <v-col cols="6">
+                  <v-card>
+                    <v-row>
+                      <v-col cols="6">
+                        <v-img
+                          class="mb-4 mt-4"
+                          :src="reservation.screening.movie.image"
+                          aspect-ratio="1"
+                          elevation-3
+                        ></v-img>
+                      </v-col>
+                      <v-col cols="6">
+                        <div class="d-flex flex-column">
                           <v-card-title>
                             <strong>
                               {{ reservation.screening.movie.title }}
@@ -115,44 +111,40 @@
                             </div>
                           </v-card-text>
 
-                          <v-card-text>
-                            Kod rezerwacji:
-                            {{ reservation.reservation_code }}
+                          <v-card-text class="d-flex flex-column align-start">
+                            <div class="mb-2">
+                              Kod rezerwacji: {{ reservation.reservation_code }}
+                            </div>
+                            <v-btn
+                              class="hover-btn mt-2"
+                              v-if="
+                                checkCancelationTime(
+                                  reservation.screening.screening_date,
+                                  reservation.screening.screening_time
+                                )
+                              "
+                              @click="cancelReservation(reservation.id)"
+                            >
+                              Anuluj rezerwację
+                            </v-btn>
                           </v-card-text>
-                          <v-btn
-                            v-if="
-                              checkCancelationTime(
-                                reservation.screening.screening_date,
-                                reservation.screening.screening_time
-                              )
-                            "
-                            @click="cancelReservation(reservation.id)"
-                          >
-                            Anuluj rezerwację
-                          </v-btn>
-                        </v-col>
-                      </v-row>
-                    </v-card>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-tabs-window-item>
+                        </div>
+                      </v-col>
+                    </v-row>
+                  </v-card>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-tabs-window-item>
 
-            <v-tabs-window-item value="three"> Three </v-tabs-window-item>
-          </v-tabs-window>
-        </v-card-text>
-      </v-card>
-    </v-container>
-  </v-app>
+          <v-tabs-window-item value="three"> Three </v-tabs-window-item>
+        </v-tabs-window>
+      </v-card-text>
+    </v-card>
+  </v-container>
 </template>
 <script>
-import {
-  VApp,
-  VContainer,
-  VCard,
-  VTextField,
-  VBtn,
-} from "vuetify/lib/components";
+import { VContainer, VCard, VTextField, VBtn } from "vuetify/lib/components";
 import axios from "axios";
 import Swal from "sweetalert2";
 
@@ -197,7 +189,6 @@ export default {
     };
   },
   components: {
-    VApp,
     VContainer,
     VCard,
     VTextField,
@@ -394,4 +385,9 @@ export default {
   },
 };
 </script>
-<style></style>
+<style>
+.v-card-actions {
+  display: flex;
+  justify-content: center;
+}
+</style>

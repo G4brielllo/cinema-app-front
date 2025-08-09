@@ -1,60 +1,65 @@
 <template>
-  <v-app>
-    <v-container class="d-flex justify-center align-center">
-      <v-card>
-        <v-card-title>
-          <h1>Lista Seansów</h1>
-        </v-card-title>
+  <v-container>
+    <v-card class="w-100">
+      <v-card-title class="d-flex justify-space-between align-center">
+        <h1>Lista Seansów</h1>
+        <v-btn
+          class="hover-btn"
+          style="max-width: 70px"
+          @click="goToAddScreening"
+        >
+          <v-icon>mdi-plus</v-icon>
+        </v-btn>
+      </v-card-title>
 
-        <v-table>
-          <thead>
-            <tr>
-              <th>Zdjęcie</th>
-              <th>Nazwa</th>
-              <th>Data</th>
-              <th>Godzina</th>
-              <th>Status</th>
-              <th>Akcja</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(screening, index) in sortedScreenings" :key="index">
-              <td>
-                <img
-                  :src="screening.movie.image"
-                  alt="Screening Image"
-                  width="100"
-                />
-              </td>
-              <td>{{ screening.movie.title }}</td>
-              <td>{{ screening.screening_date }}</td>
-              <td>{{ screening.screening_time }}</td>
-              <td>{{ screening.status }}</td>
-              <td>
-                <v-btn @click="editScreening(screening)">Edytuj</v-btn>
-                <v-btn @click="confirmDeleteScreening(screening.id)"
-                  >Usuń</v-btn
-                >
-              </td>
-            </tr>
-          </tbody>
-        </v-table>
-
-        <v-card-actions>
-          <v-btn style="outline: auto" @click="addScreening">Dodaj</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-container>
-  </v-app>
+      <v-table>
+        <thead>
+          <tr>
+            <th>Zdjęcie</th>
+            <th>Nazwa</th>
+            <th>Data</th>
+            <th>Godzina</th>
+            <th>Status</th>
+            <th>Akcja</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(screening, index) in sortedScreenings" :key="index">
+            <td>
+              <img
+                :src="screening.movie.image"
+                alt="Screening Image"
+                width="100"
+              />
+            </td>
+            <td>{{ screening.movie.title }}</td>
+            <td>{{ screening.screening_date }}</td>
+            <td>{{ screening.screening_time }}</td>
+            <td>{{ screening.status }}</td>
+            <td>
+              <v-btn class="ma-1 hover-btn" @click="editScreening(screening)">
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
+              <v-btn
+                class="ma-1 hover-btn"
+                @click="confirmDeleteScreening(screening.id)"
+              >
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </td>
+          </tr>
+        </tbody>
+      </v-table>
+    </v-card>
+  </v-container>
 </template>
 
 <script>
-import { VApp, VCard, VBtn, VTable } from "vuetify/lib/components";
+import { VCard, VBtn, VTable } from "vuetify/lib/components";
 import axios from "axios";
 import Swal from "sweetalert2";
 export default {
   components: {
-    VApp,
     VCard,
     VBtn,
     VTable,
@@ -141,7 +146,7 @@ export default {
         console.error("Błąd przy usuwaniu seansu:", error);
       }
     },
-    addScreening() {
+    goToAddScreening() {
       this.$router.push("/addMovieScreening");
     },
     confirmDeleteScreening(screeningId) {

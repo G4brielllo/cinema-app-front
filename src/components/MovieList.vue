@@ -1,93 +1,111 @@
 <template>
-  <v-app>
-    <v-container class="d-flex flex-column align-center">
-      <v-card class="mb-6">
-        <v-card-title>
-          <h1>Lista filmów</h1>
-        </v-card-title>
+  <v-container class="d-flex flex-column align-center">
+    <v-card class="w-100 mb-6">
+      <v-card-title class="d-flex justify-space-between align-center">
+        <h1>Lista filmów</h1>
+        <v-btn class="hover-btn" style="max-width: 70px" @click="goToAddMovie">
+          <v-icon>mdi-plus</v-icon>
+        </v-btn>
+      </v-card-title>
 
-        <h2>Filmy</h2>
-        <v-table>
-          <thead>
-            <tr>
-              <th>Zdjęcie</th>
-              <th>Tytuł</th>
-              <th>Kategoria</th>
-              <th>Data rozpoczęcia emisji</th>
-              <th>Data zakończenia emisji</th>
-              <th>Status</th>
-              <th>Akcja</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="movie in movies.filter((m) => m.status === 'movie')"
-              :key="movie.id"
-            >
-              <td><img :src="movie.image" alt="Film Image" width="100" /></td>
-              <td>{{ movie.title }}</td>
-              <td>{{ movie.category }}</td>
-              <td>{{ movie.playing_from }}</td>
-              <td>{{ movie.playing_until }}</td>
-              <td>{{ movie.status }}</td>
-              <td>
-                <v-btn @click="editMovie(movie)">Edytuj</v-btn>
-                <v-btn @click="confirmDeleteMovie(movie.id)">Usuń</v-btn>
-              </td>
-            </tr>
-          </tbody>
-        </v-table>
-      </v-card>
+      <v-table>
+        <thead>
+          <tr>
+            <th>Zdjęcie</th>
+            <th>Tytuł</th>
+            <th>Kategoria</th>
+            <th>Data rozpoczęcia emisji</th>
+            <th>Data zakończenia emisji</th>
+            <th>Status</th>
+            <th>Akcja</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="movie in movies.filter((m) => m.status === 'movie')"
+            :key="movie.id"
+          >
+            <td><img :src="movie.image" alt="Film Image" width="100" /></td>
+            <td>{{ movie.title }}</td>
+            <td>{{ movie.category }}</td>
+            <td>{{ movie.playing_from }}</td>
+            <td>{{ movie.playing_until }}</td>
+            <td>{{ movie.status }}</td>
+            <td>
+              <v-btn class="ma-1 hover-btn" @click="editMovie(movie)">
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
+              <v-btn
+                class="ma-1 hover-btn"
+                @click="confirmDeleteMovie(movie.id)"
+              >
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </td>
+          </tr>
+        </tbody>
+      </v-table>
+    </v-card>
 
-      <v-card class="mb-6">
-        <v-card-title>
-          <h2>Zapowiedzi</h2>
-        </v-card-title>
-        <v-table>
-          <thead>
-            <tr>
-              <th>Zdjęcie</th>
-              <th>Tytuł</th>
-              <th>Kategoria</th>
-              <th>Data rozpoczęcia emisji</th>
-              <th>Data zakończenia emisji</th>
-              <th>Status</th>
-              <th>Akcja</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="movie in movies.filter((m) => m.status === 'announcement')"
-              :key="movie.id"
-            >
-              <td><img :src="movie.image" alt="Film Image" width="100" /></td>
-              <td>{{ movie.title }}</td>
-              <td>{{ movie.category }}</td>
-              <td>{{ movie.playing_from }}</td>
-              <td>{{ movie.playing_until }}</td>
-              <td>{{ movie.status }}</td>
-              <td>
-                <v-btn @click="editMovie(movie)">Edytuj</v-btn>
-                <v-btn @click="confirmDeleteMovie(movie.id)">Usuń</v-btn>
-              </td>
-            </tr>
-          </tbody>
-        </v-table>
-      </v-card>
-
-      <v-btn style="outline: auto" @click="goToAddMovie">Dodaj</v-btn>
-    </v-container>
-  </v-app>
+    <v-card class="w-100 mb-6">
+      <v-card-title class="d-flex justify-space-between align-center">
+        <h1>Zapowiedzi</h1>
+        <v-btn
+          class="hover-btn"
+          style="max-width: 70px"
+          @click="goToAddAnnouncement"
+        >
+          <v-icon>mdi-plus</v-icon>
+        </v-btn>
+      </v-card-title>
+      <v-table>
+        <thead>
+          <tr>
+            <th>Zdjęcie</th>
+            <th>Tytuł</th>
+            <th>Kategoria</th>
+            <th>Data rozpoczęcia emisji</th>
+            <th>Data zakończenia emisji</th>
+            <th>Status</th>
+            <th>Akcja</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="movie in movies.filter((m) => m.status === 'announcement')"
+            :key="movie.id"
+          >
+            <td><img :src="movie.image" alt="Film Image" width="100" /></td>
+            <td>{{ movie.title }}</td>
+            <td>{{ movie.category }}</td>
+            <td>{{ movie.playing_from }}</td>
+            <td>{{ movie.playing_until }}</td>
+            <td>{{ movie.status }}</td>
+            <td>
+              <v-btn class="ma-1 hover-btn" @click="editMovie(movie)"
+                ><v-icon> mdi-pencil </v-icon></v-btn
+              >
+              <v-btn
+                class="ma-1 hover-btn"
+                @click="confirmDeleteMovie(movie.id)"
+              >
+                <v-icon>mdi-delete</v-icon>
+              </v-btn>
+            </td>
+          </tr>
+        </tbody>
+      </v-table>
+    </v-card>
+  </v-container>
 </template>
 
 <script>
-import { VApp, VCard, VBtn, VTable } from "vuetify/lib/components";
+import { VCard, VBtn, VTable } from "vuetify/lib/components";
 import axios from "axios";
 import Swal from "sweetalert2";
 
 export default {
   components: {
-    VApp,
     VCard,
     VBtn,
     VTable,
@@ -168,6 +186,9 @@ export default {
     },
 
     goToAddMovie() {
+      this.$router.push("/addMovie");
+    },
+    goToAddAnnouncement() {
       this.$router.push("/addMovie");
     },
     confirmDeleteMovie(movieId) {

@@ -1,8 +1,16 @@
 <template>
-  <v-app>
-    <v-container class="d-flex justify-center">
+    <v-container>
       <v-card width="100%" class="pa-4">
-        <v-card-title class="text-h4 text-center mb-4">Lista sal</v-card-title>
+        <v-card-title class="d-flex justify-space-between align-center">
+          <h1 class="mb-4">Lista Sal Kinowych</h1>
+          <v-btn
+            class="hover-btn"
+            style="max-width: 70px"
+            @click="$router.push({ name: 'AddHall' })"
+          >
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
+        </v-card-title>
         <v-table>
           <thead>
             <tr>
@@ -18,18 +26,18 @@
               <td>{{ hall.rows }}</td>
               <td>{{ hall.seats_per_row }}</td>
               <td>
-                <v-btn @click="editHall(hall.id)">Edytuj</v-btn>
-                <v-btn @click="deleteHall(hall.id)">Usuń</v-btn>
+                <v-btn class="ma-1 hover-btn" @click="editHall(hall.id)">
+                  <v-icon>mdi-pencil</v-icon>
+                </v-btn>
+                <v-btn class="ma-1 hover-btn" @click="deleteHall(hall.id)">
+                  <v-icon>mdi-delete</v-icon>
+                </v-btn>
               </td>
             </tr>
           </tbody>
         </v-table>
-        <v-btn color="primary" @click="$router.push({ name: 'AddHall' })"
-          >Dodaj nową salę</v-btn
-        >
       </v-card>
     </v-container>
-  </v-app>
 </template>
 <script>
 import axios from "axios";
@@ -61,8 +69,11 @@ export default {
         console.error("Błąd przy pobieraniu danych filmów:", error);
       }
     },
+    goToAddHall() {
+      this.$router.push("/hall/add");
+    },
     editHall(id) {
-      this.$router.push({ name: "EditHall", params: {hallId: id } });
+      this.$router.push({ name: "EditHall", params: { hallId: id } });
     },
     async deleteHall(id) {
       try {
