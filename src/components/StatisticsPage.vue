@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-card width="100%">
+    <v-card class="ma-10" variant="flat" width="100%">
       <v-row>
         <v-col>
           <v-card
@@ -16,7 +16,7 @@
                   {{ numberOfClientsStatusBar }}
                 </div>
               </div>
-              <v-icon size="36" color="#3c4c63">mdi-account-group</v-icon>
+              <v-icon size="36" color="primary">mdi-account-group</v-icon>
             </div>
           </v-card>
         </v-col>
@@ -34,7 +34,7 @@
                   {{ revenueStatusBar }} zł
                 </div>
               </div>
-              <v-icon size="36" color="#3c4c63">mdi-cash</v-icon>
+              <v-icon size="36" color="primary">mdi-cash</v-icon>
             </div>
           </v-card>
         </v-col>
@@ -53,7 +53,7 @@
                   {{ numberOfOrdersStatusBar }}
                 </div>
               </div>
-              <v-icon size="36" color="#3c4c63">mdi-cart</v-icon>
+              <v-icon size="36" color="primary">mdi-cart</v-icon>
             </div>
           </v-card>
         </v-col>
@@ -72,7 +72,7 @@
                   {{ cancellationsStatusBar }}
                 </div>
               </div>
-              <v-icon size="36" color="#3c4c63">mdi-cancel</v-icon>
+              <v-icon size="36" color="primary">mdi-cancel</v-icon>
             </div>
           </v-card>
         </v-col>

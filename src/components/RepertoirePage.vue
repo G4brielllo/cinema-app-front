@@ -7,7 +7,7 @@
       <v-btn
         v-for="(day, index) in daysOfWeek"
         :key="index"
-        class="mb-4 mx-1 text-center"
+        class="hover-btn mb-4 mx-1 text-center"
         :color="index === selectedDayIndex ? 'secondary' : 'primary'"
         @click="selectedDayIndex = index"
       >
@@ -24,8 +24,8 @@
         </v-col>
         <v-col cols="3" class="d-flex flex-column justify-space-between">
           <div>
-            <h1>{{ movie.title }}</h1>
-            <div class="text-grey-darken-1">
+            <h1 class="text-left">{{ movie.title }}</h1>
+            <div class="text-grey-darken-1 text-left">
               <div><strong>Kategoria:</strong> {{ movie.category }}</div>
               <div><strong>Czas:</strong> {{ movie.duration }} min</div>
               <div><strong>Obsada:</strong> {{ movie.cast }}</div>
@@ -174,4 +174,5 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+</style>

@@ -9,7 +9,7 @@
           <v-row
             v-for="movie in movies.filter((m) => m.status === 'announcement')"
             :key="movie.id"
-            class="mb-6"
+            class="border-b-md ma-6 pb-4"
           >
             <v-col cols="3">
               <v-img
@@ -33,7 +33,7 @@
                 </div>
                 <v-btn
                   v-if="movie.trailer"
-                  class="mt-5"
+                  class="hover-btn mt-5"
                   @click="openTrailer(movie)"
                 >
                   Zwiastun

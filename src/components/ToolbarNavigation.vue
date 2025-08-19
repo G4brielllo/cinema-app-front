@@ -1,52 +1,72 @@
 <template>
-  <v-toolbar>
+  <v-toolbar color="primary" dark density="comfortable">
     <v-btn v-if="isAdmin" icon @click="$emit('update:modelValue', !modelValue)">
       <v-icon>mdi-menu</v-icon>
     </v-btn>
-    <v-btn @click="goHomePage">
-      <v-toolbar-title>CineManager</v-toolbar-title>
-    </v-btn>
+    <v-toolbar-title class="ml-2 cursor-pointer" @click="goHomePage">
+      CineManager
+    </v-toolbar-title>
 
-    <v-toolbar-items class="ml-auto">
-      <div class="d-flex ga-1">
-        <v-btn text @click="goToRepertoire">Repertuar</v-btn>
-        <v-btn text @click="goToAnnouncements">Zapowiedzi</v-btn>
-        <v-btn text @click="goToPriceList">Cennik</v-btn>
-        <v-btn text @click="goToSchoolPage">Szkoła</v-btn>
-        <v-btn text @click="navigate('/contact')">Kontakt</v-btn>
-        <v-btn text @click="navigate('/about')">O nas</v-btn>
-        <v-btn v-if="isLogged" icon>
-          <v-icon>mdi-account</v-icon>
-          <v-menu activator="parent">
-            <v-list>
-              <v-list-item
-                v-for="(item, index) in userActions"
-                :key="index"
-                @click="
-                  item.route === '/logout' ? logout() : navigate(item.route)
-                "
-              >
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </v-btn>
+    <v-spacer />
+    <div class="d-flex align-center ga-1">
+      <v-btn class="hover-btn" variant="text" @click="goToRepertoire"
+        >Repertuar</v-btn
+      >
+      <v-btn class="hover-btn" variant="text" @click="goToAnnouncements"
+        >Zapowiedzi</v-btn
+      >
+      <v-btn class="hover-btn" variant="text" @click="goToPriceList"
+        >Cennik</v-btn
+      >
+      <v-btn class="hover-btn" variant="text" @click="goToSchoolPage"
+        >Szkoła</v-btn
+      >
+      <v-btn class="hover-btn" variant="text" @click="navigate('/contactPage')"
+        >Kontakt</v-btn
+      >
+      <v-btn class="hover-btn" variant="text" @click="navigate('/aboutUsPage')"
+        >O nas</v-btn
+      >
+      <v-menu v-if="isLogged" location="bottom">
+        <template #activator="{ props }">
+          <v-btn class="hover-btn" icon v-bind="props">
+            <v-icon>mdi-account</v-icon>
+          </v-btn>
+        </template>
 
-        <v-btn v-if="isLogged" icon @click="logout">
-          <v-icon>mdi-logout</v-icon>
-        </v-btn>
-        <v-btn v-if="!isLogged" icon @click="navigate('/login')">
-          <v-icon>mdi-login</v-icon>
-        </v-btn>
-      </div>
-    </v-toolbar-items>
+        <v-list>
+          <v-list-item
+            v-for="(item, index) in userActions"
+            :key="index"
+            @click="item.route === '/logout' ? logout() : navigate(item.route)"
+          >
+            <template v-slot:prepend>
+              <v-icon v-if="item.icon">{{ item.icon }}</v-icon>
+            </template>
+            <v-list-item-title>{{ item.title }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+      <!-- <v-btn class="hover-btn" icon v-if="isLogged" @click="logout">
+        <v-icon>mdi-logout</v-icon>
+      </v-btn> -->
+      <v-btn icon v-if="!isLogged" @click="navigate('/login')">
+        <v-icon>mdi-login</v-icon>
+      </v-btn>
+    </div>
   </v-toolbar>
 </template>
 
 <script>
 import axios from "axios";
 import { useUserStore } from "@/stores/user";
+import { VIcon, VBtn } from "vuetify/lib/components";
+
 export default {
+  components: {
+    VIcon,
+    VBtn,
+  },
   props: {
     modelValue: Boolean,
   },
@@ -63,8 +83,8 @@ export default {
         { title: "Zweryfikuj Rezerwację", route: "/checkReservation" },
       ],
       userActions: [
-        { title: "Moje Konto", route: "/userDashboard" },
-        { title: "Wyloguj", route: "/logout" },
+        { title: "Moje Konto", icon: "mdi-account", route: "/userDashboard" },
+        { title: "Wyloguj", icon: "mdi-logout", route: "/logout" },
       ],
       isLogged: false,
       isAdmin: false,
@@ -139,3 +159,8 @@ export default {
   },
 };
 </script>
+<style>
+.no-rounded .v-btn {
+  border-radius: 0 !important;
+}
+</style>

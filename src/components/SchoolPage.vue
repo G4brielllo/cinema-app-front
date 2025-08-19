@@ -1,34 +1,30 @@
+
 <template>
   <v-container class="d-flex align-center justify-center">
     <v-card class="pa-8 h-100" variant="tonned">
       <h1 class="text-center mb-8">CineManager dla szkół</h1>
-      <v-carousel
-        v-if="filteredMovies.length"
-        cycle
-        interval="6000"
-        height="400"
-        show-arrows-on-hover
-        hide-delimiter-background
-         class="coverflow-carousel"
-      >
-        <v-carousel-item
-          v-for="movie in filteredMovies"
-          :key="movie.id"
-          class="carousel-item"
-        >
-          <v-img :src="movie.image" rounded="xl" cover class="carousel-img">
-            <div class="overlay">
-              <h2>{{ movie.title }}</h2>
-              <p>{{ movie.category }} | {{ movie.duration }} min</p>
-              <v-btn class="hover-btn" @click="openDialog(movie)">
-                Szczegóły
-              </v-btn>
-            </div>
-          </v-img>
-        </v-carousel-item>
-      </v-carousel>
 
-      <v-row class="mt-10" justify="center" align="stretch" dense>
+      <v-slide-group
+        v-model="active"
+        show-arrows
+        center-active
+        class="coverflow-group"
+      >
+        <v-slide-group-item
+          v-for="(movie, i) in filteredMovies"
+          :key="movie.id"
+        >
+          <v-card
+            class="movie-card"
+            :class="{ active: active === i }"
+            @click="openDialog(movie); active = i"
+          >
+            <v-img :src="movie.image" height="400" cover rounded="xl" />
+          </v-card>
+        </v-slide-group-item>
+      </v-slide-group>
+
+      <v-row justify="center" align="stretch" dense>
         <v-col cols="12" sm="6" md="4">
           <v-card outlined class="pa-6 text-center">
             <v-icon size="48" color="primary">mdi-account-group</v-icon>
@@ -69,9 +65,6 @@
             </p>
             <p><strong>Opis:</strong> {{ selectedMovie?.description }}</p>
           </v-card-text>
-          <v-card-actions>
-            <v-btn text color="primary" @click="dialog = false">Zamknij</v-btn>
-          </v-card-actions>
         </v-card>
       </v-dialog>
     </v-card>
@@ -87,6 +80,7 @@ export default {
       movies: [],
       dialog: false,
       selectedMovie: null,
+      active: 0,
     };
   },
   computed: {
@@ -133,37 +127,29 @@ export default {
 </script>
 
 <style scoped>
-.carousel-img {
-  position: relative;
-  width: 100%;
-  height: 100%;
+.coverflow-group {
+  overflow: visible;
+  padding-bottom: 40px;
 }
 
-.overlay {
-  position: absolute;
-  top: 70%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: rgba(0, 0, 0, 0.6);
-  color: white;
-  padding: 20px 30px;
-  border-radius: 10px;
-  text-align: center;
-  max-width: 80%;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+.movie-card {
+  min-width: 270px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transform: scale(0.85);
+  cursor: pointer;
 }
 
-.overlay h2 {
-  margin-bottom: 8px;
-  font-size: 24px;
+.movie-card:hover {
+  transform: scale(1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  z-index: 2;
 }
 
-.overlay p {
-  margin-bottom: 12px;
-  font-size: 16px;
+::v-deep(.v-slide-group__content) {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
 }
-.v-card {
-  height: 200px;
-}
-
 </style>
+
+

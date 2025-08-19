@@ -12,16 +12,16 @@
         >
           <v-card
             @click="goToMovieDetails(announcement.id)"
-            variant="flat"
-            class="mx-2"
+            variant="elevated"
+            class="pb-2 mx-2"
             :width="cardWidth"
           >
             <v-img :src="announcement.image" height="300" cover />
             <v-card-title style="white-space: normal; word-break: break-word">
               {{ announcement.title }}
             </v-card-title>
-            <v-card-subtitle
-              >Premiera:
+            <v-card-subtitle>
+              <strong> Premiera: </strong>
               {{ formatDate(announcement.playing_from) }}</v-card-subtitle
             >
           </v-card>
@@ -121,9 +121,5 @@ export default {
 .carousel-item {
   flex: 0 0 auto;
   scroll-snap-align: start;
-}
-.v-card-title {
-  white-space: normal;
-  word-break: break-word;
 }
 </style>

@@ -39,10 +39,7 @@
             <div>
               <p><strong>Rzędy i miejsca:</strong></p>
               <ul>
-                <li
-                  v-for="(seat, idx) in reservationData.selected_seats_json"
-                  :key="idx"
-                >
+                <li v-for="(seat, idx) in parsedSeats" :key="idx">
                   Rząd: {{ seat.row }} | Miejsce: {{ seat.number }}
                 </li>
               </ul>
@@ -59,25 +56,18 @@
 </template>
 
 <script>
-import { VContainer, VCard, VOtpInput } from "vuetify/lib/components";
 import Swal from "sweetalert2";
 import axios from "axios";
+
 export default {
-  components: {
-    VContainer,
-    VCard,
-    VOtpInput,
-  },
   data() {
     return {
       reservation: {
         code: "",
       },
-      // reservation_seat: [
-      //   seat_id = null,
-      // ],
       dialog: false,
       reservationData: null,
+      parsedSeats: [],
     };
   },
   methods: {
@@ -91,22 +81,20 @@ export default {
             },
           }
         );
-        this.reservationData = response.data;
-        console.log("Reservation data:", this.reservationData);
 
-        if (
-          this.reservationData.selected_seats_json &&
-          this.reservationData.selected_seats_json.length
-        ) {
-          this.reservationData.selected_seats_json.forEach((seat, idx) => {
-            console.log(
-              `Miejsce #${idx + 1}: Rząd ${seat.row}, Numer ${seat.number}`
-            );
-          });
-        } else {
-          console.log("Brak miejsc w selected_seats_json");
+        this.reservationData = response.data;
+
+        try {
+          this.parsedSeats = JSON.parse(
+            this.reservationData.selected_seats_json
+          );
+          console.log("Parsed seats:", this.parsedSeats);
+        } catch (parseError) {
+          console.error("Błąd parsowania miejsc:", parseError);
+          this.parsedSeats = [];
         }
 
+        // Przenieś dialog na koniec, po przypisaniu danych
         this.dialog = true;
       } catch (error) {
         console.error("Reservation not found or error occurred:", error);
@@ -124,4 +112,5 @@ export default {
   },
 };
 </script>
+
 <style></style>

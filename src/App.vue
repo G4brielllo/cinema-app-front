@@ -8,7 +8,7 @@
     </v-main>
 
     <v-footer
-      class="text-center d-flex flex-column ga-2 py-4"
+      class="footer text-center d-flex flex-column ga-2 py-4"
       color="secondary"
     >
       <div class="d-flex ga-3">

@@ -2,7 +2,7 @@
   <v-container>
     <v-card class="w-100" variant="toned">
       <v-card-title>
-        <h1>Movie booking</h1>
+        <h1>Movie Booking</h1>
       </v-card-title>
 
       <v-card class="ma-12" variant="toned">
@@ -29,9 +29,7 @@
         </v-row>
       </v-card>
 
-      <!-- Układ 2/3 (ekran i siedzenia) + 1/3 (formularz) -->
-      <v-row>
-        <!-- 2/3 szerokości -->
+      <v-row class="mb-12">
         <v-col cols="12" md="8">
           <div class="text-center mb-4 font-weight-bold">Ekran</div>
           <div class="seats">
@@ -53,7 +51,6 @@
           </div>
         </v-col>
 
-        <!-- 1/3 szerokości -->
         <v-col cols="12" md="4">
           <v-card variant="toned">
             <v-card-title>
@@ -413,9 +410,11 @@ export default {
           },
           body: JSON.stringify({
             notifyUrl:
-              "https://de08-91-205-91-71.ngrok-free.app/api/payu/notify",
+              // "https://de08-91-205-91-71.ngrok-free.app/api/payu/notify",
+              "https://5e1696cd6f28.ngrok-free.app/api/payu/notify",
             continueUrl:
-              "https://de08-91-205-91-71.ngrok-free.app/paymentStatus",
+              // "https://de08-91-205-91-71.ngrok-free.app/paymentStatus",
+              "https://5e1696cd6f28.ngrok-free.app/paymentStatus",
             extOrderId: this.reservation.reservation_code,
           }),
         });

@@ -12,8 +12,12 @@
             <v-row>
               <v-col v-for="slide in slides" :key="slide.id" cols="12" md="4">
                 <v-card>
-                  <v-img :src="slide.image_url" height="200px" />
-                  <v-card-title>{{ slide.title }}</v-card-title>
+                  <v-img :src="slide.image_url" cover height="200px" />
+                  <v-card-title>
+                    <div class="text-center w-100">
+                      {{ slide.title }}
+                    </div>
+                  </v-card-title>
                   <v-card-actions>
                     <v-btn class="hover-btn" @click="openEditSlideModal(slide)">
                       <v-icon>mdi-pencil</v-icon>
@@ -41,29 +45,33 @@
           <v-container>
             <v-row>
               <v-col
-              v-for="promo in promotions"
-              :key="promo.id"
-              cols="12"
-              md="4"
+                v-for="promo in promotions"
+                :key="promo.id"
+                cols="12"
+                md="4"
               >
-              <v-card>
-                <v-img :src="promo.image" height="200px" />
-                <v-card-title>{{ promo.title }}</v-card-title>
-                <v-card-subtitle>{{ promo.description }}</v-card-subtitle>
-                <v-card-actions>
-                  <v-btn
-                  class="hover-btn"
-                  @click="openEditPromotionModal(promo)"
-                  >
-                  <v-icon>mdi-pencil</v-icon></v-btn
-                  >
-                  <v-btn class="hover-btn" @click="deletePromotion(promo.id)"
-                  ><v-icon>mdi-delete</v-icon></v-btn
-                  >
-                </v-card-actions>
-              </v-card>
-            </v-col>
-             <v-col>
+                <v-card>
+                  <v-img :src="promo.image" cover height="200px" />
+                  <v-card-title>
+                    <div class="text-center w-100">
+                      {{ promo.title }}
+                    </div>
+                  </v-card-title>
+
+                  <v-card-actions>
+                    <v-btn
+                      class="hover-btn"
+                      @click="openEditPromotionModal(promo)"
+                    >
+                      <v-icon>mdi-pencil</v-icon></v-btn
+                    >
+                    <v-btn class="hover-btn" @click="deletePromotion(promo.id)"
+                      ><v-icon>mdi-delete</v-icon></v-btn
+                    >
+                  </v-card-actions>
+                </v-card>
+              </v-col>
+              <v-col>
                 <v-card
                   @click="openAddPromotionModal"
                   class="d-flex flex-column align-center justify-center fill-height"
@@ -72,7 +80,7 @@
                   <v-card-title>Dodaj nową promocję</v-card-title>
                 </v-card>
               </v-col>
-          </v-row>
+            </v-row>
           </v-container>
         </v-window-item>
       </v-window>
@@ -174,6 +182,7 @@ export default {
           },
         });
         this.promotions = res.data;
+        console.log("Fetched promotions:", this.promotions);
       } catch (e) {
         console.error("Błąd przy pobieraniu promocji:", e);
       }

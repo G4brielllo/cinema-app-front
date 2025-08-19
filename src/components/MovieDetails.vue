@@ -19,7 +19,7 @@
           <v-card-text>
             <v-row dense>
               <v-col cols="3" class="font-weight-bold">Data premiery:</v-col>
-              <v-col cols="9">{{ movie.release_date }}</v-col>
+              <v-col cols="9">{{ movie.playing_from }}</v-col>
 
               <v-col cols="3" class="font-weight-bold">Reżyseria:</v-col>
               <v-col cols="9">{{ movie.direction }}</v-col>
@@ -71,7 +71,7 @@ export default {
           }
         );
         this.movie = response.data;
-        console.log(response.data);
+        console.log("sraka",response.data);
       } catch (error) {
         console.error("Błąd przy pobieraniu danych seansu:", error);
       }

@@ -1,15 +1,17 @@
 <template>
-  <v-card class="promotion-hero" height="500px" v-for="promotion in promotions" :key="promotion.id">
+  <v-card
+    class="promotion-hero"
+    height="500px"
+    rounded="0"
+    v-for="promotion in promotions"
+    :key="promotion.id"
+  >
     <v-container fluid class="d-flex align-center">
       <v-row no-gutters class="fill-height">
-        <v-col
-          cols="12"
-          md="6"
-          class="text-zone justify-center px-8"
-        >
+        <v-col cols="12" md="6" class="text-zone justify-center px-8">
           <div class="centered-column text-white">
             <h2 class="text-h4 font-weight-bold">{{ promotion.title }}</h2>
-            <p class="text-subtitle-1">{{ promotion.description }}</p>
+            <p class="text-subtitle-1 pre-line">{{ promotion.description }}</p>
           </div>
         </v-col>
         <v-col>
@@ -106,13 +108,16 @@ export default {
   height: 100vh;
   overflow: hidden;
 }
-.centered-column{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    height: 400px;
+.centered-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 400px;
 }
-.img-style{
-    border-radius: 5%;
+.img-style {
+  border-radius: 5%;
+}
+.pre-line {
+  white-space: pre-line;
 }
 </style>

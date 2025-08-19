@@ -32,6 +32,8 @@ import StatisticsPage from "./components/StatisticsPage.vue";
 import UnauthorizedPage from "./components/UnauthorizedPage.vue";
 import SeatingArrangement from "./components/HomePageManagement/SeatingArrangement.vue";
 import HallList from "./components/HomePageManagement/HallList.vue";
+import ContactPage from "./components/ContactPage.vue";
+import AboutUsPage from "./components/AboutUsPage.vue";
 // import HelloWorld from './components/HelloWorld.vue';
 
 import { useUserStore } from "@/stores/user";
@@ -215,6 +217,16 @@ const routes = [
     path: "/hallList",
     name: "HallList",
     component: HallList,
+  },
+  {
+    path: "/contactPage",
+    name: "ContactPage",
+    component: ContactPage,
+  },
+  {
+    path: "/aboutUsPage",
+    name: "AboutUsPage",
+    component: AboutUsPage,
   },
 ];
 

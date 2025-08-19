@@ -101,12 +101,12 @@
             label="Scenariusz"
             required
           ></v-text-field>
-          <v-text-field
+          <!-- <v-text-field
             prepend-icon="mdi-calendar-week-begin"
             v-model="movie.release_date"
             label="Data premiery(yyyy-mm-dd)"
             required
-          ></v-text-field>
+          ></v-text-field> -->
           <v-text-field
             prepend-icon="mdi-account-group-outline"
             v-model="movie.cast"
@@ -179,7 +179,6 @@ export default {
         description: "",
         direction: "",
         script: "",
-        release_date: "",
         cast: "",
         age_group: null,
         announcement: false,
@@ -270,7 +269,6 @@ export default {
             withCredentials: true,
           }
         );
-
         this.showAlert("edit-success");
         this.clearData();
       } catch (error) {
@@ -291,7 +289,6 @@ export default {
         description: "",
         direction: "",
         script: "",
-        release_date: "",
         cast: "",
         age_group: "",
         image: null,
@@ -348,6 +345,7 @@ export default {
           ...response.data,
           announcement: Boolean(response.data.announcement),
         };
+        console.log("Fetched movie data:", this.movie);
       } catch (error) {
         console.error("Błąd przy pobieraniu danych filmów:", error);
       }

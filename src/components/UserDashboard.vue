@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-card width="80%">
+    <v-card width="60%">
       <v-card-text>
         <h1>Moje konto</h1>
       </v-card-text>
@@ -86,22 +86,22 @@
                       </v-col>
                       <v-col cols="6">
                         <div class="d-flex flex-column">
-                          <v-card-title>
+                          <h1>
                             <strong>
                               {{ reservation.screening.movie.title }}
                             </strong>
-                          </v-card-title>
-                          <v-card-text>
+                          </h1>
+                          <v-label>
                             {{
                               formatDate(reservation.screening.screening_date)
                             }}
-                          </v-card-text>
-                          <v-card-text>
+                          </v-label>
+                          <v-label>
                             {{
                               formatHour(reservation.screening.screening_time)
                             }}
-                          </v-card-text>
-                          <v-card-text>
+                          </v-label>
+                          <v-label>
                             <div
                               v-for="seat in reservation.seat_data"
                               :key="seat.seat_id"
@@ -109,9 +109,9 @@
                               Rząd: {{ seat.x }}, Miejsce:
                               {{ seat.y }}
                             </div>
-                          </v-card-text>
+                          </v-label>
 
-                          <v-card-text class="d-flex flex-column align-start">
+                          <v-label class="d-flex flex-column align-start">
                             <div class="mb-2">
                               Kod rezerwacji: {{ reservation.reservation_code }}
                             </div>
@@ -127,7 +127,7 @@
                             >
                               Anuluj rezerwację
                             </v-btn>
-                          </v-card-text>
+                          </v-label>
                         </div>
                       </v-col>
                     </v-row>
@@ -385,9 +385,12 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 .v-card-actions {
   display: flex;
   justify-content: center;
+}
+.v-col{
+  margin-top: 1%;
 }
 </style>

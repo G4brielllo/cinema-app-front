@@ -10,8 +10,10 @@ export default createVuetify({
     themes: {
       light: {
         colors: {
-          primary: "#424242",
-          secondary: "#ffa600ff",
+          // primary: "#424242",
+          // primary: "#0D1321",
+          primary: "#402e32",
+          secondary: "#ffa600",
         },
       },
     },
@@ -31,6 +33,7 @@ export default createVuetify({
     },
     VBtn: {
       style: "text-transform: none",
+      fontFamily: "'Montserrat', sans-serif",
       rounded: "xl",
     },
     VCard: {
@@ -51,6 +54,9 @@ export default createVuetify({
     },
     VFileInput: {
       variant: "underlined",
+    },
+    VNavigationDrawer: {
+      color: "primary",
     },
     VToolbar: {
       style: {

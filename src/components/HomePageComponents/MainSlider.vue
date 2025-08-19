@@ -1,7 +1,7 @@
 <template>
   <v-carousel
     v-if="slides.length != 0"
-    height="600"
+    height="550"
     show-arrows="hover"
     hide-delimiters
     cycle
@@ -15,9 +15,9 @@
         </h1>
         <v-btn
           v-if="slide.trailer_url"
-          icon="mdi-play-circle"
-          color="white"
-          class="slider-play-btn"
+          icon="mdi-play"
+
+          class="hover-btn slider-play-btn"
           @click.stop="openTrailer(slide.trailer_url)"
         ></v-btn>
       </div>

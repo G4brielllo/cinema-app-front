@@ -131,7 +131,7 @@ export default {
         });
         this.movies = response.data.filter(
           (movie) =>
-            movie.status !== "archive" && movie.status !== "announcement"
+            movie.status !== "archived" && movie.status !== "announcement"
         );
       } catch (error) {
         console.error("Błąd przy pobieraniu filmów:", error);
@@ -251,7 +251,7 @@ export default {
         movie_id: null,
         screening_date: null,
         screening_time: "",
-        hall_id: 1,
+        hall_id: null,
       };
     },
     formatScreeningTime() {

@@ -2,7 +2,7 @@
   <v-navigation-drawer v-model="internalDrawer" temporary="true">
     <v-list>
       <v-list-item
-      class="text-left"
+      class="text-left hover-btn"
         v-for="(item, i) in actionsForAdmin"
         :key="i"
         @click="navigate(item)"

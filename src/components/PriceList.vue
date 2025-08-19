@@ -1,6 +1,8 @@
 <template>
   <v-card class="price-list">
-    <h2 class="title">Cennik Biletów</h2>
+    <v-card-title>
+      <h1>Cennik Biletów</h1>
+    </v-card-title>
     <div class="ticket-option">
       <h3>Film 2D</h3>
       <p class="price">22 zł</p>
@@ -12,8 +14,7 @@
   </v-card>
 </template>
 
-<script>
-</script>
+<script></script>
 
 <style scoped>
 .price-list {
@@ -23,15 +24,7 @@
   padding: 2rem;
   border-radius: 12px;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
-  font-family: 'Segoe UI', sans-serif;
-}
-
-.title {
-  text-align: center;
-  color: #333;
-  margin-bottom: 1.5rem;
-  font-size: 1.8rem;
-  font-weight: 600;
+  font-family: "Segoe UI", sans-serif;
 }
 
 .ticket-option {

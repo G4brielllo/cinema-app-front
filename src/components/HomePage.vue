@@ -1,20 +1,29 @@
 <template>
   <MainSlider />
-  <h1><strong>Teraz Gramy</strong></h1>
-  <NowPlayingMovies />
-  <h1><strong>Zapowiedzi</strong></h1>
-  <AnnouncementsForHP />
-  <h1><strong>Promocje</strong></h1>
-  <PromotionsPage />
-  
-  <!-- <v-parallax src="https://cdn.vuetifyjs.com/images/parallax/material.jpg">
-  </v-parallax> -->
+
+  <v-parallax :src="paralaxBackground" height="auto">
+    <div class="overlay-content">
+      <h1>Teraz Gramy</h1>
+      <NowPlayingMovies class="transparent-component" />
+
+      <h1><strong>Zapowiedzi</strong></h1>
+      <AnnouncementsForHP class="transparent-component" />
+    </div>
+  </v-parallax>
+
+  <div class="below-parallax">
+    <h1><strong>Promocje</strong></h1>
+    <PromotionsPage />
+  </div>
 </template>
+
 <script>
 import AnnouncementsForHP from "./HomePageComponents/AnnouncementsForHP.vue";
 import MainSlider from "./HomePageComponents/MainSlider.vue";
 import NowPlayingMovies from "./HomePageComponents/NowPlayingMovies.vue";
 import PromotionsPage from "./HomePageComponents/HPPromotionsPage.vue";
+import paralaxBackground from "@/assets/background-4.png";
+
 export default {
   components: {
     MainSlider,
@@ -22,6 +31,29 @@ export default {
     AnnouncementsForHP,
     PromotionsPage,
   },
+  data() {
+    return {
+      paralaxBackground,
+    };
+  },
 };
 </script>
-<style></style>
+
+<style scoped>
+.overlay-content {
+
+  padding: 2rem;
+  border-radius: 8px;
+  color: white;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.transparent-component {
+  background-color: transparent !important;
+}
+
+.below-parallax {
+  padding: 3rem 1rem;
+}
+</style>
