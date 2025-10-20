@@ -4,7 +4,7 @@
       <div class="icon">🔒</div>
       <h1>Brak dostępu</h1>
       <p>Nie masz uprawnień, aby wyświetlić tę stronę.</p>
-      <router-link class="back-button" to="/">⟵ Wróć na stronę główną</router-link>
+      <v-btn class="hover-btn" to="/">Wróć na stronę główną</v-btn>
     </div>
   </div>
 </template>
@@ -49,19 +49,6 @@ p {
   margin-bottom: 2rem;
 }
 
-.back-button {
-  display: inline-block;
-  padding: 0.6rem 1.2rem;
-  background-color: #3498db;
-  color: white;
-  border-radius: 8px;
-  text-decoration: none;
-  transition: background-color 0.3s ease;
-}
-
-.back-button:hover {
-  background-color: #2980b9;
-}
 
 @keyframes fadeIn {
   from {

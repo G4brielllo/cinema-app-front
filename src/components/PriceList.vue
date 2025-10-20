@@ -18,7 +18,7 @@
 
 <style scoped>
 .price-list {
-  max-width: 400px;
+  max-width: 450px;
   margin: 0 auto;
   background-color: #ffffff;
   padding: 2rem;

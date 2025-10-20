@@ -1,60 +1,60 @@
 <template>
-    <v-container class="d-flex justify-center align-center">
-      <v-card width="50%">
-        <v-card-title>
-          <h1>Login</h1>
-        </v-card-title>
-        <v-text-field
-          v-model="user.email"
-          label="E-mail"
-          placeholder="johndoe@gmail.com"
-          clearable
-          type="email"
-        >
-        </v-text-field>
-        <v-text-field
-          v-model="user.password"
-          :type="showPassword ? 'text' : 'password'"
-          label="Hasło"
-          :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
-          @click:append-inner="togglePassword"
-          clearable
-        >
-        </v-text-field>
-        <v-card-actions>
-          <v-btn
-            class="hover-btn"
-            style="min-width: 150px"
-            
-            @click="login"
-            >Zaloguj</v-btn
-          >
-        </v-card-actions>
-        <v-card-actions>
-          <v-btn
-            class="hover-btn"
-            style="min-width: 250px"
-            
-            @click="goToForgotPassword"
-          >
-            Zapomniałem hasła
-          </v-btn>
-        </v-card-actions>
-        <v-card-text class="text-center">
-          Nie masz konta?
-          <v-btn
-            class="text-blue no-uppercase"
-            style="text-transform: none"
-            variant="text"
-            
-            @click="goToRegister"
-            >Zarejestruj się</v-btn
-          >
-        </v-card-text>
-        
-      </v-card>
-    </v-container>
+  <v-container fluid class="d-flex justify-center align-center">
+    <v-row justify="center">
+      <v-col cols="12" sm="8" md="6" lg="4">
+        <v-card class="pa-6">
+          <v-card-title class="text-center">
+            <h1>Login</h1>
+          </v-card-title>
+
+          <v-card-text class="d-flex flex-column gap-4">
+            <v-text-field
+              v-model="user.email"
+              label="E-mail"
+              placeholder="johndoe@gmail.com"
+              clearable
+              type="email"
+              dense
+              outlined
+            ></v-text-field>
+
+            <v-text-field
+              v-model="user.password"
+              :type="showPassword ? 'text' : 'password'"
+              label="Hasło"
+              :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+              @click:append-inner="togglePassword"
+              clearable
+              dense
+              outlined
+            ></v-text-field>
+
+            <v-btn class="hover-btn mb-2" block @click="login">
+              Zaloguj
+            </v-btn>
+            <v-btn class="mb-2" color="secondary" outlined block @click="goToForgotPassword">
+              Zapomniałem hasła
+            </v-btn>
+
+            <div class="text-center mt-4">
+              Nie masz konta?
+              <v-btn
+                class="text-blue no-uppercase"
+                style="text-transform: none"
+                variant="text"
+                @click="goToRegister"
+              >
+                Zarejestruj się
+              </v-btn>
+            </div>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
+
+
 
 <script>
 import Swal from "sweetalert2";
@@ -63,7 +63,6 @@ import {
   VCard,
   VTextField,
   VBtn,
-  VCardActions,
   VCardText,
 } from "vuetify/lib/components";
 import axios from "axios";
@@ -73,7 +72,6 @@ export default {
     VCard,
     VTextField,
     VBtn,
-    VCardActions,
     VCardText,
   },
   data() {

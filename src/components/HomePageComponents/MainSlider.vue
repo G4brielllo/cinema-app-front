@@ -79,7 +79,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .slider-label {
   position: absolute;
   left: 16px;

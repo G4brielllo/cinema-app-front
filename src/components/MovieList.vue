@@ -1,101 +1,136 @@
 <template>
-  <v-container class="d-flex flex-column align-center">
-    <v-card class="w-100 mb-6">
-      <v-card-title class="d-flex justify-space-between align-center">
-        <h1>Lista filmów</h1>
-        <v-btn class="hover-btn" style="max-width: 70px" @click="goToAddMovie">
-          <v-icon>mdi-plus</v-icon>
-        </v-btn>
-      </v-card-title>
+  <v-container fluid class="d-flex flex-column align-center">
+    <v-row class="w-100 mb-6" justify="center">
+      <v-col cols="12">
+        <v-card>
+          <v-card-title class="d-flex justify-space-between align-center">
+            <h1 class="text-h5 text-md-h4">Lista filmów</h1>
+            <v-btn
+              class="hover-btn"
+              style="max-width: 70px"
+              @click="goToAddMovie"
+            >
+              <v-icon>mdi-plus</v-icon>
+            </v-btn>
+          </v-card-title>
 
-      <v-table>
-        <thead>
-          <tr>
-            <th>Zdjęcie</th>
-            <th>Tytuł</th>
-            <th>Kategoria</th>
-            <th>Data rozpoczęcia emisji</th>
-            <th>Data zakończenia emisji</th>
-            <th>Status</th>
-            <th>Akcja</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="movie in movies.filter((m) => m.status === 'movie')"
-            :key="movie.id"
-          >
-            <td><img :src="movie.image" alt="Film Image" width="100" /></td>
-            <td>{{ movie.title }}</td>
-            <td>{{ movie.category }}</td>
-            <td>{{ movie.playing_from }}</td>
-            <td>{{ movie.playing_until }}</td>
-            <td>{{ movie.status }}</td>
-            <td>
-              <v-btn class="ma-1 hover-btn" @click="editMovie(movie)">
-                <v-icon>mdi-pencil</v-icon>
-              </v-btn>
-              <v-btn
-                class="ma-1 hover-btn"
-                @click="confirmDeleteMovie(movie.id)"
-              >
-                <v-icon>mdi-delete</v-icon>
-              </v-btn>
-            </td>
-          </tr>
-        </tbody>
-      </v-table>
-    </v-card>
+          <div style="overflow-x: auto">
+            <v-table>
+              <thead>
+                <tr>
+                  <th style="min-width: 100px">Zdjęcie</th>
+                  <th style="min-width: 150px">Tytuł</th>
+                  <th style="min-width: 120px">Kategoria</th>
+                  <th style="min-width: 140px">Data rozpoczęcia</th>
+                  <th style="min-width: 140px">Data zakończenia</th>
+                  <th style="min-width: 100px">Status</th>
+                  <th style="min-width: 120px">Akcja</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="movie in movies.filter((m) => m.status === 'movie')"
+                  :key="movie.id"
+                >
+                  <td>
+                    <img
+                      class="my-4"
+                      :src="movie.image"
+                      alt="Film Image"
+                      style="max-width: 100px; height: auto; border-radius: 4px"
+                    />
+                  </td>
+                  <td>{{ movie.title }}</td>
+                  <td>{{ movie.category }}</td>
+                  <td>{{ formatDate(movie.playing_from) }}</td>
+                  <td>{{ formatDate(movie.playing_until) }}</td>
 
-    <v-card class="w-100 mb-6">
-      <v-card-title class="d-flex justify-space-between align-center">
-        <h1>Zapowiedzi</h1>
-        <v-btn
-          class="hover-btn"
-          style="max-width: 70px"
-          @click="goToAddAnnouncement"
-        >
-          <v-icon>mdi-plus</v-icon>
-        </v-btn>
-      </v-card-title>
-      <v-table>
-        <thead>
-          <tr>
-            <th>Zdjęcie</th>
-            <th>Tytuł</th>
-            <th>Kategoria</th>
-            <th>Data rozpoczęcia emisji</th>
-            <th>Data zakończenia emisji</th>
-            <th>Status</th>
-            <th>Akcja</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            v-for="movie in movies.filter((m) => m.status === 'announcement')"
-            :key="movie.id"
-          >
-            <td><img :src="movie.image" alt="Film Image" width="100" /></td>
-            <td>{{ movie.title }}</td>
-            <td>{{ movie.category }}</td>
-            <td>{{ movie.playing_from }}</td>
-            <td>{{ movie.playing_until }}</td>
-            <td>{{ movie.status }}</td>
-            <td>
-              <v-btn class="ma-1 hover-btn" @click="editMovie(movie)"
-                ><v-icon> mdi-pencil </v-icon></v-btn
-              >
-              <v-btn
-                class="ma-1 hover-btn"
-                @click="confirmDeleteMovie(movie.id)"
-              >
-                <v-icon>mdi-delete</v-icon>
-              </v-btn>
-            </td>
-          </tr>
-        </tbody>
-      </v-table>
-    </v-card>
+                  <td>{{ movie.status }}</td>
+                  <td>
+                    <v-btn class="ma-1 hover-btn" @click="editMovie(movie)">
+                      <v-icon>mdi-pencil</v-icon>
+                    </v-btn>
+                    <v-btn
+                      class="ma-1 hover-btn"
+                      @click="confirmDeleteMovie(movie.id)"
+                    >
+                      <v-icon>mdi-delete</v-icon>
+                    </v-btn>
+                  </td>
+                </tr>
+              </tbody>
+            </v-table>
+          </div>
+        </v-card>
+      </v-col>
+    </v-row>
+
+    <!-- Zapowiedzi -->
+    <v-row class="w-100 mb-6" justify="center">
+      <v-col cols="12">
+        <v-card>
+          <v-card-title class="d-flex justify-space-between align-center">
+            <h1 class="text-h5 text-md-h4">Zapowiedzi</h1>
+            <v-btn
+              class="hover-btn"
+              style="max-width: 70px"
+              @click="goToAddAnnouncement"
+            >
+              <v-icon>mdi-plus</v-icon>
+            </v-btn>
+          </v-card-title>
+
+          <div style="overflow-x: auto">
+            <v-table>
+              <thead>
+                <tr>
+                  <th style="min-width: 100px">Zdjęcie</th>
+                  <th style="min-width: 150px">Tytuł</th>
+                  <th style="min-width: 120px">Kategoria</th>
+                  <th style="min-width: 140px">Data rozpoczęcia</th>
+                  <th style="min-width: 140px">Data zakończenia</th>
+                  <th style="min-width: 100px">Status</th>
+                  <th style="min-width: 120px">Akcja</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="movie in movies.filter(
+                    (m) => m.status === 'announcement'
+                  )"
+                  :key="movie.id"
+                >
+                  <td>
+                    <img
+                      class="my-4"
+                      :src="movie.image"
+                      alt="Film Image"
+                      style="max-width: 100px; height: auto; border-radius: 4px"
+                    />
+                  </td>
+                  <td>{{ movie.title }}</td>
+                  <td>{{ movie.category }}</td>
+                  <td>{{ movie.playing_from }}</td>
+                  <td>{{ movie.playing_until }}</td>
+                  <td>{{ movie.status }}</td>
+                  <td>
+                    <v-btn class="ma-1 hover-btn" @click="editMovie(movie)">
+                      <v-icon>mdi-pencil</v-icon>
+                    </v-btn>
+                    <v-btn
+                      class="ma-1 hover-btn"
+                      @click="confirmDeleteMovie(movie.id)"
+                    >
+                      <v-icon>mdi-delete</v-icon>
+                    </v-btn>
+                  </td>
+                </tr>
+              </tbody>
+            </v-table>
+          </div>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
@@ -149,6 +184,11 @@ export default {
       } catch (error) {
         console.error("Błąd przy pobieraniu danych filmów:", error);
       }
+    },
+    formatDate(dateString) {
+      if (!dateString) return "";
+      const date = new Date(dateString);
+      return new Intl.DateTimeFormat("pl-PL").format(date); // polski format
     },
 
     editMovie(movie) {
@@ -236,7 +276,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 th {
   text-align: center !important;
 }

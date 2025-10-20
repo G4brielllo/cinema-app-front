@@ -1,96 +1,100 @@
 <template>
   <v-container>
-    <v-card width="60%">
+    <v-card class="w-100">
       <v-card-text>
-        <h1>Moje konto</h1>
+        <h1 class="text-center text-sm-h4 text-md-h3">Moje konto</h1>
       </v-card-text>
+
       <v-tabs v-model="tab" bg-color="secondary" align-tabs="center">
         <v-tab value="account">Moje Konto</v-tab>
         <v-tab value="tickets">Bilety</v-tab>
-        <v-tab value="three">Item Three</v-tab>
       </v-tabs>
 
       <v-card-text>
         <v-tabs-window v-model="tab">
           <v-tabs-window-item value="account">
-            <v-row>
-              <v-col>
+            <v-row class="mt-4">
+              <v-col cols="12" sm="6">
                 <v-text-field
                   v-model="user.name"
                   variant="outlined"
                   label="Imię"
-                >
-                </v-text-field>
+                  style="max-width: 350px"
+                ></v-text-field>
               </v-col>
-              <v-col>
+              <v-col cols="12" sm="6">
                 <v-text-field
                   v-model="user.surname"
                   variant="outlined"
                   label="Nazwisko"
-                >
-                </v-text-field>
+                  style="max-width: 360px"
+                ></v-text-field>
               </v-col>
             </v-row>
 
-            <v-text-field
-              v-model="user.email"
-              variant="outlined"
-              label="E-mail"
-            >
-            </v-text-field>
-            <v-text-field
-              v-model="change_form.current_password"
-              variant="outlined"
-              label="Stare Hasło"
-              type="password"
-            >
-            </v-text-field>
-            <v-text-field
-              v-model="change_form.password"
-              variant="outlined"
-              label="Nowe Hasło"
-              type="password"
-            >
-            </v-text-field>
+            <v-row>
+              <v-col cols="12">
+                <v-text-field
+                  v-model="user.email"
+                  variant="outlined"
+                  label="E-mail"
+                ></v-text-field>
+                <v-text-field
+                  v-model="change_form.current_password"
+                  variant="outlined"
+                  label="Stare Hasło"
+                  type="password"
+                ></v-text-field>
+                <v-text-field
+                  v-model="change_form.password"
+                  variant="outlined"
+                  label="Nowe Hasło"
+                  type="password"
+                ></v-text-field>
+                <v-text-field
+                  v-model="change_form.password_confirmation"
+                  variant="outlined"
+                  label="Potwierdź Hasło"
+                  type="password"
+                ></v-text-field>
+              </v-col>
+            </v-row>
 
-            <v-text-field
-              v-model="change_form.password_confirmation"
-              variant="outlined"
-              label="Potwierdź Hasło"
-              type="password"
-            >
-            </v-text-field>
             <v-card-actions>
               <v-btn class="hover-btn" @click="updateUserData()">
                 Zapisz zmiany
               </v-btn>
             </v-card-actions>
           </v-tabs-window-item>
+
           <v-tabs-window-item value="tickets">
             <v-container>
               <v-row>
                 <v-col
-                  v-for="(reservation, index) in reservations"
+                  v-for="(reservation, index) in sortedReservations"
                   :key="index"
                   cols="12"
+                  sm="12"
+                  md="6"
+                  lg="6"
                 >
-                  <v-card>
+                  <v-card variant="flat" class="mb-4">
                     <v-row>
-                      <v-col cols="6">
+                      <v-col cols="12" sm="6">
                         <v-img
                           class="mb-4 mt-4"
                           :src="reservation.screening.movie.image"
                           aspect-ratio="1"
-                          elevation-3
+                          elevation="3"
                         ></v-img>
                       </v-col>
-                      <v-col cols="6">
+                      <v-col cols="12" sm="6">
                         <div class="d-flex flex-column">
-                          <h1>
+                          <h2 class="text-start text-sm-h5">
                             <strong>
                               {{ reservation.screening.movie.title }}
                             </strong>
-                          </h1>
+                          </h2>
                           <v-label>
                             {{
                               formatDate(reservation.screening.screening_date)
@@ -101,29 +105,30 @@
                               formatHour(reservation.screening.screening_time)
                             }}
                           </v-label>
-                          <v-label>
+                          <v-label class="d-flex flex-column align-start">
                             <div
                               v-for="seat in reservation.seat_data"
                               :key="seat.seat_id"
                             >
-                              Rząd: {{ seat.x }}, Miejsce:
-                              {{ seat.y }}
+                              Rząd: {{ seat.x }}, Miejsce: {{ seat.y }}
                             </div>
                           </v-label>
 
                           <v-label class="d-flex flex-column align-start">
-                            <div class="mb-2">
+                            <div class="mb-4">
                               Kod rezerwacji: {{ reservation.reservation_code }}
                             </div>
+
                             <v-btn
-                              class="hover-btn mt-2"
+                              class="hover-btn"
+                              variant="elevated"
                               v-if="
                                 checkCancelationTime(
                                   reservation.screening.screening_date,
                                   reservation.screening.screening_time
                                 )
                               "
-                              @click="cancelReservation(reservation.id)"
+                              @click="confirmCancelReservation(reservation.id)"
                             >
                               Anuluj rezerwację
                             </v-btn>
@@ -137,12 +142,13 @@
             </v-container>
           </v-tabs-window-item>
 
-          <v-tabs-window-item value="three"> Three </v-tabs-window-item>
+          <v-tabs-window-item value="three">Three</v-tabs-window-item>
         </v-tabs-window>
       </v-card-text>
     </v-card>
   </v-container>
 </template>
+
 <script>
 import { VContainer, VCard, VTextField, VBtn } from "vuetify/lib/components";
 import axios from "axios";
@@ -197,6 +203,16 @@ export default {
   mounted() {
     this.fetchUserData();
   },
+  computed: {
+    sortedReservations() {
+      return [...this.reservations].sort(
+        (a, b) =>
+          new Date(b.reservation_time.replace(" ", "T")) -
+          new Date(a.reservation_time.replace(" ", "T"))
+      );
+    },
+  },
+
   methods: {
     async fetchUserData() {
       try {
@@ -268,6 +284,35 @@ export default {
       const [hours, minutes] = time.split(":");
       return `${hours}:${minutes}`;
     },
+    async confirmCancelReservation(reservationId) {
+      const result = await Swal.fire({
+        title: "Czy na pewno chcesz anulować rezerwację?",
+        text: "Tej operacji nie będzie można cofnąć.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#ffa600",
+        cancelButtonColor: "#402e32",
+        confirmButtonText: "Tak, anuluj",
+        cancelButtonText: "Nie",
+      });
+
+      if (result.isConfirmed) {
+        try {
+          await this.cancelReservation(reservationId);
+          Swal.fire(
+            "Anulowano!",
+            "Twoja rezerwacja została pomyślnie anulowana.",
+            "success"
+          );
+        } catch (error) {
+          Swal.fire(
+            "Błąd",
+            "Wystąpił problem podczas anulowania rezerwacji.",
+            "error"
+          );
+        }
+      }
+    },
     checkCancelationTime(screeningDate, screeningTime) {
       const screeningDateTime = new Date(`${screeningDate}T${screeningTime}`);
       const currentTime = new Date();
@@ -285,7 +330,7 @@ export default {
           console.error("Reservation not found:", reservationId);
           return;
         }
-        const response = await axios.delete(
+        await axios.delete(
           `http://localhost:8000/api/reservations/${reservationId}`,
           {
             headers: {
@@ -294,10 +339,11 @@ export default {
             },
           }
         );
-        console.log("Reservation cancelled:", response.data);
         this.checkMyReservations();
       } catch (error) {
         console.error("Error cancelling reservation:", error);
+        // Rzuć błąd dalej, aby funkcja wywołująca mogła go obsłużyć
+        throw error;
       }
     },
     async updateUserData() {
@@ -350,7 +396,6 @@ export default {
         console.error("Error updating user data:", error);
       }
     },
-
     showAlert(status) {
       if (status === "success") {
         Swal.fire({
@@ -390,7 +435,7 @@ export default {
   display: flex;
   justify-content: center;
 }
-.v-col{
+.v-col {
   margin-top: 1%;
 }
 </style>

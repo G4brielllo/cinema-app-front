@@ -1,8 +1,9 @@
-
 <template>
   <v-container class="d-flex align-center justify-center">
-    <v-card class="pa-8 h-100" variant="tonned">
-      <h1 class="text-center mb-8">CineManager dla szkół</h1>
+    <v-card class="pa-8 w-100" variant="tonned">
+      <v-card-title>
+        <h1 class="text-left mb-8">CineManager dla szkół</h1>
+      </v-card-title>
 
       <v-slide-group
         v-model="active"
@@ -15,18 +16,25 @@
           :key="movie.id"
         >
           <v-card
+            rounded="xl"
             class="movie-card"
             :class="{ active: active === i }"
-            @click="openDialog(movie); active = i"
+            @click="
+              goToMovieDetails(movie.id);
+              active = i;
+            "
           >
-            <v-img :src="movie.image" height="400" cover rounded="xl" />
+            <v-img :src="movie.image" height="400" cover />
           </v-card>
         </v-slide-group-item>
       </v-slide-group>
 
       <v-row justify="center" align="stretch" dense>
         <v-col cols="12" sm="6" md="4">
-          <v-card outlined class="pa-6 text-center">
+          <v-card
+            outlined
+            class="pa-6 text-center d-flex flex-column align-center h-100"
+          >
             <v-icon size="48" color="primary">mdi-account-group</v-icon>
             <h3 class="mt-3">Opiekunowie wchodzą za darmo</h3>
             <p>Każdy opiekun ma darmowe wejście na seans szkolny.</p>
@@ -34,7 +42,10 @@
         </v-col>
 
         <v-col cols="12" sm="6" md="4">
-          <v-card outlined class="pa-6 text-center">
+          <v-card
+            outlined
+            class="pa-6 text-center d-flex flex-column align-center h-100"
+          >
             <v-icon size="48" color="primary">mdi-calendar-check</v-icon>
             <h3 class="mt-3">Rezerwacje</h3>
             <p>Rezerwuj seanse telefonicznie lub mailowo.</p>
@@ -42,7 +53,10 @@
         </v-col>
 
         <v-col cols="12" sm="6" md="4">
-          <v-card outlined class="pa-6 text-center">
+          <v-card
+            outlined
+            class="pa-6 text-center d-flex flex-column align-center h-100"
+          >
             <v-icon size="48" color="primary">mdi-phone</v-icon>
             <h3 class="mt-3">Kontakt</h3>
             <p>
@@ -53,20 +67,6 @@
           </v-card>
         </v-col>
       </v-row>
-
-      <v-dialog v-model="dialog" max-width="500px">
-        <v-card>
-          <v-img :src="selectedMovie?.image" height="220" cover />
-          <v-card-title>{{ selectedMovie?.title }}</v-card-title>
-          <v-card-text>
-            <p><strong>Kategoria:</strong> {{ selectedMovie?.category }}</p>
-            <p>
-              <strong>Czas trwania:</strong> {{ selectedMovie?.duration }} min
-            </p>
-            <p><strong>Opis:</strong> {{ selectedMovie?.description }}</p>
-          </v-card-text>
-        </v-card>
-      </v-dialog>
     </v-card>
   </v-container>
 </template>
@@ -115,9 +115,12 @@ export default {
         console.error("Błąd pobierania filmów:", error);
       }
     },
-    openDialog(movie) {
-      this.selectedMovie = movie;
-      this.dialog = true;
+
+    goToMovieDetails(movieId) {
+      this.$router.push({
+        path: "/movieDetails",
+        query: { movieId },
+      });
     },
   },
   created() {
@@ -151,5 +154,3 @@ export default {
   gap: 16px;
 }
 </style>
-
-

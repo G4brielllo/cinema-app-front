@@ -1,7 +1,10 @@
 <template>
   <v-container>
-    <v-card class="pa-4 w-100">
-      <v-card-title class="mb-4"> <h1>Układ Sali Kinowej</h1></v-card-title>
+    <v-card class="pa-4 w-100" >
+      <v-card-title class="mb-4">
+        <h1>Układ Sali Kinowej</h1>
+      </v-card-title>
+
       <v-row>
         <v-text-field
           v-model="hallName"
@@ -11,6 +14,7 @@
           class="mb-4"
         />
       </v-row>
+
       <v-row class="mb-6">
         <v-col cols="6">
           <v-text-field
@@ -20,7 +24,7 @@
             min="1"
             outlined
             dense
-          ></v-text-field>
+          />
         </v-col>
         <v-col cols="6">
           <v-text-field
@@ -30,11 +34,14 @@
             min="1"
             outlined
             dense
-          ></v-text-field>
+          />
         </v-col>
       </v-row>
 
-      <div class="screen mb-6 text-center">EKRAN</div>
+      <!-- Ekran -->
+      <div class="screen-container mb-6">
+        <div class="screen"></div>
+      </div>
 
       <div class="seats-container">
         <div class="seats-grid" :style="gridStyle">
@@ -44,9 +51,9 @@
             :class="['seat', seat ? 'seat--occupied' : 'seat--empty']"
             @click="toggleSeat(index)"
           >
-            <span v-if="seat" class="seat-label">
-              {{ seat.x }}-{{ seat.y }}
-            </span>
+            <span v-if="seat" class="seat-label"
+              >{{ seat.x }}-{{ seat.y }}</span
+            >
           </div>
         </div>
       </div>
@@ -232,8 +239,7 @@ export default {
             }
           );
           hallId = hallRes.data.id;
-                  this.showAlert("add-success");
-
+          this.showAlert("add-success");
         }
 
         const seatsPayload = this.seats
@@ -405,5 +411,23 @@ export default {
   .seats-grid {
     grid-template-columns: repeat(auto-fill, 30px) !important;
   }
+}
+.screen-container {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto 30px auto;
+  height: 30px;
+  overflow: hidden;
+}
+
+.screen {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 15px;
+  background: linear-gradient(to top, #ccc 0%, #f5f5f5 100%);
+  border-radius: 50% / 100% 100% 0 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
 }
 </style>

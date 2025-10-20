@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-card width="80%" variant="flat">
+    <v-card class="ma-10" width="80%" variant="flat">
       <v-row>
         <v-col cols="12" sm="6" md="4" lg="3">
           <v-img :src="movie.image"></v-img>
@@ -19,7 +19,7 @@
           <v-card-text>
             <v-row dense>
               <v-col cols="3" class="font-weight-bold">Data premiery:</v-col>
-              <v-col cols="9">{{ movie.playing_from }}</v-col>
+              <v-col cols="9">{{ formatDate(movie.playing_from) }}</v-col>
 
               <v-col cols="3" class="font-weight-bold">Reżyseria:</v-col>
               <v-col cols="9">{{ movie.direction }}</v-col>
@@ -76,10 +76,14 @@ export default {
         console.error("Błąd przy pobieraniu danych seansu:", error);
       }
     },
+     formatDate(date) {
+      const options = { year: "numeric", month: "long", day: "numeric" };
+      return new Date(date).toLocaleDateString("pl-PL", options);
+    },
   },
 };
 </script>
-<style>
+<style scoped>
 .v-card-title,
 .v-card-subtitle,
 .v-card-text {

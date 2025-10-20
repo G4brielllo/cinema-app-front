@@ -1,141 +1,169 @@
 <template>
-  <v-container class="d-flex justify-center align-center">
-    <v-card width="50%">
-      <v-card-title>
-        <h1>{{ pageOperationType }}</h1>
-      </v-card-title>
-      <v-card-text>
-        <v-form ref="form">
-          <v-text-field
-            v-model="movie.title"
-            label="Tytuł"
-            prepend-icon="mdi-format-title"
-            required
-          ></v-text-field>
-          <v-select
-            v-model="movie.category"
-            :items="[
-              'Akcja',
-              'Komedia',
-              'Dramat',
-              'Animacja',
-              'Fantasy',
-              'Science Fiction (Sci-Fi)',
-              'Horror',
-              'Romans',
-              'Thriller',
-              'Przygodowy',
-            ]"
-            prepend-icon="mdi-shape-outline"
-            label="Kategoria"
-            :menu-props="{ scrim: true, scrollStrategy: 'close' }"
-            required
-          ></v-select>
-          <v-select
-            v-model="movie.age_group"
-            :items="['Dzieci', 'Młodzież', 'Dorośli']"
-            :menu-props="{ scrim: true, scrollStrategy: 'close' }"
-            label="Grupa wiekowa"
-            prepend-icon="mdi-account-supervisor"
-            required
-          ></v-select>
-          <v-date-input
-            label="Data Rozpoczęcia Emisji"
-            prepend-icon="mdi-calendar-start"
-            first-day-of-week="1"
-            v-model="movie.playing_from"
-            required
-          ></v-date-input>
-          <v-date-input
-            label="Data Zakończenia Emisji"
-            prepend-icon="mdi-calendar-end"
-            first-day-of-week="1"
-            v-model="movie.playing_until"
-            required
-          ></v-date-input>
-          <v-text-field
-            prepend-icon="mdi-clock-time-five-outline"
-            v-model="movie.duration"
-            label="Czas trwania (w minutach)"
-            required
-          ></v-text-field>
-          <v-file-input
-            v-model="file"
-            accept="image/*"
-            @change="createBase64Image"
-            label="Zdjęcie"
-            required
-          ></v-file-input>
-          <div v-if="movie.image">
-            <img
-              :src="movie.image"
-              alt="Zdjęcie filmu"
-              style="max-width: 100px; max-height: 100px"
-            />
-          </div>
-          <v-text-field
-            prepend-icon="mdi-youtube"
-            v-model="movie.trailer"
-            label="Trailer (Link)"
-            required
-          >
-          </v-text-field>
-          <v-textarea
-            prepend-icon="mdi-text-long"
-            v-model="movie.description"
-            label="Opis"
-            variant="underlined"
-            required
-            auto-grow
-            rows="2"
-          ></v-textarea>
-          <v-text-field
-            prepend-icon="mdi-account-tie"
-            v-model="movie.direction"
-            label="Reżyseria"
-            required
-          ></v-text-field>
-          <v-text-field
-            prepend-icon="mdi-script-outline"
-            v-model="movie.script"
-            label="Scenariusz"
-            required
-          ></v-text-field>
-          <!-- <v-text-field
-            prepend-icon="mdi-calendar-week-begin"
-            v-model="movie.release_date"
-            label="Data premiery(yyyy-mm-dd)"
-            required
-          ></v-text-field> -->
-          <v-text-field
-            prepend-icon="mdi-account-group-outline"
-            v-model="movie.cast"
-            label="Obsada"
-            required
-          ></v-text-field>
-          <div class="d-flex justify-space-between align-center">
-            <h3 class="m-0">Zapowiedź</h3>
-            <v-switch
-              v-model="movie.status"
-              color="secondary"
-              :true-value="'announcement'"
-              :false-value="'movie'"
-              inset
-            />
-          </div>
-          <v-card-actions>
-            <v-btn
-              class="hover-btn mb-4"
-              @click="receivedMovieID ? editMovie() : addMovie()"
-            >
-              {{ pageOperationType }}
-            </v-btn>
-          </v-card-actions>
-        </v-form>
-      </v-card-text>
-    </v-card>
+  <v-container fluid class="d-flex justify-center align-center">
+    <v-row class="w-100" justify="center">
+      <v-col
+        cols="12"
+        sm="10"
+        md="8"
+        lg="6"
+        xl="5"
+      >
+        <v-card class="pa-6">
+          <v-card-title class="text-center">
+            <h1 class="mb-4 text-h4 text-md-h3 text-lg-h2">{{ pageOperationType }}</h1>
+          </v-card-title>
+
+          <v-form ref="form">
+            <v-row>
+              <v-col cols="12" sm="6">
+                <v-text-field
+                  v-model="movie.title"
+                  label="Tytuł"
+                  prepend-icon="mdi-format-title"
+                  required
+                />
+              </v-col>
+
+              <v-col cols="12" sm="6">
+                <v-select
+                  v-model="movie.category"
+                  :items="[
+                    'Akcja','Komedia','Dramat','Animacja','Fantasy',
+                    'Science Fiction (Sci-Fi)','Horror','Romans',
+                    'Thriller','Przygodowy'
+                  ]"
+                  label="Kategoria"
+                  prepend-icon="mdi-shape-outline"
+                  required
+                />
+              </v-col>
+
+              <v-col cols="12" sm="6">
+                <v-select
+                  v-model="movie.age_group"
+                  :items="['Dzieci', 'Młodzież', 'Dorośli']"
+                  label="Grupa wiekowa"
+                  prepend-icon="mdi-account-supervisor"
+                  required
+                />
+              </v-col>
+
+              <v-col cols="12" sm="6">
+                <v-date-input
+                  label="Data rozpoczęcia emisji"
+                  prepend-icon="mdi-calendar-start"
+                  v-model="movie.playing_from"
+                  required
+                />
+              </v-col>
+
+              <v-col cols="12" sm="6">
+                <v-date-input
+                  label="Data zakończenia emisji"
+                  prepend-icon="mdi-calendar-end"
+                  v-model="movie.playing_until"
+                  required
+                />
+              </v-col>
+
+              <v-col cols="12" sm="6">
+                <v-text-field
+                  prepend-icon="mdi-clock-time-five-outline"
+                  v-model="movie.duration"
+                  label="Czas trwania (minuty)"
+                  required
+                />
+              </v-col>
+
+              <v-col cols="12">
+                <v-file-input
+                  v-model="file"
+                  accept="image/*"
+                  @change="createBase64Image"
+                  label="Zdjęcie"
+                  required
+                />
+                <div v-if="movie.image" class="mt-2 d-flex justify-center">
+                  <img
+                    :src="movie.image"
+                    alt="Zdjęcie filmu"
+                    style="max-width: 120px; border-radius: 8px;"
+                  />
+                </div>
+              </v-col>
+
+              <v-col cols="12">
+                <v-text-field
+                  prepend-icon="mdi-youtube"
+                  v-model="movie.trailer"
+                  label="Trailer (Link)"
+                />
+              </v-col>
+
+              <v-col cols="12">
+                <v-textarea
+                  prepend-inner-icon="mdi-text-long"
+                  v-model="movie.description"
+                  label="Opis"
+                  variant="underlined"
+                  auto-grow
+                />
+              </v-col>
+
+              <v-col cols="12" sm="6">
+                <v-text-field
+                  prepend-icon="mdi-account-tie"
+                  v-model="movie.direction"
+                  label="Reżyseria"
+                />
+              </v-col>
+
+              <v-col cols="12" sm="6">
+                <v-text-field
+                  prepend-icon="mdi-script-outline"
+                  v-model="movie.script"
+                  label="Scenariusz"
+                />
+              </v-col>
+
+              <v-col cols="12">
+                <v-text-field
+                  prepend-icon="mdi-account-group-outline"
+                  v-model="movie.cast"
+                  label="Obsada"
+                />
+              </v-col>
+
+              <v-col cols="12">
+                <div class="d-flex justify-space-between align-center">
+                  <h3 class="m-0">Zapowiedź</h3>
+                  <v-switch
+                    v-model="movie.status"
+                    color="secondary"
+                    :true-value="'announcement'"
+                    :false-value="'movie'"
+                    inset
+                  />
+                </div>
+              </v-col>
+
+              <v-col cols="12" class="text-center">
+                <v-btn
+                  class="hover-btn mt-4"
+                  color="primary"
+                  @click="receivedMovieID ? editMovie() : addMovie()"
+                >
+                  {{ pageOperationType }}
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-form>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
+
 
 <script>
 import { VDateInput } from "vuetify/labs/VDateInput";
@@ -146,7 +174,6 @@ import {
   VCard,
   VTextField,
   VBtn,
-  VCardText,
   VTextarea,
   VFileInput,
   VSelect,
@@ -162,7 +189,7 @@ export default {
     VTextField,
     VTextarea,
     VBtn,
-    VCardText,
+
     VDateInput,
     VSelect,
     VSwitch,

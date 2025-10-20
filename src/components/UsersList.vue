@@ -1,40 +1,50 @@
 <template>
-    <v-container class="d-flex justify-center align-center">
-      <v-card>
-        <v-card-title>
-          <h1>Lista Użytkowników</h1>
-        </v-card-title>
+  <v-container fluid class="d-flex flex-column align-center">
+    <v-row class="w-100" justify="center">
+      <v-col cols="12" sm="12" md="10" lg="8">
+        <v-card>
+          <v-card-title class="d-flex justify-center">
+            <h1 class="text-h5 text-md-h4">Lista Użytkowników</h1>
+          </v-card-title>
 
-        <v-table>
-          <thead>
-            <tr>
-              <th>Imię</th>
-              <th>Nazwisko</th>
-              <th>Email</th>
-              <th>Rola</th>
-              <th>Akcja</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(user, index) in users" :key="index">
-              <td>{{ user.name }}</td>
-              <td>{{ user.surname }}</td>
-              <td>{{ user.email }}</td>
-              <td>{{ user.role }}</td>
-              <td>
-                <v-btn class="hover-btn" @click="confirmDeleteUser(user.id)">
-                  <v-icon>mdi-delete</v-icon>
-                </v-btn>
-              </td>
-            </tr>
-          </tbody>
-        </v-table>
-      </v-card>
-    </v-container>
+          <div style="overflow-x: auto">
+            <v-table>
+              <thead>
+                <tr>
+                  <th style="min-width: 120px" class="text-center">Imię</th>
+                  <th style="min-width: 120px" class="text-center">Nazwisko</th>
+                  <th style="min-width: 200px" class="text-center">Email</th>
+                  <th style="min-width: 100px" class="text-center">Rola</th>
+                  <th style="min-width: 120px" class="text-center">Akcja</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(user, index) in users" :key="index">
+                  <td class="text-center">{{ user.name }}</td>
+                  <td class="text-center">{{ user.surname }}</td>
+                  <td class="text-center">{{ user.email }}</td>
+                  <td class="text-center">{{ user.role }}</td>
+                  <td class="text-center">
+                    <v-btn
+                      small
+                      class="hover-btn px-3"
+                      @click="confirmDeleteUser(user.id)"
+                    >
+                      <v-icon left>mdi-delete</v-icon>
+                    </v-btn>
+                  </td>
+                </tr>
+              </tbody>
+            </v-table>
+          </div>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
-import {VCard, VBtn, VTable } from "vuetify/lib/components";
+import { VCard, VBtn, VTable } from "vuetify/lib/components";
 import axios from "axios";
 import Swal from "sweetalert2";
 
@@ -132,4 +142,13 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+th {
+  text-align: center !important;
+  vertical-align: middle !important;
+}
+td {
+  text-align: center;
+  vertical-align: middle;
+}
+</style>

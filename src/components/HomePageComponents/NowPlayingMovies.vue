@@ -77,7 +77,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .movie-row-wrapper {
   overflow-x: auto;
   padding: 20px 0;

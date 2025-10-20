@@ -1,28 +1,40 @@
 <template>
   <v-container>
     <v-card class="w-100" variant="toned">
-      <v-card-title>
-        <h1>Movie Booking</h1>
-      </v-card-title>
-
-      <v-card class="ma-12" variant="toned">
-        <v-row>
-          <v-col cols="2">
-            <v-img :src="movie.image" aspect-ratio="2/3" elevation-3></v-img>
+      <v-card class="ma-6 pa-6" variant="toned">
+        <v-row class="d-flex align-center flex-wrap">
+          <v-col
+            xs="4"
+            sm="3"
+            md="2"
+            class="d-flex justify-center justify-sm-start"
+          >
+            <v-img
+              :src="movie.image"
+              class="rounded-lg"
+              height="160"
+              width="110"
+              contain
+            ></v-img>
           </v-col>
-          <v-col cols="3">
-            <h3>{{ movie.title }}</h3>
-            <div class="text-grey-darken-1">
+          <v-col
+            xs="8"
+            sm="9"
+            md="6"
+            class="d-flex flex-column text-center text-sm-start"
+          >
+            <h2 class="text-sm-h5 text-md-h4">{{ movie.title }}</h2>
+            <div class="text-grey-darken-1 mb-1">
               <strong>Format:</strong> {{ screening.format }}
             </div>
-            <div class="text-grey-darken-1">
+            <div class="text-grey-darken-1 mb-1">
               <strong>Audio:</strong> {{ screening.audio_type }}
             </div>
-            <div class="text-grey-darken-1">
+            <div class="text-grey-darken-1 mb-1">
               <strong>Czas rozpoczęcia:</strong>
               {{ formatTime(screening.screening_time) }}
             </div>
-            <div class="mb-4 font-weight-bold text-red">
+            <div class="mb-1 font-weight-bold text-red">
               Czas do finalizacji zamówienia: {{ formatCountdown }}
             </div>
           </v-col>
@@ -30,8 +42,11 @@
       </v-card>
 
       <v-row class="mb-12">
-        <v-col cols="12" md="8">
-          <div class="text-center mb-4 font-weight-bold">Ekran</div>
+        <v-col cols="12" sm="12" md="6" lg="6" xl="6" class="text-center">
+          <div class="screen-container">
+            <div class="screen"></div>
+          </div>
+
           <div class="seats">
             <div v-for="row in parseInt(hall.rows)" :key="row" class="seat-row">
               <div class="row-number">{{ row }}</div>
@@ -51,34 +66,39 @@
           </div>
         </v-col>
 
-        <v-col cols="12" md="4">
+        <v-col
+          class="text-center justify-sm-center"
+          cols="12"
+          xs="12"
+          sm="12"
+          md="4"
+        >
           <v-card variant="toned">
-            <v-card-title>
-              <h2>Wybierz miejsca</h2>
-            </v-card-title>
+            <h2>Wybierz miejsca</h2>
             <v-card-text>
               <v-form ref="form">
-                <v-label>
+                <div class="text-center">
                   Liczba wybranych biletów: {{ selectedSeats.length }}
-                </v-label>
+                </div>
 
                 <div v-if="selectedSeats.length" class="my-4">
                   <div
                     v-for="(seat, index) in selectedSeats"
                     :key="index"
-                    class="text-caption"
+                    class="text-caption text-center"
                   >
                     Rząd {{ seat.row }}, Miejsce {{ seat.number }}
                   </div>
                 </div>
-
-                <v-btn
-                  class="hover-btn mt-4"
-                  :disabled="screening.status === 'archived'"
-                  @click="bookTickets()"
-                >
-                  Potwierdzam rezerwację
-                </v-btn>
+                <div class="text-center">
+                  <v-btn
+                    class="hover-btn mt-4"
+                    :disabled="screening.status === 'archived'"
+                    @click="bookTickets()"
+                  >
+                    Potwierdzam rezerwację
+                  </v-btn>
+                </div>
               </v-form>
             </v-card-text>
           </v-card>
@@ -123,7 +143,6 @@ import {
   VCol,
   VImg,
   VForm,
-  VLabel,
   VSpacer,
   VBtn,
   VDialog,
@@ -140,7 +159,7 @@ export default {
     VCol,
     VImg,
     VForm,
-    VLabel,
+
     VSpacer,
     VBtn,
     VDialog,
@@ -409,12 +428,8 @@ export default {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            notifyUrl:
-              // "https://de08-91-205-91-71.ngrok-free.app/api/payu/notify",
-              "https://5e1696cd6f28.ngrok-free.app/api/payu/notify",
-            continueUrl:
-              // "https://de08-91-205-91-71.ngrok-free.app/paymentStatus",
-              "https://5e1696cd6f28.ngrok-free.app/paymentStatus",
+            notifyUrl: "https://86321378ec25.ngrok-free.app/api/payu/notify",
+            continueUrl: "https://86321378ec25.ngrok-free.app/paymentStatus",
             extOrderId: this.reservation.reservation_code,
           }),
         });
@@ -529,34 +544,65 @@ export default {
 };
 </script>
 
-<style>
-.seat-row {
-  display: flex;
-  gap: 8px;
-  align-items: center;
+<style scoped>
+.screen-container {
+  position: relative;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto 30px auto;
+  height: 30px;
+  overflow: hidden;
 }
-.row-number {
-  width: 60px;
-  text-align: right;
-  font-weight: bold;
+
+.screen {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 15px;
+  background: linear-gradient(to top, #ccc 0%, #f5f5f5 100%);
+  border-radius: 50% / 100% 100% 0 0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
 }
+
 .seats {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  width: 100%;
+  overflow-x: auto;
+  padding-bottom: 10px;
 }
+
+.seat-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+  gap: 4px;
+  width: 100%;
+  max-width: 100%;
+}
+
+.row-number {
+  width: 28px;
+  text-align: right;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
 .seat {
-  width: 27px;
-  height: 24px;
+  aspect-ratio: 1 / 1;
   border-radius: 4px;
   cursor: pointer;
   text-align: center;
-  line-height: 24px;
-  background-color: white;
   border: 2px solid orange;
+  background-color: white;
   transition: background-color 0.2s;
+  flex: 1 1 auto;
+  max-width: 32px;
+  min-width: 16px;
 }
+
 .selected {
   background-color: orange;
 }
@@ -566,5 +612,17 @@ export default {
 }
 .hidden {
   visibility: hidden;
+}
+
+@media (max-width: 768px) {
+  .seat {
+    max-width: 24px;
+  }
+}
+@media (max-width: 480px) {
+  .seat {
+    max-width: 18px;
+    border-width: 1px;
+  }
 }
 </style>

@@ -1,71 +1,96 @@
 <template>
-    <v-container class="d-flex justify-center align-center">
-      <v-card width="50%">
-        <v-card-title>
-          <h1>
-            <v-model>{{ pageOperationType }}</v-model>
-          </h1>
-        </v-card-title>
-        <v-card-text>
-          <v-form ref="form">
-            <v-select
-              movie-open-check-outline
-              prepend-icon="mdi-movie-open-check-outline"
-              v-model="screening.movie_id"
-              :items="movies"
-              item-title="title"
-              item-value="id"
-              label="Wybierz film"
-              required
-            ></v-select>
+  <v-container fluid class="d-flex justify-center align-center">
+    <v-row class="w-100" justify="center">
+      <v-col cols="12" sm="10" md="8" lg="6" xl="5">
+        <v-card class="pa-6">
+          <v-card-title class="text-center">
+            <h1 class="mb-4 text-h4 text-md-h3 text-lg-h2">
+              {{ pageOperationType }}
+            </h1>
+          </v-card-title>
 
-            <v-date-input
-              label="Data"
-              first-day-of-week="1"
-              v-model="screening.screening_date"
-              required
-            ></v-date-input>
-            <v-select
-              prepend-icon="mdi-sofa"
-              v-model="screening.hall_id"
-              :items="halls"
-              item-title="name"
-              item-value="id"
-              label="Sala kinowa"
-              required
-            ></v-select>
-            <v-text-field
-              prepend-icon="mdi-clock-time-five-outline"
-              v-model="screening.screening_time"
-              label="Godzina (HH:MM)"
-              required
-              @blur="formatScreeningTime"
-            />
-            <v-select
-              prepend-icon="mdi-video-3d"
-              v-model="screening.format"
-              :items="['2D', '3D']"
-              label="Format"
-              required
-            ></v-select>
-            <v-select
-              prepend-icon="mdi-closed-caption-outline"
-              v-model="screening.audio_type"
-              :items="['Dubbing', 'Napisy']"
-              label="Audio"
-              required
-            ></v-select>
-            <v-card-actions>
-              <v-btn
-                class="hover-btn mb-4"
-                @click="receivedScreeningID ? editScreening() : addScreening()"
-                ><v-model>{{ pageOperationType }}</v-model></v-btn
-              >
-            </v-card-actions>
+          <v-form ref="form">
+            <v-row>
+              <v-col cols="12" sm="6">
+                <v-select
+                  prepend-icon="mdi-movie-open-check-outline"
+                  v-model="screening.movie_id"
+                  :items="movies"
+                  item-title="title"
+                  item-value="id"
+                  label="Wybierz film"
+                  required
+                />
+              </v-col>
+
+              <v-col cols="12" sm="6">
+                <v-date-input
+                  label="Data"
+                  first-day-of-week="1"
+                  v-model="screening.screening_date"
+                  required
+                />
+              </v-col>
+
+              <v-col cols="12" sm="6">
+                <v-select
+                  prepend-icon="mdi-sofa"
+                  v-model="screening.hall_id"
+                  :items="halls"
+                  item-title="name"
+                  item-value="id"
+                  label="Sala kinowa"
+                  required
+                />
+              </v-col>
+
+              <v-col cols="12" sm="6">
+                <v-text-field
+                  prepend-icon="mdi-clock-time-five-outline"
+                  v-model="screening.screening_time"
+                  label="Godzina (HH:MM)"
+                  required
+                  @blur="formatScreeningTime"
+                />
+              </v-col>
+
+              <v-col cols="12" sm="6">
+                <v-select
+                  prepend-icon="mdi-video-3d"
+                  v-model="screening.format"
+                  :items="['2D', '3D']"
+                  label="Format"
+                  required
+                />
+              </v-col>
+
+              <v-col cols="12" sm="6">
+                <v-select
+                  prepend-icon="mdi-closed-caption-outline"
+                  v-model="screening.audio_type"
+                  :items="['Dubbing', 'Napisy']"
+                  label="Audio"
+                  required
+                />
+              </v-col>
+
+              <v-col cols="12" class="text-center">
+                <v-btn
+                  class="hover-btn mt-4"
+                  color="primary"
+                  @click="
+                    receivedScreeningID ? editScreening() : addScreening()
+                  "
+                >
+                  {{ pageOperationType }}
+                </v-btn>
+              </v-col>
+            </v-row>
           </v-form>
-        </v-card-text>
-      </v-card>
-    </v-container>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -76,7 +101,6 @@ import {
   VContainer,
   VCard,
   VCardTitle,
-  VCardText,
   VForm,
   VSelect,
   VTextField,
@@ -109,7 +133,7 @@ export default {
     VContainer,
     VCard,
     VCardTitle,
-    VCardText,
+
     VForm,
     VSelect,
     VTextField,
@@ -182,12 +206,13 @@ export default {
 
     async editScreening() {
       try {
+        const dateObj = this.screening.screening_date;
         const payload = {
           ...this.screening,
-          screening_date: this.screening.screening_date
-            ? this.screening.screening_date
-                .toLocaleDateString("pl-PL")
-                .split("T")[0]
+          screening_date: dateObj
+            ? `${dateObj.getFullYear()}-${String(
+                dateObj.getMonth() + 1
+              ).padStart(2, "0")}-${String(dateObj.getDate()).padStart(2, "0")}`
             : null,
         };
         const response = await axios.put(

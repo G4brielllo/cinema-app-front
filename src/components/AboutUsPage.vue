@@ -1,11 +1,11 @@
 <template>
   <v-container class="pa-6" style="max-width: 800px; margin: auto;">
-    <v-card elevation="6" class="pa-6 rounded-card">
+    <v-card class="pa-6" variant="tonned">
       <v-card-title class="headline title" >
         O nas
       </v-card-title>
 
-      <v-card-text class="description mb-8">
+      <v-card-text class=" description mb-8">
         CineManager to kompleksowy system zarządzania kinem, który pomaga
         właścicielom i operatorom kin w efektywnym prowadzeniu działalności.
         Nasza misja to dostarczanie narzędzi umożliwiających szybkie zarządzanie

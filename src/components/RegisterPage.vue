@@ -1,42 +1,59 @@
 <template>
-    <v-container class="d-flex justify-center align-center">
-      <v-card width="50%">
-        <v-card-title>
-          <h1>Rejestracja</h1>
-        </v-card-title>
-        <v-text-field v-model="user.name" label="Imię"> </v-text-field>
-        <v-text-field v-model="user.surname" label="Nazwisko"> </v-text-field>
-        <v-text-field
-          v-model="user.email"
-          label="E-mail"
-          placeholder="johndoe@gmail.com"
-          clearable
-        >
-        </v-text-field>
-        <v-text-field v-model="user.password" label="Hasło"> </v-text-field>
-        <v-text-field
-          v-model="user.password_confirmation"
-          label="Powtórz hasło"
-        >
-        </v-text-field>
-        <v-card-actions>
-          <v-btn class="hover-btn" style="min-width: 170px"  @click="saveUser()">Zarejestruj się</v-btn>
-        </v-card-actions>
-        <v-card-actions>
-          <v-btn class="hover-btn md-12" style="min-width: 150px"  @click="goToLogin">Zaloguj się</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-container>
+  <v-container fluid class="d-flex justify-center align-center">
+    <v-row justify="center">
+      <v-col cols="12" sm="8" md="6" lg="4">
+        <v-card class="pa-6">
+          <v-card-title class="justify-center">
+            <h1>Rejestracja</h1>
+          </v-card-title>
+
+          <v-card-text class="d-flex flex-column gap-4">
+            <v-text-field
+              v-model="user.name"
+              label="Imię"
+              dense
+              outlined
+            ></v-text-field>
+            <v-text-field
+              v-model="user.surname"
+              label="Nazwisko"
+              dense
+              outlined
+            ></v-text-field>
+            <v-text-field
+              v-model="user.email"
+              label="E-mail"
+              placeholder="johndoe@gmail.com"
+              clearable
+              dense
+              outlined
+            ></v-text-field>
+            <v-text-field
+              v-model="user.password"
+              label="Hasło"
+              dense
+              outlined
+            ></v-text-field>
+            <v-text-field
+              v-model="user.password_confirmation"
+              label="Powtórz hasło"
+              dense
+              outlined
+            ></v-text-field>
+
+            <!-- Przyciski w v-card-text z odstępem -->
+            <v-btn class="mb-2" block color="primary" @click="saveUser()">Zarejestruj się</v-btn>
+            <v-btn class="mb-2" block outlined color="secondary" @click="goToLogin">Zaloguj się</v-btn>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
+
 <script>
-import {
-  VContainer,
-  VCard,
-  VTextField,
-  VBtn,
-  VCardActions,
-} from "vuetify/lib/components";
+import { VContainer, VCard, VTextField, VBtn } from "vuetify/lib/components";
 import axios from "axios";
 export default {
   components: {
@@ -44,7 +61,6 @@ export default {
     VCard,
     VTextField,
     VBtn,
-    VCardActions,
   },
   data() {
     return {
@@ -77,7 +93,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .v-card-actions {
   display: flex;
   justify-content: center;

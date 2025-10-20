@@ -3,20 +3,19 @@
     <v-btn v-if="isAdmin" icon @click="$emit('update:modelValue', !modelValue)">
       <v-icon>mdi-menu</v-icon>
     </v-btn>
+
     <v-toolbar-title class="ml-2 cursor-pointer" @click="goHomePage">
       CineManager
     </v-toolbar-title>
 
     <v-spacer />
-    <div class="d-flex align-center ga-1">
+
+    <div class="d-none d-md-flex align-center ga-1">
       <v-btn class="hover-btn" variant="text" @click="goToRepertoire"
         >Repertuar</v-btn
       >
       <v-btn class="hover-btn" variant="text" @click="goToAnnouncements"
         >Zapowiedzi</v-btn
-      >
-      <v-btn class="hover-btn" variant="text" @click="goToPriceList"
-        >Cennik</v-btn
       >
       <v-btn class="hover-btn" variant="text" @click="goToSchoolPage"
         >Szkoła</v-btn
@@ -27,32 +26,80 @@
       <v-btn class="hover-btn" variant="text" @click="navigate('/aboutUsPage')"
         >O nas</v-btn
       >
+
       <v-menu v-if="isLogged" location="bottom">
         <template #activator="{ props }">
           <v-btn class="hover-btn" icon v-bind="props">
             <v-icon>mdi-account</v-icon>
           </v-btn>
         </template>
-
         <v-list>
           <v-list-item
             v-for="(item, index) in userActions"
             :key="index"
             @click="item.route === '/logout' ? logout() : navigate(item.route)"
           >
-            <template v-slot:prepend>
+            <template #prepend>
               <v-icon v-if="item.icon">{{ item.icon }}</v-icon>
             </template>
             <v-list-item-title>{{ item.title }}</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
-      <!-- <v-btn class="hover-btn" icon v-if="isLogged" @click="logout">
-        <v-icon>mdi-logout</v-icon>
-      </v-btn> -->
+
       <v-btn icon v-if="!isLogged" @click="navigate('/login')">
         <v-icon>mdi-login</v-icon>
       </v-btn>
+    </div>
+
+    <div class="d-flex d-md-none">
+      <v-menu offset-y>
+        <template #activator="{ props }">
+          <v-btn icon v-bind="props">
+            <v-icon>mdi-menu</v-icon>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item @click="goToRepertoire">
+            <v-list-item-title>Repertuar</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="goToAnnouncements">
+            <v-list-item-title>Zapowiedzi</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="goToSchoolPage">
+            <v-list-item-title>Szkoła</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="navigate('/contactPage')">
+            <v-list-item-title>Kontakt</v-list-item-title>
+          </v-list-item>
+          <v-list-item @click="navigate('/aboutUsPage')">
+            <v-list-item-title>O nas</v-list-item-title>
+          </v-list-item>
+
+          <v-divider></v-divider>
+
+          <template v-if="isLogged">
+            <v-list-item
+              v-for="(item, index) in userActions"
+              :key="index"
+              @click="
+                item.route === '/logout' ? logout() : navigate(item.route)
+              "
+            >
+              <template #prepend>
+                <v-icon v-if="item.icon">{{ item.icon }}</v-icon>
+              </template>
+              <v-list-item-title>{{ item.title }}</v-list-item-title>
+            </v-list-item>
+          </template>
+
+          <v-list-item v-if="!isLogged" @click="navigate('/login')">
+            <v-icon start>mdi-login</v-icon>
+            <v-list-item-title>Zaloguj</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </div>
   </v-toolbar>
 </template>
@@ -159,7 +206,7 @@ export default {
   },
 };
 </script>
-<style>
+<style scoped>
 .no-rounded .v-btn {
   border-radius: 0 !important;
 }

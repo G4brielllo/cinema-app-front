@@ -1,42 +1,64 @@
 <template>
   <v-container>
     <v-card class="w-100" variant="toned">
-      <v-card-title>
+      <v-card-title class="mt-8">
         <h1>Repertuar</h1>
       </v-card-title>
-      <v-btn
-        v-for="(day, index) in daysOfWeek"
-        :key="index"
-        class="hover-btn mb-4 mx-1 text-center"
-        :color="index === selectedDayIndex ? 'secondary' : 'primary'"
-        @click="selectedDayIndex = index"
-      >
-        {{ day }}
-      </v-btn>
-
+      <v-col>
+        <v-btn
+          v-for="(day, index) in daysOfWeek"
+          :key="index"
+          class="hover-btn mt-6 mb-6 mx-1 text-center"
+          :color="index === selectedDayIndex ? 'secondary' : 'primary'"
+          @click="selectedDayIndex = index"
+        >
+          {{ day }}
+        </v-btn>
+      </v-col>
       <v-row
         class="py-6 border-b"
         v-for="(movie, index) in filteredMovies"
         :key="index"
       >
-        <v-col cols="3">
-          <v-img :src="movie.image" aspect-ratio="2/3" elevation-3></v-img>
+        <v-col
+          class="d-flex justify-sm-center justify-md-start"
+          cols="12"
+          sm="4"
+          md="4"
+          lg="4"
+          xl="4"
+        >
+          <v-img max-height="300px" :src="movie.image" aspect-ratio="2/3" elevation-3></v-img>
         </v-col>
-        <v-col cols="3" class="d-flex flex-column justify-space-between">
-          <div>
-            <h1 class="text-left">{{ movie.title }}</h1>
-            <div class="text-grey-darken-1 text-left">
+        <v-col
+          cols="12"
+          sm="4"
+          md="4"
+          lg="4"
+          xl="6"
+          class="d-flex flex-column justify-space-between"
+        >
+          <div mx-4>
+            <h1 class="text-xs-center text-sm-left">{{ movie.title }}</h1>
+            <div class="text-grey-darken-1 text-xs-center text-sm-left">
               <div><strong>Kategoria:</strong> {{ movie.category }}</div>
               <div><strong>Czas:</strong> {{ movie.duration }} min</div>
               <div><strong>Obsada:</strong> {{ movie.cast }}</div>
             </div>
           </div>
         </v-col>
-        <v-col cols="2" class="d-flex flex-column justify-inline">
+        <v-col
+          cols="12"
+          sm="4"
+          md="4"
+          lg="4"
+          xl="12"
+          class="d-flex justify-center justify-inline"
+        >
           <v-btn
             v-for="(screening, index) in filteredScreenings(movie.screenings)"
             :key="index"
-            class="mb-4 mx-1"
+            class="mx-1"
             style="min-height: 45px"
             color="orange"
             @click="goToMovieBooking(screening.id, screening.hall_id)"
@@ -128,6 +150,7 @@ export default {
           : parsed.toLocaleTimeString([], {
               hour: "2-digit",
               minute: "2-digit",
+              hourCycle: "h23"
             });
       }
     },
@@ -174,5 +197,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style scoped></style>

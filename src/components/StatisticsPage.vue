@@ -29,7 +29,7 @@
           >
             <div class="d-flex align-center justify-space-between">
               <div>
-                <div class="text-subtitle-2 mb-1">Przychód</div>
+                <div class="text-subtitle-2 mb-1"><strong>Przychód</strong> (w tym miesiącu)</div>
                 <div class="text-h5 font-weight-bold">
                   {{ revenueStatusBar }} zł
                 </div>
@@ -48,7 +48,7 @@
           >
             <div class="d-flex align-center justify-space-between">
               <div>
-                <div class="text-subtitle-2 mb-1">Zamówienia</div>
+                <div class="text-subtitle-2 mb-1"><strong>Zamówienia</strong> (w tym miesiącu)</div>
                 <div class="text-h5 font-weight-bold">
                   {{ numberOfOrdersStatusBar }}
                 </div>
@@ -67,7 +67,7 @@
           >
             <div class="d-flex align-center justify-space-between">
               <div>
-                <div class="text-subtitle-2 mb-1">Anulacje</div>
+                <div class="text-subtitle-2 mb-1"><strong>Anulacje</strong> (w tym miesiącu)</div>
                 <div class="text-h5 font-weight-bold">
                   {{ cancellationsStatusBar }}
                 </div>
@@ -111,7 +111,7 @@
       </v-row>
       <v-row>
         <v-col>
-          <v-card>
+          <v-card class="d-flex justify-center" height="400px">
             <canvas id="screeningsVsReservationsChart"></canvas>
           </v-card>
         </v-col>

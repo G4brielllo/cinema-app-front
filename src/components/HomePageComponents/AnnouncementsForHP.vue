@@ -1,9 +1,6 @@
 <template>
   <v-container>
     <div class="carousel-wrapper">
-      <v-btn icon @click="scroll(-1)">
-        <v-icon>mdi-chevron-left</v-icon>
-      </v-btn>
       <div class="carousel" ref="carousel">
         <div
           class="carousel-item"
@@ -13,7 +10,7 @@
           <v-card
             @click="goToMovieDetails(announcement.id)"
             variant="elevated"
-            class="pb-2 mx-2"
+            class="movie-card pb-2 mx-2"
             :width="cardWidth"
           >
             <v-img :src="announcement.image" height="300" cover />
@@ -27,10 +24,6 @@
           </v-card>
         </div>
       </div>
-
-      <v-btn icon @click="scroll(1)">
-        <v-icon>mdi-chevron-right</v-icon>
-      </v-btn>
     </div>
   </v-container>
 </template>
@@ -121,5 +114,18 @@ export default {
 .carousel-item {
   flex: 0 0 auto;
   scroll-snap-align: start;
+}
+.movie-card {
+  min-width: 220px;
+  flex: 0 0 auto;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.movie-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  z-index: 2;
 }
 </style>

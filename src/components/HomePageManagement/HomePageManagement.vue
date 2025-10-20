@@ -18,14 +18,28 @@
                       {{ slide.title }}
                     </div>
                   </v-card-title>
-                  <v-card-actions>
-                    <v-btn class="hover-btn" @click="openEditSlideModal(slide)">
-                      <v-icon>mdi-pencil</v-icon>
-                    </v-btn>
-                    <v-btn class="hover-btn" @click="deleteSlide(slide.id)">
-                      <v-icon>mdi-delete</v-icon></v-btn
+
+                  <div
+                    class="mb-4 d-flex justify-center align-center"
+                    style="gap: 8px"
+                  >
+                    <v-btn
+                      small
+                      class="hover-btn"
+                      @click="openEditSlideModal(slide)"
                     >
-                  </v-card-actions>
+                      <v-icon left>mdi-pencil</v-icon>
+                      Edytuj
+                    </v-btn>
+                    <v-btn
+                      small
+                      class="hover-btn"
+                      @click="deleteSlide(slide.id)"
+                    >
+                      <v-icon left>mdi-delete</v-icon>
+                      Usuń
+                    </v-btn>
+                  </div>
                 </v-card>
               </v-col>
               <v-col>

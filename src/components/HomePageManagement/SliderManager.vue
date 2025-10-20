@@ -197,7 +197,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 v-btn {
   padding: 100px;
 }

@@ -102,7 +102,7 @@ export default {
   },
 };
 </script>
-<style>
+ <style scoped>
 .promotion-hero {
   background-color: black;
   height: 100vh;

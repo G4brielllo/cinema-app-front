@@ -37,7 +37,7 @@ export default createVuetify({
       rounded: "xl",
     },
     VCard: {
-      rounded: "xl",
+      // rounded: "xl",
     },
     VContainer: {
       class: "d-flex justify-center align-center",
