@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-card width="80%">
+    <v-card width="100%" variant="tonned" class="pa-12">
       <v-card-title><h1>Dodaj Promocję</h1></v-card-title>
       <v-form>
         <v-text-field

@@ -199,6 +199,7 @@ export default {
       try {
         await axios.get("http://localhost:8000/api/auto-archive-movies");
         await axios.get("http://localhost:8000/api/auto-archive-screenings");
+        await axios.get("http://localhost:8000/api/auto-archive-movies");
       } catch (error) {
         console.error("Nie udało się zarchiwizować filmów oraz seansów", error);
       }

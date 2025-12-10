@@ -11,7 +11,7 @@
           >
             <div class="d-flex align-center justify-space-between">
               <div>
-                <div class="text-subtitle-2 mb-1">Klienci</div>
+                <div class="text-subtitle-2 mb-1"><strong>Klienci</strong></div>
                 <div class="text-h5 font-weight-bold">
                   {{ numberOfClientsStatusBar }}
                 </div>
@@ -29,7 +29,7 @@
           >
             <div class="d-flex align-center justify-space-between">
               <div>
-                <div class="text-subtitle-2 mb-1"><strong>Przychód</strong> (w tym miesiącu)</div>
+                <div class="text-subtitle-2 mb-1"><strong>Przychód</strong></div>
                 <div class="text-h5 font-weight-bold">
                   {{ revenueStatusBar }} zł
                 </div>
@@ -48,7 +48,7 @@
           >
             <div class="d-flex align-center justify-space-between">
               <div>
-                <div class="text-subtitle-2 mb-1"><strong>Zamówienia</strong> (w tym miesiącu)</div>
+                <div class="text-subtitle-2 mb-1"><strong>Zamówienia</strong></div>
                 <div class="text-h5 font-weight-bold">
                   {{ numberOfOrdersStatusBar }}
                 </div>
@@ -67,7 +67,7 @@
           >
             <div class="d-flex align-center justify-space-between">
               <div>
-                <div class="text-subtitle-2 mb-1"><strong>Anulacje</strong> (w tym miesiącu)</div>
+                <div class="text-subtitle-2 mb-1"><strong>Anulacje</strong></div>
                 <div class="text-h5 font-weight-bold">
                   {{ cancellationsStatusBar }}
                 </div>

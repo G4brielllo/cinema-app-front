@@ -1,8 +1,8 @@
 <template>
   <v-container class="d-flex align-center justify-center">
     <v-card class="pa-6" max-width="600" width="100%">
-      <v-card-title class="text-center">
-        <h1 class="text-h5 text-md-h4">Sprawdź rezerwację</h1>
+      <v-card-title class="d-flex justify-center">
+        <h1 class="text-h5 text-md-h4">Zweryfikuj rezerwację</h1>
       </v-card-title>
 
       <v-card-text class="text-center">

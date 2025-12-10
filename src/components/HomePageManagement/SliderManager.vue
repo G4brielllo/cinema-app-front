@@ -1,6 +1,6 @@
 <template>
   <v-container class="d-flex justify-center align-center">
-    <v-card width="100%">
+    <v-card variant="tonned" width="100%">
       <v-card-title><h1>Dodaj Slajd</h1></v-card-title>
       <v-card-text>
         <v-form>

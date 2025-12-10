@@ -1,12 +1,12 @@
 .hover-btn {
-  background-color: #402e32;
+  background-color: #212121;
   color: white;
   transition: background-color 0.3s ease;
 }
 
 .hover-btn:hover {
   background-color: #ffa600ff;
-  color: #402e32;
+  color: #212121;
 }
 .v-btn,
 .v-list-item,

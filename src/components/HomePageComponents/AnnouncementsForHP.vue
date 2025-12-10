@@ -1,32 +1,30 @@
 <template>
   <v-container>
     <div class="carousel-wrapper">
-      <div class="carousel" ref="carousel">
-        <div
-          class="carousel-item"
+      <div class="carousel">
+        <v-card
           v-for="announcement in announcements"
           :key="announcement.id"
+          class="announcement-card"
+          @click="goToMovieDetails(announcement.id)"
         >
-          <v-card
-            @click="goToMovieDetails(announcement.id)"
-            variant="elevated"
-            class="movie-card pb-2 mx-2"
-            :width="cardWidth"
-          >
-            <v-img :src="announcement.image" height="300" cover />
-            <v-card-title style="white-space: normal; word-break: break-word">
-              {{ announcement.title }}
-            </v-card-title>
-            <v-card-subtitle>
-              <strong> Premiera: </strong>
-              {{ formatDate(announcement.playing_from) }}</v-card-subtitle
-            >
-          </v-card>
-        </div>
+          <div class="image-wrapper">
+            <v-img :src="announcement.image" cover class="announcement-img" />
+          </div>
+
+          <div class="announcement-info">
+            <h3 class="announcement-title">{{ announcement.title }}</h3>
+
+            <p class="announcement-premiere">
+              <strong>Premiera:</strong> {{ formatDate(announcement.playing_from) }}
+            </p>
+          </div>
+        </v-card>
       </div>
     </div>
   </v-container>
 </template>
+
 
 <script>
 import axios from "axios";
@@ -80,7 +78,7 @@ export default {
     formatDate(date) {
       if (!date) return "";
       const [year, month, day] = date.split("-");
-      return `${day}-${month}-${year}`;
+      return `${day}.${month}.${year}`;
     },
     scroll(direction) {
       const container = this.$refs.carousel;
@@ -98,34 +96,56 @@ export default {
 
 <style scoped>
 .carousel-wrapper {
-  display: flex;
-  align-items: center;
-  overflow: hidden;
+  overflow-x: auto;
+  padding: 20px 0;
+  -webkit-overflow-scrolling: touch;
 }
 
 .carousel {
   display: flex;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  width: 100%;
-  padding: 10px 0;
+  gap: 20px;
+  min-width: max-content;
 }
 
-.carousel-item {
-  flex: 0 0 auto;
-  scroll-snap-align: start;
-}
-.movie-card {
-  min-width: 220px;
-  flex: 0 0 auto;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+.announcement-card {
+  width: 220px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #212121;
+  color: white;
   cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.announcement-card:hover {
+  transform: scale(1.08);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+  z-index: 3;
+}
+
+.image-wrapper {
   position: relative;
 }
 
-.movie-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-  z-index: 2;
+.announcement-img {
+  height: 320px;
+  object-fit: cover;
+}
+
+.announcement-info {
+  padding: 15px 10px;
+  text-align: center;
+}
+
+.announcement-title {
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 6px;
+  white-space: normal;
+}
+
+.announcement-premiere {
+  font-size: 14px;
+  opacity: 0.85;
 }
 </style>

@@ -3,8 +3,8 @@
     <v-row class="w-100" justify="center">
       <v-col cols="12" sm="12" md="10" lg="8">
         <v-card>
-          <v-card-title class="d-flex justify-center">
-            <h1 class="text-h5 text-md-h4">Lista Użytkowników</h1>
+          <v-card-title>
+            <h1 class="ma-8">Lista Użytkowników</h1>
           </v-card-title>
 
           <div style="overflow-x: auto">

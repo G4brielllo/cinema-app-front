@@ -1,8 +1,8 @@
 <template>
   <v-container class="py-16">
     <v-row align="center" justify="center">
-      <v-col cols="12" sm="8" md="6">
-        <v-card class="pa-8" variant="tonned">
+      <v-col cols="12" sm="8" md="8">
+        <v-card class="" variant="tonnal">
           <v-card-title class="text-start text-primary">
             <h2>Skontaktuj się z nami</h2>
           </v-card-title>
@@ -44,22 +44,30 @@
             <h2 class="text-primary mb-4">Dane kontaktowe</h2>
 
             <v-row justify="center" class="mt-3">
-              <v-col cols="12" md="4" class="text-center">
+              <v-col cols="12" lg="4" class="text-center">
                 <v-icon color="primary">mdi-map-marker</v-icon>
                 <div class="mt-4">
-                  <h4>ul. Kinowa 12, 00-123 Warszawa</h4>
+                  <div class="text-subtitle-1 font-weight-bold">
+                    ul. Kinowa 12, 00-123 Warszawa
+                  </div>
                 </div>
               </v-col>
-              <v-col cols="12" md="4" class="text-center">
+
+              <v-col cols="12" lg="4" class="text-center">
                 <v-icon color="primary">mdi-phone</v-icon>
                 <div class="mt-4">
-                  <h4>+48 123 456 789</h4>
+                  <div class="text-subtitle-1 font-weight-bold text-no-wrap">
+                    +48 123 456 789
+                  </div>
                 </div>
               </v-col>
-              <v-col cols="12" md="4" class="text-center">
+
+              <v-col cols="12" lg="4" class="text-center">
                 <v-icon color="primary">mdi-email</v-icon>
                 <div class="mt-4">
-                  <h4>support@cinemanager.pl</h4>
+                  <div class="text-subtitle-1 font-weight-bold text-no-wrap">
+                    support@cinemanager.pl
+                  </div>
                 </div>
               </v-col>
             </v-row>
@@ -69,7 +77,6 @@
     </v-row>
   </v-container>
 </template>
-
 
 <script>
 export default {

@@ -1,9 +1,9 @@
 <template>
   <v-container>
     <v-card elevation="6" class="payment-success pa-10 mb-10">
-      <v-card-title class="text-h5 mb-4 text-center text-primary font-weight-bold">
+      <h5 class="text-h5 mb-4 text-center text-primary font-weight-bold">
         Płatność zakończona sukcesem
-      </v-card-title>
+      </h5>
 
       <v-card-text class="text-center">
         <p class="mb-2">Twoja płatność została pomyślnie przetworzona.</p>

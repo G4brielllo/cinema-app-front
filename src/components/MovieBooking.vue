@@ -74,21 +74,21 @@
           md="4"
         >
           <v-card variant="toned">
-            <h2>Wybierz miejsca</h2>
+            <h1>Wybierz miejsca</h1>
             <v-card-text>
               <v-form ref="form">
-                <div class="text-center">
+                <h3 class="text-center">
                   Liczba wybranych biletów: {{ selectedSeats.length }}
-                </div>
+                </h3>
 
                 <div v-if="selectedSeats.length" class="my-4">
-                  <div
+                  <h3
                     v-for="(seat, index) in selectedSeats"
                     :key="index"
-                    class="text-caption text-center"
+                    class=" text-center"
                   >
                     Rząd {{ seat.row }}, Miejsce {{ seat.number }}
-                  </div>
+                </h3>
                 </div>
                 <div class="text-center">
                   <v-btn
@@ -428,8 +428,8 @@ export default {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            notifyUrl: "https://86321378ec25.ngrok-free.app/api/payu/notify",
-            continueUrl: "https://86321378ec25.ngrok-free.app/paymentStatus",
+            notifyUrl: "https://72f306caa966.ngrok-free.app/api/payu/notify",
+            continueUrl: "https://72f306caa966.ngrok-free.app/paymentStatus",
             extOrderId: this.reservation.reservation_code,
           }),
         });

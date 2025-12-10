@@ -1,20 +1,17 @@
 <template>
   <MainSlider />
-
   <v-parallax :src="paralaxBackground" height="auto">
     <div class="overlay-content">
-      <h1 class="blur-behind mt-8">Teraz Gramy</h1>
-      <NowPlayingMovies class="transparent-component" />
-
-      <h1 class="blur-behind mt-8"><strong>Zapowiedzi</strong></h1>
-      <AnnouncementsForHP class="transparent-component" />
+      <h1 class="text-left mt-8">Aktualnie w repertuarze</h1>
+      <NowPlayingMovies/>
+      <h1 class="text-left mt-8"><strong>Zapowiedzi</strong></h1>
+      <AnnouncementsForHP />
+      <h1 class="text-left">Promocje</h1>
+    </div>
+    <div>
+      <PromotionsPage />
     </div>
   </v-parallax>
-
-  <div class="below-parallax">
-    <h1><strong>Promocje</strong></h1>
-    <PromotionsPage />
-  </div>
 </template>
 
 <script>
@@ -42,19 +39,9 @@ export default {
 <style scoped>
 .overlay-content {
   padding: 2rem;
-  border-radius: 8px;
   color: white;
-  max-width: 1000px;
-  margin: 0 auto;
 }
 
-.transparent-component {
-  background-color: transparent !important;
-}
-
-.below-parallax {
-  padding: 3rem 1rem;
-}
 h1 {
   color: white;
   font-size: 2.5rem;
@@ -65,12 +52,7 @@ h1 {
 .blur-behind {
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
-  background-color: rgba(
-    0,
-    0,
-    0,
-    0.25
-  ); /* bardzo lekki przyciemniony dla kontrastu */
+  background-color: rgba(0, 0, 0, 0.25);
   padding: 0.5rem 1rem;
   border-radius: 6px;
   display: inline-block;

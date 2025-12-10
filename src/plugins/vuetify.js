@@ -12,7 +12,7 @@ export default createVuetify({
         colors: {
           // primary: "#424242",
           // primary: "#0D1321",
-          primary: "#402e32",
+          primary: "#212121",
           secondary: "#ffa600",
         },
       },
@@ -43,7 +43,7 @@ export default createVuetify({
       class: "d-flex justify-center align-center",
     },
     VCardTitle: {
-      class: "d-flex justify-space-between align-center",
+      class: "d-flex  align-center",
     },
     VSelect: {
       variant: "underlined",

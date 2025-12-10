@@ -29,7 +29,6 @@
                       @click="openEditSlideModal(slide)"
                     >
                       <v-icon left>mdi-pencil</v-icon>
-                      Edytuj
                     </v-btn>
                     <v-btn
                       small
@@ -37,7 +36,6 @@
                       @click="deleteSlide(slide.id)"
                     >
                       <v-icon left>mdi-delete</v-icon>
-                      Usuń
                     </v-btn>
                   </div>
                 </v-card>
@@ -72,7 +70,10 @@
                     </div>
                   </v-card-title>
 
-                  <v-card-actions>
+                  <div
+                    class="mb-4 d-flex justify-center align-center"
+                    style="gap: 8px"
+                  >
                     <v-btn
                       class="hover-btn"
                       @click="openEditPromotionModal(promo)"
@@ -82,7 +83,7 @@
                     <v-btn class="hover-btn" @click="deletePromotion(promo.id)"
                       ><v-icon>mdi-delete</v-icon></v-btn
                     >
-                  </v-card-actions>
+                  </div>
                 </v-card>
               </v-col>
               <v-col>

@@ -2,7 +2,7 @@
   <v-navigation-drawer v-model="internalDrawer" temporary="true">
     <v-list>
       <v-list-item
-      class="text-left hover-btn"
+        class="text-left hover-btn"
         v-for="(item, i) in actionsForAdmin"
         :key="i"
         @click="navigate(item)"
@@ -44,44 +44,41 @@ export default {
           icon: "mdi-movie-plus",
         },
         {
-          title: "Dodaj Seans",
-          route: "/addMovieScreening",
-          icon: "mdi-filmstrip",
-        },
-        {
           title: "Lista Filmów/Zapowiedzi",
           route: "/moviesList",
           icon: "mdi-format-list-bulleted",
+        },
+        {
+          title: "Dodaj Seans",
+          route: "/addMovieScreening",
+          icon: "mdi-filmstrip",
         },
         {
           title: "Lista Seansów",
           route: "/screeningsList",
           icon: "mdi-format-list-bulleted",
         },
-        {
-          title: "Lista Użytkowników",
-          route: "/usersList",
-          icon: "mdi-account-group",
-        },
-        {
-          title: "Zarządzaj Stroną Główną",
-          route: "/homePageManagement",
-          icon: "mdi-home",
-        },
-        {
-          title: "Lista Sal Kinowych",
-          route: "/hallList",
-          icon: "mdi-seat",
-        },
+
         {
           title: "Dodaj Salę Kinową",
           route: "/hall/add",
           icon: "mdi-seat",
         },
         {
-          title: "Statystyki",
-          route: "/statisticsPage",
-          icon: "mdi-chart-areaspline",
+          title: "Lista Sal Kinowych",
+          route: "/hallList",
+          icon: "mdi-seat",
+        },
+
+        {
+          title: "Lista Użytkowników",
+          route: "/usersList",
+          icon: "mdi-account-group",
+        },
+        {
+          title: "Zweryfikuj Rezerwację",
+          route: "/checkReservation",
+          icon: "mdi-key",
         },
         {
           title: "PayU",
@@ -89,9 +86,14 @@ export default {
           icon: "mdi-cash-check",
         },
         {
-          title: "Zweryfikuj Rezerwację",
-          route: "/checkReservation",
-          icon: "mdi-key",
+          title: "Statystyki",
+          route: "/statisticsPage",
+          icon: "mdi-chart-areaspline",
+        },
+        {
+          title: "Zarządzaj Stroną Główną",
+          route: "/homePageManagement",
+          icon: "mdi-home",
         },
       ],
       internalDrawer: false,

@@ -12,7 +12,12 @@
           class="border-b-md ma-6 pb-4"
         >
           <v-col cols="12" sm="6">
-            <v-img max-height="300px" :src="movie.image" aspect-ratio="2/3" elevation="3"></v-img>
+            <v-img
+              max-height="300px"
+              :src="movie.image"
+              aspect-ratio="2/3"
+              elevation="3"
+            ></v-img>
           </v-col>
           <v-col cols="12" sm="6" class="flex-column justify-space-between">
             <div>
@@ -23,9 +28,10 @@
                 {{ movie.description }}
               </div>
               <div class="text-grey-darken-1 text-center text-sm-left mt-5">
-                <strong>Obsada:</strong> {{ movie.cast }}
+                <strong>Data premiery:</strong> {{ formatDate(movie.playing_from) }}
               </div>
               <div class="text-grey-darken-1 text-center text-sm-left mt-5">
+                <strong>Obsada:</strong> {{ movie.cast }}
                 <div><strong>Kategoria:</strong> {{ movie.category }}</div>
                 <div><strong>Czas:</strong> {{ movie.duration }} min</div>
               </div>
@@ -45,21 +51,13 @@
     </v-card>
   </v-container>
   <v-dialog v-model="trailerDialog" max-width="800px">
-    <v-card>
-      <v-card-title class="headline">Zwiastun</v-card-title>
-      <v-card-text>
-        <iframe
-          width="100%"
-          height="400"
-          :src="currentTrailer"
-          frameborder="0"
-          allowfullscreen
-        ></iframe>
-      </v-card-text>
-      <v-card-actions>
-        <v-btn color="primary" @click="trailerDialog = false">Zamknij</v-btn>
-      </v-card-actions>
-    </v-card>
+    <iframe
+      width="100%"
+      height="400"
+      :src="currentTrailer"
+      frameborder="0"
+      allowfullscreen
+    ></iframe>
   </v-dialog>
 </template>
 
@@ -73,8 +71,6 @@ import {
   VBtn,
   VDialog,
   VCardTitle,
-  VCardText,
-  VCardActions,
 } from "vuetify/lib/components";
 import "@mdi/font/css/materialdesignicons.css";
 import axios from "axios";
@@ -88,8 +84,6 @@ export default {
     VBtn,
     VDialog,
     VCardTitle,
-    VCardText,
-    VCardActions,
   },
   data() {
     return {
@@ -109,6 +103,8 @@ export default {
         image: null,
         trailer: "",
         status: "",
+        playing_from: "",
+
       },
       trailerDialog: false,
       currentTrailer: "",
@@ -130,10 +126,16 @@ export default {
         console.error("Błąd przy pobieraniu danych filmów:", error);
       }
     },
+    formatDate(dateString) {
+      if (!dateString) return "";
+      const date = new Date(dateString);
+      const day = String(date.getDate()).padStart(2, "0");
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const year = date.getFullYear();
+      return `${day}.${month}.${year}`;
+    },
     openTrailer(movie) {
       if (!movie.trailer) return;
-
-      // Zamień link watch?v= na embed/
       const embedUrl = movie.trailer.replace("watch?v=", "embed/");
 
       this.currentTrailer = embedUrl;

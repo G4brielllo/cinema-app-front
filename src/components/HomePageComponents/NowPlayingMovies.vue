@@ -8,19 +8,20 @@
           class="movie-card"
           @click="goToMovieDetails(movie.id)"
         >
-          <v-img :src="movie.image" cover></v-img>
-          <v-card-title style="white-space: normal; word-break: break-word">
-            <strong>{{ movie.title }}</strong>
-          </v-card-title>
-          <v-card-subtitle
-            ><strong>{{ movie.category }}</strong></v-card-subtitle
-          >
-          <v-card-text>{{ movie.duration }} min</v-card-text>
+          <div class="image-wrapper">
+            <v-img :src="movie.image" cover class="movie-img" />
+          </div>
+
+          <div class="movie-info">
+            <h3 class="movie-title">{{ movie.title }}</h3>
+            <p class="movie-category">{{ movie.category }}</p>
+          </div>
         </v-card>
       </div>
     </div>
   </v-container>
 </template>
+
 
 <script>
 import axios from "axios";
@@ -82,37 +83,55 @@ export default {
   overflow-x: auto;
   padding: 20px 0;
   -webkit-overflow-scrolling: touch;
-  margin: 0 -5%;
 }
 
 .movie-row {
   display: flex;
-  gap: 15px;
+  gap: 20px;
   min-width: max-content;
-  padding: 0 5%;
 }
 
 .movie-card {
-  min-width: 220px;
-  flex: 0 0 auto;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 220px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #212121;
+  color: white;
   cursor: pointer;
-  position: relative;
+  transition: 0.3s ease;
 }
 
 .movie-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
-  z-index: 2;
+  transform: scale(1.08);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+  z-index: 3;
 }
 
-.v-img {
-  height: 350px;
+.image-wrapper {
+  position: relative;
+}
+
+.movie-img {
+  height: 320px;
   object-fit: cover;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
-.v-container {
-  max-width: 100% !important;
-  padding: 0 !important;
+.movie-info {
+  padding: 15px 10px;
+  text-align: center;
+}
+
+.movie-title {
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 5px;
+  white-space: normal;
+}
+
+.movie-category {
+  font-size: 14px;
+  opacity: 0.8;
 }
 </style>
